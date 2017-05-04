@@ -153,12 +153,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
- 
     <Content Include="favicon.ico" />
     <Content Include="fonts\*" />
-	<Content Include="Scripts\*\*" />
-	<Content Include="Scripts\*" />
-	<Content Include="Global.asax" />
+    <Content Include="Scripts\*\*" />
+    <Content Include="Scripts\*" />
+    <Content Include="Global.asax" />
     <Content Include="Content\*.css" />
     <Content Include="bower.json" />
     <Content Include="Web.config" />
@@ -171,7 +170,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\*.cshtml" />
     <Content Include="Views\*\*.cshtml" />
- 
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
