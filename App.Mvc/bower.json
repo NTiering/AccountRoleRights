@@ -1,0 +1,11 @@
+{
+  "name": "myproject",
+  "dependencies": {
+    "datatables": "~1.10.13",
+    "font-awesome": "font-awsome#~4.7.0",
+    "underscore": "~1.8.3",
+    "toast-css": "1.1.0",
+    "toastr": "~2.1.3",
+    "bootstrap-datepicker": "1.6.0"
+  }
+}

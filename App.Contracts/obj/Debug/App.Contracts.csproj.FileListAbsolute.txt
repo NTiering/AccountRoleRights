@@ -1,0 +1,9 @@
+C:\Git\Tetra\Created\App\App.Contracts\bin\Debug\App.Contracts.dll
+C:\Git\Tetra\Created\App\App.Contracts\bin\Debug\App.Contracts.pdb
+C:\Git\Tetra\Created\App\App.Contracts\bin\Debug\EntityFramework.dll
+C:\Git\Tetra\Created\App\App.Contracts\bin\Debug\EntityFramework.SqlServer.dll
+C:\Git\Tetra\Created\App\App.Contracts\bin\Debug\EntityFramework.xml
+C:\Git\Tetra\Created\App\App.Contracts\bin\Debug\EntityFramework.SqlServer.xml
+C:\Git\Tetra\Created\App\App.Contracts\obj\Debug\App.Contracts.csprojResolveAssemblyReference.cache
+C:\Git\Tetra\Created\App\App.Contracts\obj\Debug\App.Contracts.dll
+C:\Git\Tetra\Created\App\App.Contracts\obj\Debug\App.Contracts.pdb

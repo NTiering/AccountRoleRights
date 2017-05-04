@@ -1,0 +1,29 @@
+﻿<div class="jumbotron">
+    <h1>Home</h1>
+    <p class="lead">
+       Welcome
+    </p>
+</div>
+
+@*<div class="row">
+
+    @foreach (var s in sections.Where(x => isHomeController(x) == false).OrderBy(x => x.Name))
+    {
+        <div class="col-md-4 text-center">
+            <h2><i style="color:@s.Colour" class='icon-@(s.Name.ToLower())' aria-hidden='true'></i> @s.Name</h2>
+            <p>
+                @s.Description
+            </p>
+            <p>
+                <a class="btn btn-info" href="@Url.Action(s.InitialMethodName, s.ControllerName)">
+                    <i class="icon-view" aria-hidden="true"></i> View
+                </a>
+                <a class="btn btn-success" href="javascript:radio('app-@(s.ControllerName.ToLower())-add').broadcast()">
+                    <i class="icon-new" aria-hidden="true"></i> New
+                </a>
+
+            </p>
+        </div>
+    }
+
+</div>*@

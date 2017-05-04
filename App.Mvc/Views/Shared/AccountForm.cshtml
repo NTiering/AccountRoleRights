@@ -1,0 +1,133 @@
+@model App.Contracts.DataModels.IAccountDataModel
+@{ 
+    Layout = null;
+	var isReadOnly = ViewBag.Readonly ;
+    var cssClass = isReadOnly ? " readonly form-control " : " form-control ";
+	var showRelationships = ViewBag.ShowRelationships ;
+}
+<script>  
+    $(function () {
+        radio("app-startup").broadcast(false);
+    })
+</script>
+
+@if(showRelationships)
+{
+	<p>	
+		<!-- show a list of Role objects in a popup for AccountRole -->
+        <a class="btn btn-info btn-sm disableOnAjax" onclick="radio('Account-AccountRole').broadcast(@Model.Id)"><i class="icon-role"></i> Account Role</a>
+	</p>	
+}
+
+<form>
+
+    <div class="row">
+			<div class="col-md-4">
+				<!-- ===========================================
+						Input for Username (string)
+				=========================================== -->
+				<label for="Username">Username:
+				<i title="Any combinaton of characters" class="fa fa-question info-icon"></i></label>
+				<i class="fa fa-exclamation-triangle text-danger error-icon" id="error-icon-for-Username" aria-hidden="true"></i>
+				<br/><small>Unique user Id</small>
+				
+				@Html.TextBoxFor(x=>x.Username, new { @class= cssClass + " data-string type-string", name="Username" })
+								
+			</div>
+			<div class="col-md-4">
+				<!-- ===========================================
+						Input for Password (hashed)
+				=========================================== -->
+				<label for="Password">Password:
+				<i title="Any matching password" class="fa fa-question info-icon"></i></label>
+				<i class="fa fa-exclamation-triangle text-danger error-icon" id="error-icon-for-Password" aria-hidden="true"></i>
+				<br/><small>One way encrypted password</small>
+				
+				<div class="row">
+					<div class="col-md-8">
+						@Html.PasswordFor(x => x.Password, new { @class = cssClass + " hashed-input data-string type-hashed", name = "Password", @readonly = "readonly" , value = Model.Password })
+					</div>
+					<div class="col-md-2">
+					@if (isReadOnly == false)
+                    {
+                    	<span class="btn btn-info disableOnAjax" onclick="radio('password-fill').broadcast({name : 'Password' , onSave : function(n){$('#Password').val(n)}})"><i class="fa fa-key"></i></span>
+					}
+					</div>
+				</div>
+				
+			</div>
+			<div class="col-md-4">
+				<!-- ===========================================
+						Input for LastLoggedIn (datetime)
+				=========================================== -->
+				<label for="LastLoggedIn">Last Logged In:
+				<i title="Any date" class="fa fa-question info-icon"></i></label>
+				<i class="fa fa-exclamation-triangle text-danger error-icon" id="error-icon-for-LastLoggedIn" aria-hidden="true"></i>
+				<br/><small>Last time someone successfully logged in with this account</small>
+				
+				@Html.TextBoxFor(x=>x.LastLoggedIn,"{0:d MMM yyyy}", new { @class= cssClass + " data-DateTime type-datetime", name="LastLoggedIn" })
+								
+			</div>
+			<div class="col-md-4">
+				<!-- ===========================================
+						Input for LoginAttempts (int)
+				=========================================== -->
+				<label for="LoginAttempts">Login Attempts:
+				<i title="Any whole numer" class="fa fa-question info-icon"></i></label>
+				<i class="fa fa-exclamation-triangle text-danger error-icon" id="error-icon-for-LoginAttempts" aria-hidden="true"></i>
+				<br/><small>Count of unsuccessful login attempts against this account</small>
+				
+				@Html.TextBoxFor(x=>x.LoginAttempts, new { @class= cssClass + " data-int type-int", name="LoginAttempts" })
+								
+			</div>
+			<div class="col-md-4">
+				<!-- ===========================================
+						Input for IsLockedOut (bool)
+				=========================================== -->
+				<label for="IsLockedOut">Is Locked Out:
+				<i title="Yes or no" class="fa fa-question info-icon"></i></label>
+				<i class="fa fa-exclamation-triangle text-danger error-icon" id="error-icon-for-IsLockedOut" aria-hidden="true"></i>
+				<br/><small>If true this account cannot be used until unlocked</small>
+				
+				@if(isReadOnly) // fix 'drop downs still expand while diabled'
+				{
+					var items = (ViewBag.BoolSelectItems as SelectListItem[]) ;
+					<p><br/>@(Model.IsLockedOut ? items.First().Text : items.Last().Text )</p>
+				}
+				else
+				{
+					@Html.DropDownListFor(x=>x.IsLockedOut, ViewBag.BoolSelectItems as SelectListItem[], new { @class= cssClass + " data-bool type-bool" ,name="IsLockedOut"})
+				}
+				
+			</div>
+			<div class="col-md-4">
+				<!-- ===========================================
+						Input for AccountValidFrom (datetime)
+				=========================================== -->
+				<label for="AccountValidFrom">Account Valid From:
+				<i title="Any date" class="fa fa-question info-icon"></i></label>
+				<i class="fa fa-exclamation-triangle text-danger error-icon" id="error-icon-for-AccountValidFrom" aria-hidden="true"></i>
+				<br/><small>The date the account can be used from</small>
+				
+				@Html.TextBoxFor(x=>x.AccountValidFrom,"{0:d MMM yyyy}", new { @class= cssClass + " data-DateTime type-datetime", name="AccountValidFrom" })
+								
+			</div>
+			<div class="col-md-4">
+				<!-- ===========================================
+						Input for AccountValidTo (datetime)
+				=========================================== -->
+				<label for="AccountValidTo">Account Valid To:
+				<i title="Any date" class="fa fa-question info-icon"></i></label>
+				<i class="fa fa-exclamation-triangle text-danger error-icon" id="error-icon-for-AccountValidTo" aria-hidden="true"></i>
+				<br/><small>The date the account can be used to</small>
+				
+				@Html.TextBoxFor(x=>x.AccountValidTo,"{0:d MMM yyyy}", new { @class= cssClass + " data-DateTime type-datetime", name="AccountValidTo" })
+								
+			</div>
+	
+	
+	</div>
+	
+	
+
+</form>

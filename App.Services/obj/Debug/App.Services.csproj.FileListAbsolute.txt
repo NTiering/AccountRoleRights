@@ -1,0 +1,7 @@
+C:\Git\Tetra\Created\App\App.Services\bin\Debug\App.Services.dll
+C:\Git\Tetra\Created\App\App.Services\bin\Debug\App.Services.pdb
+C:\Git\Tetra\Created\App\App.Services\bin\Debug\App.Contracts.dll
+C:\Git\Tetra\Created\App\App.Services\bin\Debug\App.Contracts.pdb
+C:\Git\Tetra\Created\App\App.Services\obj\Debug\App.Services.csprojResolveAssemblyReference.cache
+C:\Git\Tetra\Created\App\App.Services\obj\Debug\App.Services.dll
+C:\Git\Tetra\Created\App\App.Services\obj\Debug\App.Services.pdb

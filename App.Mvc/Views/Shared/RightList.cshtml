@@ -1,0 +1,66 @@
+@model IEnumerable<App.Contracts.DataModels.IRightDataModel>
+@{
+    Layout = null;
+	var toolButtons = ViewBag.ToolButtons == null ? String.Empty : ViewBag.ToolButtons.ToLower().Trim();
+    var viewToolButton = toolButtons.Contains("v");
+    var editToolButton = toolButtons.Contains("e");
+    var deleteToolButton = toolButtons.Contains("d");
+    var pickToolButton = toolButtons.Contains("p");
+
+	var pickState = ViewBag.PickState == null ? 0 : ViewBag.PickState ? 1:0;
+}
+<script>
+    $(function () {
+        radio("app-startup").broadcast(false);
+    })
+</script>
+<table class="table table-hover dataTable" id="dataTable-Right">
+    <thead>
+		<tr>
+			<td title="Identifier" class="header datatype-Id">
+				Id
+			</td>
+			<td title="Human readable name" class="header datatype-string">
+				Name
+			</td>
+			<td title="Unique string the application can check against" class="header datatype-string">
+				Key
+			</td>
+			<td title="If true the right can be assigned to a role" class="header datatype-bool">
+				Is Assignable
+			</td>
+			<td></td>               
+		</tr>
+		
+	</thead>
+
+    <tbody>
+        @foreach (var m in Model.Where(x=> x != null)){<text>
+        <tr>
+			<td title="Identifier" class="row datatype-Id">
+				@m.Id
+			</td>
+			<td title="Human readable name" class="row datatype-string">
+				@m.Name
+			</td>
+			<td title="Unique string the application can check against" class="row datatype-string">
+				@m.Key
+			</td>
+			<td title="If true the right can be assigned to a role" class="row datatype-bool">
+				@m.IsAssignable
+			</td>
+		 <td class="row datatype-actions">
+            <div class="btn-group btn-group-sm">
+				@if (viewToolButton)
+				{<i title="View" class="icon-search btn btn-default" aria-hidden="true" onclick="radio('app-right-view').broadcast(@m.Id)"></i>}
+				@if (editToolButton)
+				{<i title="Edit" class="icon-edit btn btn-default" aria-hidden="true" onclick="radio('app-right-edit').broadcast(@m.Id)"></i>}
+				@if (deleteToolButton)
+				{<i title="Delete" class="icon-delete btn btn-danger" aria-hidden="true" onclick="radio('app-right-delete').broadcast(@m.Id)"></i>}
+				@if (pickToolButton)
+				{<i title="Pick" class="fa fa-times btn btn-danger pick-btn" data-pickable="1" data-pick-elementId="@m.Id" data-pick-value="@pickState" aria-hidden="true" ></i>}
+			</div>
+		</td>
+		</tr></text>}
+    </tbody>
+</table>

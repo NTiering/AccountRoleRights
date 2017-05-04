@@ -1,0 +1,75 @@
+@model App.Contracts.DataModels.IRightDataModel
+@{ 
+    Layout = null;
+	var isReadOnly = ViewBag.Readonly ;
+    var cssClass = isReadOnly ? " readonly form-control " : " form-control ";
+	var showRelationships = ViewBag.ShowRelationships ;
+}
+<script>  
+    $(function () {
+        radio("app-startup").broadcast(false);
+    })
+</script>
+
+@if(showRelationships)
+{
+	<p>	
+		<!-- show a list of Role objects in a popup for RoleRight -->
+        <a class="btn btn-info btn-sm disableOnAjax" onclick="radio('Right-RoleRight').broadcast(@Model.Id)"><i class="icon-role"></i> Role Right</a>
+	</p>	
+}
+
+<form>
+
+    <div class="row">
+			<div class="col-md-4">
+				<!-- ===========================================
+						Input for Name (string)
+				=========================================== -->
+				<label for="Name">Name:
+				<i title="Any combinaton of characters" class="fa fa-question info-icon"></i></label>
+				<i class="fa fa-exclamation-triangle text-danger error-icon" id="error-icon-for-Name" aria-hidden="true"></i>
+				<br/><small>Human readable name</small>
+				
+				@Html.TextBoxFor(x=>x.Name, new { @class= cssClass + " data-string type-string", name="Name" })
+								
+			</div>
+			<div class="col-md-4">
+				<!-- ===========================================
+						Input for Key (string)
+				=========================================== -->
+				<label for="Key">Key:
+				<i title="Any combinaton of characters" class="fa fa-question info-icon"></i></label>
+				<i class="fa fa-exclamation-triangle text-danger error-icon" id="error-icon-for-Key" aria-hidden="true"></i>
+				<br/><small>Unique string the application can check against</small>
+				
+				@Html.TextBoxFor(x=>x.Key, new { @class= cssClass + " data-string type-string", name="Key" })
+								
+			</div>
+			<div class="col-md-4">
+				<!-- ===========================================
+						Input for IsAssignable (bool)
+				=========================================== -->
+				<label for="IsAssignable">Is Assignable:
+				<i title="Yes or no" class="fa fa-question info-icon"></i></label>
+				<i class="fa fa-exclamation-triangle text-danger error-icon" id="error-icon-for-IsAssignable" aria-hidden="true"></i>
+				<br/><small>If true the right can be assigned to a role</small>
+				
+				@if(isReadOnly) // fix 'drop downs still expand while diabled'
+				{
+					var items = (ViewBag.BoolSelectItems as SelectListItem[]) ;
+					<p><br/>@(Model.IsAssignable ? items.First().Text : items.Last().Text )</p>
+				}
+				else
+				{
+					@Html.DropDownListFor(x=>x.IsAssignable, ViewBag.BoolSelectItems as SelectListItem[], new { @class= cssClass + " data-bool type-bool" ,name="IsAssignable"})
+				}
+				
+			</div>
+	
+	
+	</div>
+	
+	
+
+</form>

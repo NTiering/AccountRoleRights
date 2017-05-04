@@ -1,0 +1,58 @@
+﻿using App.Contracts;
+using App.Contracts.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+
+namespace App.Api.Controllers
+{
+    public class CustomerController : ApiController
+    {
+        private ICustomerService service;
+
+        public CustomerController(ICustomerService service)
+        {
+            this.service = service;
+        }
+
+        // GET api/values
+        public HttpResponseMessage Get()
+        {
+            var errors = new List<IModelError>();
+            var result = service.GetAll((x => x != null), errors).ToArray();
+
+            return errors.Any() ?
+                Request.CreateResponse(HttpStatusCode.BadRequest, errors) :
+                Request.CreateResponse(HttpStatusCode.OK, result);
+        }
+
+        // GET api/values/5
+        public HttpResponseMessage Get(int id)
+        {
+            var errors = new List<IModelError>();
+            var result = service.Get(id, errors);
+
+            return errors.Any() ?
+                Request.CreateResponse(HttpStatusCode.OK, result) :
+                Request.CreateResponse(HttpStatusCode.BadRequest, errors);
+        }
+
+        // POST api/values
+        public void Post([FromBody]string value)
+        {
+        }
+
+        // PUT api/values/5
+        public void Put(int id, [FromBody]string value)
+        {
+        }
+
+        // DELETE api/values/5
+        public void Delete(int id)
+        {
+        }
+    }
+}
