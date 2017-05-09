@@ -12,7 +12,7 @@ namespace App.Mvc.Models
     public static class ModelExt
     {
 
-		/// <summary>
+        /// <summary>
         /// Represents a single Account instance as a select list item 
         /// </summary>
         public static SelectListItem ToSelectListItem(this IAccountDataModel model,IAccountDataModel selected = null)
@@ -32,7 +32,7 @@ namespace App.Mvc.Models
             }
         }
 
-		/// <summary>
+        /// <summary>
         /// Represents a collection Account instance as select list items
         /// </summary>
         public static IEnumerable<SelectListItem> ToSelectListItem(this IEnumerable<IAccountDataModel> models, IAccountDataModel selected = null)
@@ -43,14 +43,14 @@ namespace App.Mvc.Models
             }
             else
             {
-				var rtn = new List<SelectListItem>();
-				rtn.Add(new SelectListItem{ Text = "Select ....." , Value = "-1" });
-				rtn.AddRange(models.Select(x => x.ToSelectListItem(selected)).OrderBy(x => x.Text));
+                var rtn = new List<SelectListItem>();
+                rtn.Add(new SelectListItem{ Text = "Select ....." , Value = "-1" });
+                rtn.AddRange(models.Select(x => x.ToSelectListItem(selected)).OrderBy(x => x.Text));
                 return rtn;
             }
         }
-		
-		/// <summary>
+        
+        /// <summary>
         /// Represents a single Role instance as a select list item 
         /// </summary>
         public static SelectListItem ToSelectListItem(this IRoleDataModel model,IRoleDataModel selected = null)
@@ -70,7 +70,7 @@ namespace App.Mvc.Models
             }
         }
 
-		/// <summary>
+        /// <summary>
         /// Represents a collection Role instance as select list items
         /// </summary>
         public static IEnumerable<SelectListItem> ToSelectListItem(this IEnumerable<IRoleDataModel> models, IRoleDataModel selected = null)
@@ -81,14 +81,14 @@ namespace App.Mvc.Models
             }
             else
             {
-				var rtn = new List<SelectListItem>();
-				rtn.Add(new SelectListItem{ Text = "Select ....." , Value = "-1" });
-				rtn.AddRange(models.Select(x => x.ToSelectListItem(selected)).OrderBy(x => x.Text));
+                var rtn = new List<SelectListItem>();
+                rtn.Add(new SelectListItem{ Text = "Select ....." , Value = "-1" });
+                rtn.AddRange(models.Select(x => x.ToSelectListItem(selected)).OrderBy(x => x.Text));
                 return rtn;
             }
         }
-		
-		/// <summary>
+        
+        /// <summary>
         /// Represents a single Right instance as a select list item 
         /// </summary>
         public static SelectListItem ToSelectListItem(this IRightDataModel model,IRightDataModel selected = null)
@@ -108,7 +108,7 @@ namespace App.Mvc.Models
             }
         }
 
-		/// <summary>
+        /// <summary>
         /// Represents a collection Right instance as select list items
         /// </summary>
         public static IEnumerable<SelectListItem> ToSelectListItem(this IEnumerable<IRightDataModel> models, IRightDataModel selected = null)
@@ -119,13 +119,13 @@ namespace App.Mvc.Models
             }
             else
             {
-				var rtn = new List<SelectListItem>();
-				rtn.Add(new SelectListItem{ Text = "Select ....." , Value = "-1" });
-				rtn.AddRange(models.Select(x => x.ToSelectListItem(selected)).OrderBy(x => x.Text));
+                var rtn = new List<SelectListItem>();
+                rtn.Add(new SelectListItem{ Text = "Select ....." , Value = "-1" });
+                rtn.AddRange(models.Select(x => x.ToSelectListItem(selected)).OrderBy(x => x.Text));
                 return rtn;
             }
         }
-		
+        
 
     }
 }

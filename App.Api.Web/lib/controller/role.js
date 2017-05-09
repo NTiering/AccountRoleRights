@@ -5,7 +5,7 @@ app.controller('role', function ($scope) {
     // **********************
     // private properties
     // **********************
-	var _dataTableId = "tbl-role";
+    var _dataTableId = "tbl-role";
 
     // **********************
     // public properties
@@ -21,7 +21,7 @@ app.controller('role', function ($scope) {
         $scope.$apply();
     }
 
-	// load data into table
+    // load data into table
     var _loadData = function () {
         //todo go to server and load data
         $('#' + _dataTableId).DataTable();

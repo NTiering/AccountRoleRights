@@ -1,0 +1,29 @@
+Section,Project,Class/Interface,Complexity Index (CI) 1-100
+
+Account,App.Contracts,IAccountDataModel,10				
+Account,App.Mvc,AccountDataModel,10	
+Account,App.Contracts,IAccountDal,10	
+Account,App.Contracts,IAccountService,10			
+Account,App.Services,AccountService,30
+Account,App.Contracts,IAccountDal,10			
+Account,App.Dal,AccountDal,30
+Account,App.Mvc,AccountController,20
+Account,App.Mvc,Account Views,20
+Role,App.Contracts,IRoleDataModel,10				
+Role,App.Mvc,RoleDataModel,10	
+Role,App.Contracts,IRoleDal,10	
+Role,App.Contracts,IRoleService,10			
+Role,App.Services,RoleService,30
+Role,App.Contracts,IRoleDal,10			
+Role,App.Dal,RoleDal,30
+Role,App.Mvc,RoleController,20
+Role,App.Mvc,Role Views,20
+Right,App.Contracts,IRightDataModel,10				
+Right,App.Mvc,RightDataModel,10	
+Right,App.Contracts,IRightDal,10	
+Right,App.Contracts,IRightService,10			
+Right,App.Services,RightService,30
+Right,App.Contracts,IRightDal,10			
+Right,App.Dal,RightDal,30
+Right,App.Mvc,RightController,20
+Right,App.Mvc,Right Views,20

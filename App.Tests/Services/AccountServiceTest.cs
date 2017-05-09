@@ -69,7 +69,7 @@ namespace App.Tests.Services.Validation
         }
         
 
-		[TestMethod]
+        [TestMethod]
         public void Missing_Username_properites_on_new_UsernameDataModels_cause_errors()
         {
             var service = registerClient.Get<IAccountService>();
@@ -122,7 +122,7 @@ namespace App.Tests.Services.Validation
         }
          
 
-		[TestMethod]
+        [TestMethod]
         public void Missing_Password_properites_on_new_PasswordDataModels_cause_errors()
         {
             var service = registerClient.Get<IAccountService>();
@@ -175,7 +175,7 @@ namespace App.Tests.Services.Validation
         }
          
 
-		[TestMethod]
+        [TestMethod]
         public void Missing_IsLockedOut_properites_on_new_IsLockedOutDataModels_cause_errors()
         {
             var service = registerClient.Get<IAccountService>();
@@ -228,7 +228,7 @@ namespace App.Tests.Services.Validation
         }
          
 
-		[TestMethod]
+        [TestMethod]
         public void Missing_AccountValidFrom_properites_on_new_AccountValidFromDataModels_cause_errors()
         {
             var service = registerClient.Get<IAccountService>();
@@ -281,7 +281,7 @@ namespace App.Tests.Services.Validation
         }
          
 
-		[TestMethod]
+        [TestMethod]
         public void Missing_AccountValidTo_properites_on_new_AccountValidToDataModels_cause_errors()
         {
             var service = registerClient.Get<IAccountService>();
@@ -342,23 +342,25 @@ namespace App.Tests.Services.Validation
             var rtn = new Mock<IAccountDataModel>();
             rtn.SetupAllProperties();
             rtn.SetupGet(x => x.IsNew).Returns(isNew);
-            rtn.Object.Username = "some string __ !!!  look ";	
-            rtn.Object.Password = "some hashed string";	
-            rtn.Object.LastLoggedIn = DateTime.Now;	
-            rtn.Object.LoginAttempts = 42;	
-            rtn.Object.IsLockedOut = true;	
-            rtn.Object.AccountValidFrom = DateTime.Now;	
-            rtn.Object.AccountValidTo = DateTime.Now;	
+            rtn.Object.Username = "some string __ !!!  look ";    
+            rtn.Object.Password = "some hashed string";    
+            rtn.Object.LastLoggedIn = DateTime.Now;    
+            rtn.Object.LoginAttempts = 42;    
+            rtn.Object.IsLockedOut = true;    
+            rtn.Object.AccountValidFrom = DateTime.Now;    
+            rtn.Object.AccountValidTo = DateTime.Now;    
+            rtn.Object.LoginStartAt = "12:01";    
+            rtn.Object.LoginUntil = "12:01";    
             return rtn.Object;
         }  
         
         private static RegisterClient registerClient;
         private static Mock<IAccountDal> accountDal;
-            private static Mock<IEntityChangeHandler<IAccountDataModel>> accountChangeHandler;	
+            private static Mock<IEntityChangeHandler<IAccountDataModel>> accountChangeHandler;    
         private static Mock<IRoleDal> roleDal;
-            private static Mock<IEntityChangeHandler<IRoleDataModel>> roleChangeHandler;	
+            private static Mock<IEntityChangeHandler<IRoleDataModel>> roleChangeHandler;    
         private static Mock<IRightDal> rightDal;
-            private static Mock<IEntityChangeHandler<IRightDataModel>> rightChangeHandler;	
+            private static Mock<IEntityChangeHandler<IRightDataModel>> rightChangeHandler;    
 
 
     

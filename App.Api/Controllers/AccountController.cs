@@ -14,10 +14,10 @@ namespace App.Api.Controllers
     public class AccountController : ApiController
     {
         private IAccountService service; 
-	    public AccountController(IAccountService service)
+        public AccountController(IAccountService service)
         {
             this.service = service;
-	    }
+        }
 
         /// <summary>
         /// Gets all Account.
@@ -27,7 +27,7 @@ namespace App.Api.Controllers
         {
             var errors = new List<IModelError>();
             var result = service.GetAll((x => x != null), errors)
-				.AsParallel()
+                .AsParallel()
                 .Select(x=> x.ToViewModel())
                 .ToArray();
 
@@ -88,7 +88,7 @@ namespace App.Api.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-	    public HttpResponseMessage Delete(int id)
+        public HttpResponseMessage Delete(int id)
         {
             var errors = new List<IModelError>();
             var result = service.TryDelete(id, errors);
@@ -99,7 +99,7 @@ namespace App.Api.Controllers
         }
 
 
-		/// <summary>
+        /// <summary>
         /// Supports the many to many relationship (AccountRole) between 
         /// Account (parent) Role (child)
         /// </summary>
@@ -107,22 +107,22 @@ namespace App.Api.Controllers
         /// <param name="roleId"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-		[Route("Api/Account/{roleId}/AccountRole")]
-		[HttpGet]
-		public HttpResponseMessage GetAccountRole(int roleId)
-		{
-			var errors = new List<IModelError>();
-			var result = service.GetAccountRole(roleId ,errors)
-				.AsParallel()
+        [Route("Api/Account/{roleId}/AccountRole")]
+        [HttpGet]
+        public HttpResponseMessage GetAccountRole(int roleId)
+        {
+            var errors = new List<IModelError>();
+            var result = service.GetAccountRole(roleId ,errors)
+                .AsParallel()
                 .Select(x=> x.ToViewModel())
-                .ToArray();		
+                .ToArray();        
 
-			return errors.Any() ?
+            return errors.Any() ?
                 Request.CreateResponse(HttpStatusCode.BadRequest, errors):
                 Request.CreateResponse(HttpStatusCode.OK, result);
-		}
+        }
 
-		/// <summary>
+        /// <summary>
         /// Supports the many to many relationship (AccountRole) between 
         /// Account (parent) Role (child)
         /// </summary>
@@ -130,19 +130,19 @@ namespace App.Api.Controllers
         /// <param name="roleId"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-		[Route("Api/Account/AccountRole")]
-		[HttpPost]		
-		public HttpResponseMessage AddAccountRole(int accountId, int roleId)
-		{
-			var errors = new List<IModelError>();
-			var result = service.TryAddAccountRole(accountId, roleId, errors);
+        [Route("Api/Account/AccountRole")]
+        [HttpPost]        
+        public HttpResponseMessage AddAccountRole(int accountId, int roleId)
+        {
+            var errors = new List<IModelError>();
+            var result = service.TryAddAccountRole(accountId, roleId, errors);
 
-			return errors.Any() ?
+            return errors.Any() ?
                 Request.CreateResponse(HttpStatusCode.BadRequest, errors):
                 Request.CreateResponse(HttpStatusCode.OK, result);
-		}
+        }
 
-		/// <summary>
+        /// <summary>
         /// Supports the many to many relationship (AccountRole) between 
         /// Account (parent) Role (child)
         /// </summary>
@@ -150,17 +150,17 @@ namespace App.Api.Controllers
         /// <param name="roleId"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-		[Route("Api/Account/AccountRole")]
-		[HttpDelete]	
-		public HttpResponseMessage RemoveAccountRole(int accountId, int roleId)
-		{
-			var errors = new List<IModelError>();
-			var result = service.TryRemoveAccountRole(accountId, roleId, errors);
+        [Route("Api/Account/AccountRole")]
+        [HttpDelete]    
+        public HttpResponseMessage RemoveAccountRole(int accountId, int roleId)
+        {
+            var errors = new List<IModelError>();
+            var result = service.TryRemoveAccountRole(accountId, roleId, errors);
 
-			return errors.Any() ?
+            return errors.Any() ?
                 Request.CreateResponse(HttpStatusCode.BadRequest, errors):
                 Request.CreateResponse(HttpStatusCode.OK, result);
-		}
-					
-	  }
+        }
+                    
+      }
 }

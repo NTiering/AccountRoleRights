@@ -7,22 +7,22 @@ namespace App.Dal
     using Contracts.Dals;
     using DataModels;
     using EntityDataModels;
-	
+    
     class RightDal : IDal<IRightDataModel>, IRightDal
     {        
-		/// <summary> 
+        /// <summary> 
         /// Create a new Right
         /// </summary>
         public void Create(IRightDataModel item, IModelContext context)
-        {			
-			var ctx = new AppContext();
-			var dataEntity = new RightEntityDataModel(item);
+        {            
+            var ctx = new AppContext();
+            var dataEntity = new RightEntityDataModel(item);
             ctx.Right.Add(dataEntity);
-	        ctx.SaveChanges();
-			item.Id = dataEntity.Id;    
+            ctx.SaveChanges();
+            item.Id = dataEntity.Id;    
         }
-		
-		/// <summary> 
+        
+        /// <summary> 
         /// Delete an existing Right
         /// </summary>
         public void Delete(int id, IModelContext context)
@@ -36,38 +36,38 @@ namespace App.Dal
                 ctx.SaveChanges();
             }   
         }
-		
-		/// <summary> 
+        
+        /// <summary> 
         /// Find a single Right
         /// </summary>
         public IRightDataModel Get(Func<IRightDataModel, bool> filter, IModelContext context)
         {
-			 var ctx = new AppContext();
-			 var rtn = ctx.Right.FirstOrDefault(filter);
-			 return rtn;
+             var ctx = new AppContext();
+             var rtn = ctx.Right.FirstOrDefault(filter);
+             return rtn;
         }
-		
-		/// <summary> 
+        
+        /// <summary> 
         /// Find a single Right
         /// </summary>
         public IRightDataModel Get(int id, IModelContext context)
         {
-			 var ctx = new AppContext();
-			 var rtn = ctx.Right.FirstOrDefault(x=>x.Id == id);
-			 return rtn;
+             var ctx = new AppContext();
+             var rtn = ctx.Right.FirstOrDefault(x=>x.Id == id);
+             return rtn;
         }
-		
-		/// <summary> 
+        
+        /// <summary> 
         /// Find zero or more Right
         /// </summary>
         public IQueryable<IRightDataModel> GetAll(Func<IRightDataModel, bool> filter, IModelContext context)
         {
-			var ctx = new AppContext();
-			var rtn = ctx.Right.Where(filter).AsQueryable();
-			return rtn;
+            var ctx = new AppContext();
+            var rtn = ctx.Right.Where(filter).AsQueryable();
+            return rtn;
         }
 
-		/// <summary> 
+        /// <summary> 
         /// Update a Right
         /// </summary>
         public void Update(IRightDataModel item, IModelContext context)
@@ -80,27 +80,27 @@ namespace App.Dal
             }
             ctx.Entry(entity).CurrentValues.SetValues(item);
             ctx.SaveChanges();
-        }	
+        }    
 
 
-		/// <summary>
+        /// <summary>
         /// Supports the many to many relationship (RoleRight) between 
         /// Right (parent) Role (child)
         /// </summary>
         /// <param name="roleId"></param>
         /// <param name="ctx"></param>
         /// <returns></returns>
-		public IQueryable<IRightDataModel> GetRoleRight(int roleId, IModelContext context)
-		{
-			var ctx = new AppContext();
+        public IQueryable<IRightDataModel> GetRoleRight(int roleId, IModelContext context)
+        {
+            var ctx = new AppContext();
             var result = (from main in ctx.Right
                           join link in ctx.RoleRight on main.Id equals link.RightId
-						  where (link.RoleId == roleId)
+                          where (link.RoleId == roleId)
                           select main);
             return result;
-		}
+        }
 
-		/// <summary>
+        /// <summary>
         /// Supports the many to many relationship (RoleRight) between 
         /// Right (parent) Role (child)
         /// </summary>
@@ -108,18 +108,18 @@ namespace App.Dal
         /// <param name="roleId"></param>
         /// <param name="ctx"></param>
         /// <returns></returns>
-		public void AddRoleRight(int rightId, int roleId, IModelContext context)
-		{
-			var ctx = new AppContext();
-			var model = new RoleRightRelationshipModel{ RightId = rightId , RoleId = roleId };
-			
-			if(ctx.RoleRight.Any(x=> x.RightId == rightId && x.RoleId == roleId )) return ;
-			
-			ctx.RoleRight.Add(model);
-			ctx.SaveChanges();
-		}
+        public void AddRoleRight(int rightId, int roleId, IModelContext context)
+        {
+            var ctx = new AppContext();
+            var model = new RoleRightRelationshipModel{ RightId = rightId , RoleId = roleId };
+            
+            if(ctx.RoleRight.Any(x=> x.RightId == rightId && x.RoleId == roleId )) return ;
+            
+            ctx.RoleRight.Add(model);
+            ctx.SaveChanges();
+        }
 
-		/// <summary>
+        /// <summary>
         /// Supports the many to many relationship (RoleRight) between 
         /// Right (parent) Role (child)
         /// </summary>
@@ -127,15 +127,15 @@ namespace App.Dal
         /// <param name="roleId"></param>
         /// <param name="ctx"></param>
         /// <returns></returns>
-		public void RemoveRoleRight(int rightId, int roleId, IModelContext context)
-		{
-			var ctx = new AppContext();
+        public void RemoveRoleRight(int rightId, int roleId, IModelContext context)
+        {
+            var ctx = new AppContext();
             var model = ctx.RoleRight.FirstOrDefault(x => x.RightId == rightId && x.RoleId == roleId);
             if (model == null) return;
             ctx.RoleRight.Remove(model);
             ctx.SaveChanges();   
-		}
-			
+        }
+            
 
     }
 }

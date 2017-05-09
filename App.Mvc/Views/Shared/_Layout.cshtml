@@ -7,57 +7,65 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
-	@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
    
-	<!-- endpoints (set here so we can use 'Url.Action') -->
+    <!-- endpoints (set here so we can use 'Url.Action') -->
     <script>
         document.endpoints = {};
-		document.endpoints.navigation = "@Url.Action("Navigation", "Home")";       
-		document.endpoints.password = {};
-        document.endpoints.password.form = "@Url.Action("Form", "Password")";		
+        document.endpoints.navigation = "@Url.Action("Navigation", "Home")";       
+        document.endpoints.password = {};
+        document.endpoints.password.form = "@Url.Action("Form", "Password")";        
 
-		document.endpoints.account = {};
-		document.endpoints.account.delete = "@Url.Action("Delete", "Account")";
-		document.endpoints.account.create = "@Url.Action("Create", "Account")";
+        document.endpoints.account = {};
+        document.endpoints.account.delete = "@Url.Action("Delete", "Account")";
+        document.endpoints.account.create = "@Url.Action("Create", "Account")";
         document.endpoints.account.edit = "@Url.Action("Edit", "Account")";
-		document.endpoints.account.view = "@Url.Action("View", "Account")";
-		document.endpoints.account.list = "@Url.Action("List", "Account")";
-		document.endpoints.account.remove = "@Url.Action("Remove", "Account")";		
-		document.endpoints.account.save = "@Url.Action("Save", "Account")";
-		document.endpoints.role = {};
-		document.endpoints.role.delete = "@Url.Action("Delete", "Role")";
-		document.endpoints.role.create = "@Url.Action("Create", "Role")";
+        document.endpoints.account.view = "@Url.Action("View", "Account")";
+        document.endpoints.account.list = "@Url.Action("List", "Account")";
+        document.endpoints.account.remove = "@Url.Action("Remove", "Account")";        
+        document.endpoints.account.save = "@Url.Action("Save", "Account")";
+        document.endpoints.role = {};
+        document.endpoints.role.delete = "@Url.Action("Delete", "Role")";
+        document.endpoints.role.create = "@Url.Action("Create", "Role")";
         document.endpoints.role.edit = "@Url.Action("Edit", "Role")";
-		document.endpoints.role.view = "@Url.Action("View", "Role")";
-		document.endpoints.role.list = "@Url.Action("List", "Role")";
-		document.endpoints.role.remove = "@Url.Action("Remove", "Role")";		
-		document.endpoints.role.save = "@Url.Action("Save", "Role")";
-		document.endpoints.right = {};
-		document.endpoints.right.delete = "@Url.Action("Delete", "Right")";
-		document.endpoints.right.create = "@Url.Action("Create", "Right")";
+        document.endpoints.role.view = "@Url.Action("View", "Role")";
+        document.endpoints.role.list = "@Url.Action("List", "Role")";
+        document.endpoints.role.remove = "@Url.Action("Remove", "Role")";        
+        document.endpoints.role.save = "@Url.Action("Save", "Role")";
+        document.endpoints.right = {};
+        document.endpoints.right.delete = "@Url.Action("Delete", "Right")";
+        document.endpoints.right.create = "@Url.Action("Create", "Right")";
         document.endpoints.right.edit = "@Url.Action("Edit", "Right")";
-		document.endpoints.right.view = "@Url.Action("View", "Right")";
-		document.endpoints.right.list = "@Url.Action("List", "Right")";
-		document.endpoints.right.remove = "@Url.Action("Remove", "Right")";		
-		document.endpoints.right.save = "@Url.Action("Save", "Right")";
+        document.endpoints.right.view = "@Url.Action("View", "Right")";
+        document.endpoints.right.list = "@Url.Action("List", "Right")";
+        document.endpoints.right.remove = "@Url.Action("Remove", "Right")";        
+        document.endpoints.right.save = "@Url.Action("Save", "Right")";
 
-		document.endpoints.account.getAccountRole = "@Url.Action("GetAccountRole", "Account")";
-		document.endpoints.account.saveAccountRole = "@Url.Action("SaveAccountRole", "Account")";
-		document.endpoints.account.addAccountRole = "@Url.Action("AddAccountRole", "Account")";
-		document.endpoints.role.getAccountRole = "@Url.Action("GetAccountRole", "Role")"; 
-		document.endpoints.role.saveAccountRole = "@Url.Action("SaveAccountRole", "Role")"; 
-		document.endpoints.role.addAccountRole = "@Url.Action("AddAccountRole", "Role")"; 
+        document.endpoints.account.getAccountRole = "@Url.Action("GetAccountRole", "Account")";
+        document.endpoints.account.saveAccountRole = "@Url.Action("SaveAccountRole", "Account")";
+        document.endpoints.account.addAccountRole = "@Url.Action("AddAccountRole", "Account")";
+        document.endpoints.role.getAccountRole = "@Url.Action("GetAccountRole", "Role")"; 
+        document.endpoints.role.saveAccountRole = "@Url.Action("SaveAccountRole", "Role")"; 
+        document.endpoints.role.addAccountRole = "@Url.Action("AddAccountRole", "Role")"; 
+		document.endpoints.role.linkAccountRole = "@Url.Action("LinkAccountRole", "Role")"; 
+        document.endpoints.account.linkRoleAccount = "@Url.Action("LinkRoleAccount", "Account")"; 
+    	document.endpoints.role.unlinkAccountRole = "@Url.Action("UnlinkAccountRole", "Role")"; 
+        document.endpoints.account.unlinkRoleAccount = "@Url.Action("UnlinkRoleAccount", "Account")"; 
         
-		document.endpoints.right.getRoleRight = "@Url.Action("GetRoleRight", "Right")";
-		document.endpoints.right.saveRoleRight = "@Url.Action("SaveRoleRight", "Right")";
-		document.endpoints.right.addRoleRight = "@Url.Action("AddRoleRight", "Right")";
-		document.endpoints.role.getRoleRight = "@Url.Action("GetRoleRight", "Role")"; 
-		document.endpoints.role.saveRoleRight = "@Url.Action("SaveRoleRight", "Role")"; 
-		document.endpoints.role.addRoleRight = "@Url.Action("AddRoleRight", "Role")"; 
-        				
+        document.endpoints.right.getRoleRight = "@Url.Action("GetRoleRight", "Right")";
+        document.endpoints.right.saveRoleRight = "@Url.Action("SaveRoleRight", "Right")";
+        document.endpoints.right.addRoleRight = "@Url.Action("AddRoleRight", "Right")";
+        document.endpoints.role.getRoleRight = "@Url.Action("GetRoleRight", "Role")"; 
+        document.endpoints.role.saveRoleRight = "@Url.Action("SaveRoleRight", "Role")"; 
+        document.endpoints.role.addRoleRight = "@Url.Action("AddRoleRight", "Role")"; 
+		document.endpoints.role.linkRightRole = "@Url.Action("LinkRightRole", "Role")"; 
+        document.endpoints.right.linkRoleRight = "@Url.Action("LinkRoleRight", "Right")"; 
+    	document.endpoints.role.unlinkRightRole = "@Url.Action("UnlinkRightRole", "Role")"; 
+        document.endpoints.right.unlinkRoleRight = "@Url.Action("UnlinkRoleRight", "Right")"; 
+                        
 
-		document.icons = {};		  
+        document.icons = {};          
     </script>
 
     <!-- data tables -->
@@ -73,38 +81,38 @@
 
     <!-- underscore -->
     <script src="~/bower_components/underscore/underscore-min.js"></script>
-	   
-	<!-- navigation -->
+       
+    <!-- navigation -->
     <script src="/Scripts/Tools/navigation.js"></script>
 
- 	<!-- toastr notifications -->
+     <!-- toastr notifications -->
     <link href="~/bower_components/toastr/toastr.min.css" rel="stylesheet" />
     <script src="~/bower_components/toastr/toastr.min.js"></script>
 
-	<!-- date picker -->
+    <!-- date picker -->
     <script src="~/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="~/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.en-GB.min.js"></script>
     <link href="~/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
 
-	<!-- tools -->
+    <!-- tools -->
     <script src="~/Scripts/Tools/startup.js"></script>
     <script src="~/Scripts/Tools/core.js"></script>
-    <script src="~/Scripts/Tools/modal.js"></script>	
+    <script src="~/Scripts/Tools/modal.js"></script>    
     <script src="/Scripts/Tools/notify.js"></script>
 
-	<script src="~/Scripts/Tools/account.js"></script>
-	<script src="~/Scripts/Tools/role.js"></script>
-	<script src="~/Scripts/Tools/right.js"></script>
-	
-	<!-- icons -->
+    <script src="~/Scripts/Tools/account.js"></script>
+    <script src="~/Scripts/Tools/role.js"></script>
+    <script src="~/Scripts/Tools/right.js"></script>
+    
+    <!-- icons -->
     <script src="/Scripts/Tools/icons.js"></script>
 
-	<!-- translations -->
+    <!-- translations -->
     <script src="~/Scripts/Translations/core.js"></script>    
 
-	<script src="~/Scripts/Translations/account.tr.js"></script>
-	<script src="~/Scripts/Translations/role.tr.js"></script>
-	<script src="~/Scripts/Translations/right.tr.js"></script>
+    <script src="~/Scripts/Translations/account.tr.js"></script>
+    <script src="~/Scripts/Translations/role.tr.js"></script>
+    <script src="~/Scripts/Translations/right.tr.js"></script>
 </head>
 <body>
      <div class="navbar navbar-inverse navbar-fixed-top" >
@@ -116,12 +124,12 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a href="@Url.Action("index","home")" class="navbar-brand">@ViewBag.Title
-				    <i class='icon-home' aria-hidden='true'></i> 
-					 @if (Html.IsDebug())
-						{ <span >(Development)</span>}                  
+                    <i class='icon-home' aria-hidden='true'></i> 
+                     @if (Html.IsDebug())
+                        { <span >(Development)</span>}                  
                 </a>
                 <a href="" class="navbar-brand" >
-                    <i class='' aria-hidden='true'></i>	
+                    <i class='' aria-hidden='true'></i>    
                 </a>
             </div>
             <div class="navbar-collapse collapse">
@@ -133,16 +141,16 @@
                     </li>
                     <!-- add new menu items here -->
                 </ul>
-				 <ul class="nav navbar-nav navbar-right">
+                 <ul class="nav navbar-nav navbar-right">
 
                 </ul>
             </div>
         </div>
     </div>
     <div class="container body-content">
-	    @RenderBody()
+        @RenderBody()
         <footer>
-	        @Html.Partial("_Footer")
+            @Html.Partial("_Footer")
         </footer>
 
     </div>

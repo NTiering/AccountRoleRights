@@ -7,7 +7,7 @@ namespace App.Dal
 
     class AppContext : DbContext
     {
-		static AppContext()
+        static AppContext()
         {
             // only use for debug instances // do not deploy debug to a live enviroment
 #if DEBUG
@@ -20,30 +20,30 @@ namespace App.Dal
 
         }
 
-		/// <summary>
+        /// <summary>
         /// Represents a validated end user
-		/// </summary>		
-		public DbSet<AccountEntityDataModel> Account { get; set; } 
+        /// </summary>        
+        public DbSet<AccountEntityDataModel> Account { get; set; } 
 
-		/// <summary>
+        /// <summary>
         /// Represents a collection of common rights
-		/// </summary>		
-		public DbSet<RoleEntityDataModel> Role { get; set; } 
+        /// </summary>        
+        public DbSet<RoleEntityDataModel> Role { get; set; } 
 
-		/// <summary>
+        /// <summary>
         /// A single action an end user can perform
-		/// </summary>		
-		public DbSet<RightEntityDataModel> Right { get; set; } 
+        /// </summary>        
+        public DbSet<RightEntityDataModel> Right { get; set; } 
         
-		/// <summary>
+        /// <summary>
         /// Used internally to manage relationships between Account and Role for AccountRole searches.
-		/// </summary>		
-		public DbSet<AccountRoleRelationshipModel> AccountRole { get; set; } 
+        /// </summary>        
+        public DbSet<AccountRoleRelationshipModel> AccountRole { get; set; } 
 
-		/// <summary>
+        /// <summary>
         /// Used internally to manage relationships between Right and Role for RoleRight searches.
-		/// </summary>		
-		public DbSet<RoleRightRelationshipModel> RoleRight { get; set; } 
+        /// </summary>        
+        public DbSet<RoleRightRelationshipModel> RoleRight { get; set; } 
 
     }
 

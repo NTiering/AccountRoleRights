@@ -4,7 +4,7 @@
     using System;
     using System.Linq;
 
-	public partial interface IDal<T> where T : class, IDataModel
+    public partial interface IDal<T> where T : class, IDataModel
     {
         /// <summary>
         /// Creates the specified item.

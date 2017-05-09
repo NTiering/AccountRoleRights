@@ -14,10 +14,10 @@ namespace App.Api.Controllers
     public class RightController : ApiController
     {
         private IRightService service; 
-	    public RightController(IRightService service)
+        public RightController(IRightService service)
         {
             this.service = service;
-	    }
+        }
 
         /// <summary>
         /// Gets all Right.
@@ -27,7 +27,7 @@ namespace App.Api.Controllers
         {
             var errors = new List<IModelError>();
             var result = service.GetAll((x => x != null), errors)
-				.AsParallel()
+                .AsParallel()
                 .Select(x=> x.ToViewModel())
                 .ToArray();
 
@@ -88,7 +88,7 @@ namespace App.Api.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-	    public HttpResponseMessage Delete(int id)
+        public HttpResponseMessage Delete(int id)
         {
             var errors = new List<IModelError>();
             var result = service.TryDelete(id, errors);
@@ -99,7 +99,7 @@ namespace App.Api.Controllers
         }
 
 
-		/// <summary>
+        /// <summary>
         /// Supports the many to many relationship (RoleRight) between 
         /// Right (parent) Role (child)
         /// </summary>
@@ -107,22 +107,22 @@ namespace App.Api.Controllers
         /// <param name="roleId"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-		[Route("Api/Right/{roleId}/RoleRight")]
-		[HttpGet]
-		public HttpResponseMessage GetRoleRight(int roleId)
-		{
-			var errors = new List<IModelError>();
-			var result = service.GetRoleRight(roleId ,errors)
-				.AsParallel()
+        [Route("Api/Right/{roleId}/RoleRight")]
+        [HttpGet]
+        public HttpResponseMessage GetRoleRight(int roleId)
+        {
+            var errors = new List<IModelError>();
+            var result = service.GetRoleRight(roleId ,errors)
+                .AsParallel()
                 .Select(x=> x.ToViewModel())
-                .ToArray();		
+                .ToArray();        
 
-			return errors.Any() ?
+            return errors.Any() ?
                 Request.CreateResponse(HttpStatusCode.BadRequest, errors):
                 Request.CreateResponse(HttpStatusCode.OK, result);
-		}
+        }
 
-		/// <summary>
+        /// <summary>
         /// Supports the many to many relationship (RoleRight) between 
         /// Right (parent) Role (child)
         /// </summary>
@@ -130,19 +130,19 @@ namespace App.Api.Controllers
         /// <param name="roleId"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-		[Route("Api/Right/RoleRight")]
-		[HttpPost]		
-		public HttpResponseMessage AddRoleRight(int rightId, int roleId)
-		{
-			var errors = new List<IModelError>();
-			var result = service.TryAddRoleRight(rightId, roleId, errors);
+        [Route("Api/Right/RoleRight")]
+        [HttpPost]        
+        public HttpResponseMessage AddRoleRight(int rightId, int roleId)
+        {
+            var errors = new List<IModelError>();
+            var result = service.TryAddRoleRight(rightId, roleId, errors);
 
-			return errors.Any() ?
+            return errors.Any() ?
                 Request.CreateResponse(HttpStatusCode.BadRequest, errors):
                 Request.CreateResponse(HttpStatusCode.OK, result);
-		}
+        }
 
-		/// <summary>
+        /// <summary>
         /// Supports the many to many relationship (RoleRight) between 
         /// Right (parent) Role (child)
         /// </summary>
@@ -150,17 +150,17 @@ namespace App.Api.Controllers
         /// <param name="roleId"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-		[Route("Api/Right/RoleRight")]
-		[HttpDelete]	
-		public HttpResponseMessage RemoveRoleRight(int rightId, int roleId)
-		{
-			var errors = new List<IModelError>();
-			var result = service.TryRemoveRoleRight(rightId, roleId, errors);
+        [Route("Api/Right/RoleRight")]
+        [HttpDelete]    
+        public HttpResponseMessage RemoveRoleRight(int rightId, int roleId)
+        {
+            var errors = new List<IModelError>();
+            var result = service.TryRemoveRoleRight(rightId, roleId, errors);
 
-			return errors.Any() ?
+            return errors.Any() ?
                 Request.CreateResponse(HttpStatusCode.BadRequest, errors):
                 Request.CreateResponse(HttpStatusCode.OK, result);
-		}
-					
-	  }
+        }
+                    
+      }
 }

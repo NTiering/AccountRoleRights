@@ -8,7 +8,7 @@ namespace App.Tests.Services
     using Moq;
     using System;
 
-	[TestClass]
+    [TestClass]
     public class RegisterTests
     {
         static Mock<IRegisterClient> client;
@@ -29,7 +29,7 @@ namespace App.Tests.Services
                 Times.Once, GetErrorMessage(typeExpected));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void Account_Service_Is_Registered()
         {
             var typeExpected = typeof(IAccountService);
@@ -37,8 +37,8 @@ namespace App.Tests.Services
             client.Verify(x => x.Register(typeExpected, It.IsAny<Type>(), ""),
                 Times.Once, GetErrorMessage(typeExpected));
         }
-		
-		[TestMethod]
+        
+        [TestMethod]
         public void Role_Service_Is_Registered()
         {
             var typeExpected = typeof(IRoleService);
@@ -46,8 +46,8 @@ namespace App.Tests.Services
             client.Verify(x => x.Register(typeExpected, It.IsAny<Type>(), ""),
                 Times.Once, GetErrorMessage(typeExpected));
         }
-		
-		[TestMethod]
+        
+        [TestMethod]
         public void Right_Service_Is_Registered()
         {
             var typeExpected = typeof(IRightService);
@@ -55,9 +55,9 @@ namespace App.Tests.Services
             client.Verify(x => x.Register(typeExpected, It.IsAny<Type>(), ""),
                 Times.Once, GetErrorMessage(typeExpected));
         }
-		        
+                
 
-		[TestMethod]
+        [TestMethod]
         public void Account_Validator_Is_Registered()
         {
             var typeExpected = typeof(IValidator<IAccountDataModel>);
@@ -65,8 +65,8 @@ namespace App.Tests.Services
             client.Verify(x => x.Register(typeExpected, It.IsAny<Type>(), ""),
                 Times.Once, GetErrorMessage(typeExpected));
         }
-		
-		[TestMethod]
+        
+        [TestMethod]
         public void Role_Validator_Is_Registered()
         {
             var typeExpected = typeof(IValidator<IRoleDataModel>);
@@ -74,8 +74,8 @@ namespace App.Tests.Services
             client.Verify(x => x.Register(typeExpected, It.IsAny<Type>(), ""),
                 Times.Once, GetErrorMessage(typeExpected));
         }
-		
-		[TestMethod]
+        
+        [TestMethod]
         public void Right_Validator_Is_Registered()
         {
             var typeExpected = typeof(IValidator<IRightDataModel>);
@@ -83,7 +83,7 @@ namespace App.Tests.Services
             client.Verify(x => x.Register(typeExpected, It.IsAny<Type>(), ""),
                 Times.Once, GetErrorMessage(typeExpected));
         }
-				
+                
 
         // ****************************** //
         // helpers                        //

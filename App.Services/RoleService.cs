@@ -14,48 +14,48 @@ namespace App.Services
     /// Service to provide atomic opertaion for a Role data object
     /// </summary>
     class RoleService : BaseService<IRoleDataModel>, IService<IRoleDataModel> , IRoleService
-    {	
-		
-		private IRoleDal serviceDal ; 
-		
+    {    
+        
+        private IRoleDal serviceDal ; 
+        
         private IAccountDal accountDal ;
 
         private IRightDal rightDal ;
 
-		public RoleService(IRoleDal dal, IAccountDal accountDal , IRightDal rightDal , IValidator<IRoleDataModel> validator, IEntityChangeHandler<IRoleDataModel>[] changeHandler = null)
-		 :base(dal, validator, changeHandler)
-		{
-			serviceDal = dal; // keep a local copy as it's more specialized than IDal<Role>
-			
+        public RoleService(IRoleDal dal, IAccountDal accountDal , IRightDal rightDal , IValidator<IRoleDataModel> validator, IEntityChangeHandler<IRoleDataModel>[] changeHandler = null)
+         :base(dal, validator, changeHandler)
+        {
+            serviceDal = dal; // keep a local copy as it's more specialized than IDal<Role>
+            
             this.accountDal = accountDal ;
 
             this.rightDal = rightDal ;
 
-		}
+        }
 
-		
+        
 
-	
-		/// <summary>
+    
+        /// <summary>
         /// Supports the many to many relationship (AccountRole) between 
         /// Role (child) Account (parent)
         /// </summary>
         /// <param name="accountId"></param>
         /// <param name="context"></param>
         /// <returns></returns> 
-		public IQueryable<IRoleDataModel> GetAccountRole(int accountId, List<IModelError> errors, IModelContext context = null)
-		{
-			if (accountDal.Get(accountId, context) == null) // check accountId exists
+        public IQueryable<IRoleDataModel> GetAccountRole(int accountId, List<IModelError> errors, IModelContext context = null)
+        {
+            if (accountDal.Get(accountId, context) == null) // check accountId exists
             {
                 errors.Add(new ModelError{Property = "accountId", ErrorMessage = "accountId_notfound" });
-				return Enumerable.Empty<IRoleDataModel>().AsQueryable();
-			}
+                return Enumerable.Empty<IRoleDataModel>().AsQueryable();
+            }
 
-			var rtn = serviceDal.GetAccountRole(accountId, context);
-			return rtn;
-		}
-		
-		/// <summary>
+            var rtn = serviceDal.GetAccountRole(accountId, context);
+            return rtn;
+        }
+        
+        /// <summary>
         /// Supports the many to many relationship (AccountRole) between 
         /// Role (child) Account (parent)
         /// </summary>
@@ -63,25 +63,25 @@ namespace App.Services
         /// <param name="accountId"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-		public bool TryAddAccountRole(int roleId, int accountId, List<IModelError> errors, IModelContext context = null)
-		{			
-			if (serviceDal.Get(roleId, context) == null) // check roleId exists
+        public bool TryAddAccountRole(int roleId, int accountId, List<IModelError> errors, IModelContext context = null)
+        {            
+            if (serviceDal.Get(roleId, context) == null) // check roleId exists
             {
                 errors.Add(new ModelError{Property = "roleId", ErrorMessage = "roleId_notfound" });
-				return false;
-			}
+                return false;
+            }
 
-			if (accountDal.Get(accountId, context) == null) // check accountId exists
+            if (accountDal.Get(accountId, context) == null) // check accountId exists
             {
                 errors.Add(new ModelError{Property = "accountId", ErrorMessage = "accountId_notfound" });
-				return false;
-			}
+                return false;
+            }
 
-			serviceDal.AddAccountRole(roleId, accountId, context);
-			return true; 
-		}
+            serviceDal.AddAccountRole(roleId, accountId, context);
+            return true; 
+        }
 
-		/// <summary>
+        /// <summary>
         /// Supports the many to many relationship (AccountRole) between 
         /// Role (child) Account (parent)
         /// </summary>
@@ -89,44 +89,44 @@ namespace App.Services
         /// <param name="accountId"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-		public bool TryRemoveAccountRole(int roleId, int accountId, List<IModelError> errors, IModelContext context = null)
-		{
-			if (serviceDal.Get(roleId, context) == null) // check roleId exists
+        public bool TryRemoveAccountRole(int roleId, int accountId, List<IModelError> errors, IModelContext context = null)
+        {
+            if (serviceDal.Get(roleId, context) == null) // check roleId exists
             {
                 errors.Add(new ModelError{Property = "roleId", ErrorMessage = "roleId_notfound" });
-				return false;
-			}
+                return false;
+            }
 
-			if (accountDal.Get(accountId, context) == null) // check accountId exists
+            if (accountDal.Get(accountId, context) == null) // check accountId exists
             {
                 errors.Add(new ModelError{Property = "accountId", ErrorMessage = "accountId_notfound" });
-				return false;
-			}
+                return false;
+            }
 
-			serviceDal.RemoveAccountRole(roleId, accountId, context);
-			return true; 
-		}
-		
-		/// <summary>
+            serviceDal.RemoveAccountRole(roleId, accountId, context);
+            return true; 
+        }
+        
+        /// <summary>
         /// Supports the many to many relationship (RoleRight) between 
         /// Role (child) Right (parent)
         /// </summary>
         /// <param name="rightId"></param>
         /// <param name="context"></param>
         /// <returns></returns> 
-		public IQueryable<IRoleDataModel> GetRoleRight(int rightId, List<IModelError> errors, IModelContext context = null)
-		{
-			if (rightDal.Get(rightId, context) == null) // check rightId exists
+        public IQueryable<IRoleDataModel> GetRoleRight(int rightId, List<IModelError> errors, IModelContext context = null)
+        {
+            if (rightDal.Get(rightId, context) == null) // check rightId exists
             {
                 errors.Add(new ModelError{Property = "rightId", ErrorMessage = "rightId_notfound" });
-				return Enumerable.Empty<IRoleDataModel>().AsQueryable();
-			}
+                return Enumerable.Empty<IRoleDataModel>().AsQueryable();
+            }
 
-			var rtn = serviceDal.GetRoleRight(rightId, context);
-			return rtn;
-		}
-		
-		/// <summary>
+            var rtn = serviceDal.GetRoleRight(rightId, context);
+            return rtn;
+        }
+        
+        /// <summary>
         /// Supports the many to many relationship (RoleRight) between 
         /// Role (child) Right (parent)
         /// </summary>
@@ -134,25 +134,25 @@ namespace App.Services
         /// <param name="rightId"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-		public bool TryAddRoleRight(int roleId, int rightId, List<IModelError> errors, IModelContext context = null)
-		{			
-			if (serviceDal.Get(roleId, context) == null) // check roleId exists
+        public bool TryAddRoleRight(int roleId, int rightId, List<IModelError> errors, IModelContext context = null)
+        {            
+            if (serviceDal.Get(roleId, context) == null) // check roleId exists
             {
                 errors.Add(new ModelError{Property = "roleId", ErrorMessage = "roleId_notfound" });
-				return false;
-			}
+                return false;
+            }
 
-			if (rightDal.Get(rightId, context) == null) // check rightId exists
+            if (rightDal.Get(rightId, context) == null) // check rightId exists
             {
                 errors.Add(new ModelError{Property = "rightId", ErrorMessage = "rightId_notfound" });
-				return false;
-			}
+                return false;
+            }
 
-			serviceDal.AddRoleRight(roleId, rightId, context);
-			return true; 
-		}
+            serviceDal.AddRoleRight(roleId, rightId, context);
+            return true; 
+        }
 
-		/// <summary>
+        /// <summary>
         /// Supports the many to many relationship (RoleRight) between 
         /// Role (child) Right (parent)
         /// </summary>
@@ -160,24 +160,24 @@ namespace App.Services
         /// <param name="rightId"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-		public bool TryRemoveRoleRight(int roleId, int rightId, List<IModelError> errors, IModelContext context = null)
-		{
-			if (serviceDal.Get(roleId, context) == null) // check roleId exists
+        public bool TryRemoveRoleRight(int roleId, int rightId, List<IModelError> errors, IModelContext context = null)
+        {
+            if (serviceDal.Get(roleId, context) == null) // check roleId exists
             {
                 errors.Add(new ModelError{Property = "roleId", ErrorMessage = "roleId_notfound" });
-				return false;
-			}
+                return false;
+            }
 
-			if (rightDal.Get(rightId, context) == null) // check rightId exists
+            if (rightDal.Get(rightId, context) == null) // check rightId exists
             {
                 errors.Add(new ModelError{Property = "rightId", ErrorMessage = "rightId_notfound" });
-				return false;
-			}
+                return false;
+            }
 
-			serviceDal.RemoveRoleRight(roleId, rightId, context);
-			return true; 
-		}
-				
+            serviceDal.RemoveRoleRight(roleId, rightId, context);
+            return true; 
+        }
+                
 
-	}
+    }
 }

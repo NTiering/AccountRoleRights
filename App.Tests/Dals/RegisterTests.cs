@@ -5,8 +5,8 @@ namespace App.Dals.Services
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using System;
-	
-	[TestClass]
+    
+    [TestClass]
     public class RegisterTests
     {
         static Mock<IRegisterClient> client;
@@ -17,9 +17,9 @@ namespace App.Dals.Services
             client = new Mock<IRegisterClient>();
             App.Dal.Register.RegisterTypes(client.Object);
         }
-		        
+                
 
-		[TestMethod]
+        [TestMethod]
         public void AccountDal_Is_Registered()
         {
             var typeExpected = typeof(IAccountDal);
@@ -27,8 +27,8 @@ namespace App.Dals.Services
             client.Verify(x => x.Register(typeExpected, It.IsAny<Type>(), ""),
                 Times.Once, GetErrorMessage(typeExpected));
         }
-		
-		[TestMethod]
+        
+        [TestMethod]
         public void RoleDal_Is_Registered()
         {
             var typeExpected = typeof(IRoleDal);
@@ -36,8 +36,8 @@ namespace App.Dals.Services
             client.Verify(x => x.Register(typeExpected, It.IsAny<Type>(), ""),
                 Times.Once, GetErrorMessage(typeExpected));
         }
-		
-		[TestMethod]
+        
+        [TestMethod]
         public void RightDal_Is_Registered()
         {
             var typeExpected = typeof(IRightDal);
@@ -45,7 +45,7 @@ namespace App.Dals.Services
             client.Verify(x => x.Register(typeExpected, It.IsAny<Type>(), ""),
                 Times.Once, GetErrorMessage(typeExpected));
         }
-		
+        
         // ****************************** //
         // helpers                        //
         private static string GetErrorMessage(Type t)

@@ -69,7 +69,7 @@ namespace App.Tests.Services.Validation
         }
         
 
-		[TestMethod]
+        [TestMethod]
         public void Missing_Name_properites_on_new_NameDataModels_cause_errors()
         {
             var service = registerClient.Get<IRightService>();
@@ -122,7 +122,7 @@ namespace App.Tests.Services.Validation
         }
          
 
-		[TestMethod]
+        [TestMethod]
         public void Missing_Key_properites_on_new_KeyDataModels_cause_errors()
         {
             var service = registerClient.Get<IRightService>();
@@ -183,19 +183,19 @@ namespace App.Tests.Services.Validation
             var rtn = new Mock<IRightDataModel>();
             rtn.SetupAllProperties();
             rtn.SetupGet(x => x.IsNew).Returns(isNew);
-            rtn.Object.Name = "some string __ !!!  look ";	
-            rtn.Object.Key = "some string __ !!!  look ";	
-            rtn.Object.IsAssignable = true;	
+            rtn.Object.Name = "some string __ !!!  look ";    
+            rtn.Object.Key = "some string __ !!!  look ";    
+            rtn.Object.IsAssignable = true;    
             return rtn.Object;
         }  
         
         private static RegisterClient registerClient;
         private static Mock<IAccountDal> accountDal;
-            private static Mock<IEntityChangeHandler<IAccountDataModel>> accountChangeHandler;	
+            private static Mock<IEntityChangeHandler<IAccountDataModel>> accountChangeHandler;    
         private static Mock<IRoleDal> roleDal;
-            private static Mock<IEntityChangeHandler<IRoleDataModel>> roleChangeHandler;	
+            private static Mock<IEntityChangeHandler<IRoleDataModel>> roleChangeHandler;    
         private static Mock<IRightDal> rightDal;
-            private static Mock<IEntityChangeHandler<IRightDataModel>> rightChangeHandler;	
+            private static Mock<IEntityChangeHandler<IRightDataModel>> rightChangeHandler;    
 
 
     

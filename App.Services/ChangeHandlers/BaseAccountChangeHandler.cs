@@ -26,7 +26,7 @@ namespace App.Services.ChangeHandlers
             
         }
 
-		/// <summary>
+        /// <summary>
         /// Called when [create].
         /// </summary>
         /// <param name="item">The item.</param>
@@ -46,7 +46,7 @@ namespace App.Services.ChangeHandlers
             
         }
 
-		/// <summary>
+        /// <summary>
         /// When overriden, called before a customer is deleted
         /// </summary>
         /// <param name="item">The item.</param>
@@ -55,7 +55,7 @@ namespace App.Services.ChangeHandlers
         {
             BeforeAccountDelete(item, context);
         }
-		
+        
         /// <summary>
         /// When overriden, called when a customer is deleted
         /// </summary>
@@ -65,8 +65,8 @@ namespace App.Services.ChangeHandlers
         {
             
         }
-				
-		/// <summary>
+                
+        /// <summary>
         /// When overriden, called before a customer is deleted
         /// </summary>
         /// <param name="item">The item.</param>
@@ -75,7 +75,7 @@ namespace App.Services.ChangeHandlers
         {
             AfterAccountDelete(id, context);
         }
-		
+        
         /// <summary>
         /// When overriden, called when a customer is deleted
         /// </summary>
@@ -106,7 +106,7 @@ namespace App.Services.ChangeHandlers
 
         }
 
-		/// <summary>
+        /// <summary>
         /// Called when [update].
         /// </summary>
         /// <param name="item">The item.</param>

@@ -7,7 +7,7 @@ namespace App.Mvc
     {
         public static void RegisterTypes(IRegisterClient registerClient)
         {
-			// add any types used exclusivity in App.Mvc 
+            // add any types used exclusivity in App.Mvc 
         }
     }
 

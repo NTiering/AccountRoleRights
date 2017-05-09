@@ -7,22 +7,22 @@ namespace App.Dal
     using Contracts.Dals;
     using DataModels;
     using EntityDataModels;
-	
+    
     class AccountDal : IDal<IAccountDataModel>, IAccountDal
     {        
-		/// <summary> 
+        /// <summary> 
         /// Create a new Account
         /// </summary>
         public void Create(IAccountDataModel item, IModelContext context)
-        {			
-			var ctx = new AppContext();
-			var dataEntity = new AccountEntityDataModel(item);
+        {            
+            var ctx = new AppContext();
+            var dataEntity = new AccountEntityDataModel(item);
             ctx.Account.Add(dataEntity);
-	        ctx.SaveChanges();
-			item.Id = dataEntity.Id;    
+            ctx.SaveChanges();
+            item.Id = dataEntity.Id;    
         }
-		
-		/// <summary> 
+        
+        /// <summary> 
         /// Delete an existing Account
         /// </summary>
         public void Delete(int id, IModelContext context)
@@ -36,38 +36,38 @@ namespace App.Dal
                 ctx.SaveChanges();
             }   
         }
-		
-		/// <summary> 
+        
+        /// <summary> 
         /// Find a single Account
         /// </summary>
         public IAccountDataModel Get(Func<IAccountDataModel, bool> filter, IModelContext context)
         {
-			 var ctx = new AppContext();
-			 var rtn = ctx.Account.FirstOrDefault(filter);
-			 return rtn;
+             var ctx = new AppContext();
+             var rtn = ctx.Account.FirstOrDefault(filter);
+             return rtn;
         }
-		
-		/// <summary> 
+        
+        /// <summary> 
         /// Find a single Account
         /// </summary>
         public IAccountDataModel Get(int id, IModelContext context)
         {
-			 var ctx = new AppContext();
-			 var rtn = ctx.Account.FirstOrDefault(x=>x.Id == id);
-			 return rtn;
+             var ctx = new AppContext();
+             var rtn = ctx.Account.FirstOrDefault(x=>x.Id == id);
+             return rtn;
         }
-		
-		/// <summary> 
+        
+        /// <summary> 
         /// Find zero or more Account
         /// </summary>
         public IQueryable<IAccountDataModel> GetAll(Func<IAccountDataModel, bool> filter, IModelContext context)
         {
-			var ctx = new AppContext();
-			var rtn = ctx.Account.Where(filter).AsQueryable();
-			return rtn;
+            var ctx = new AppContext();
+            var rtn = ctx.Account.Where(filter).AsQueryable();
+            return rtn;
         }
 
-		/// <summary> 
+        /// <summary> 
         /// Update a Account
         /// </summary>
         public void Update(IAccountDataModel item, IModelContext context)
@@ -80,27 +80,27 @@ namespace App.Dal
             }
             ctx.Entry(entity).CurrentValues.SetValues(item);
             ctx.SaveChanges();
-        }	
+        }    
 
 
-		/// <summary>
+        /// <summary>
         /// Supports the many to many relationship (AccountRole) between 
         /// Account (parent) Role (child)
         /// </summary>
         /// <param name="roleId"></param>
         /// <param name="ctx"></param>
         /// <returns></returns>
-		public IQueryable<IAccountDataModel> GetAccountRole(int roleId, IModelContext context)
-		{
-			var ctx = new AppContext();
+        public IQueryable<IAccountDataModel> GetAccountRole(int roleId, IModelContext context)
+        {
+            var ctx = new AppContext();
             var result = (from main in ctx.Account
                           join link in ctx.AccountRole on main.Id equals link.AccountId
-						  where (link.RoleId == roleId)
+                          where (link.RoleId == roleId)
                           select main);
             return result;
-		}
+        }
 
-		/// <summary>
+        /// <summary>
         /// Supports the many to many relationship (AccountRole) between 
         /// Account (parent) Role (child)
         /// </summary>
@@ -108,18 +108,18 @@ namespace App.Dal
         /// <param name="roleId"></param>
         /// <param name="ctx"></param>
         /// <returns></returns>
-		public void AddAccountRole(int accountId, int roleId, IModelContext context)
-		{
-			var ctx = new AppContext();
-			var model = new AccountRoleRelationshipModel{ AccountId = accountId , RoleId = roleId };
-			
-			if(ctx.AccountRole.Any(x=> x.AccountId == accountId && x.RoleId == roleId )) return ;
-			
-			ctx.AccountRole.Add(model);
-			ctx.SaveChanges();
-		}
+        public void AddAccountRole(int accountId, int roleId, IModelContext context)
+        {
+            var ctx = new AppContext();
+            var model = new AccountRoleRelationshipModel{ AccountId = accountId , RoleId = roleId };
+            
+            if(ctx.AccountRole.Any(x=> x.AccountId == accountId && x.RoleId == roleId )) return ;
+            
+            ctx.AccountRole.Add(model);
+            ctx.SaveChanges();
+        }
 
-		/// <summary>
+        /// <summary>
         /// Supports the many to many relationship (AccountRole) between 
         /// Account (parent) Role (child)
         /// </summary>
@@ -127,15 +127,15 @@ namespace App.Dal
         /// <param name="roleId"></param>
         /// <param name="ctx"></param>
         /// <returns></returns>
-		public void RemoveAccountRole(int accountId, int roleId, IModelContext context)
-		{
-			var ctx = new AppContext();
+        public void RemoveAccountRole(int accountId, int roleId, IModelContext context)
+        {
+            var ctx = new AppContext();
             var model = ctx.AccountRole.FirstOrDefault(x => x.AccountId == accountId && x.RoleId == roleId);
             if (model == null) return;
             ctx.AccountRole.Remove(model);
             ctx.SaveChanges();   
-		}
-			
+        }
+            
 
     }
 }

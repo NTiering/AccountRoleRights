@@ -5,7 +5,7 @@ app.controller('account', function ($scope) {
     // **********************
     // private properties
     // **********************
-	var _dataTableId = "tbl-account";
+    var _dataTableId = "tbl-account";
 
     // **********************
     // public properties
@@ -21,7 +21,7 @@ app.controller('account', function ($scope) {
         $scope.$apply();
     }
 
-	// load data into table
+    // load data into table
     var _loadData = function () {
         //todo go to server and load data
         $('#' + _dataTableId).DataTable();

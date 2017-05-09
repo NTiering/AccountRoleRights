@@ -1,9 +1,9 @@
 namespace App.Contracts.DataModels
 {   
     using App.Contracts.Models;
-	using System;
+    using System;
 
-	/// <summary>
+    /// <summary>
     /// A single action an end user can perform
     /// </summary>
     public class RightDataModel :  IRightDataModel
@@ -24,24 +24,24 @@ namespace App.Contracts.DataModels
             }
         }
 
-		
+        
 
-		/// <summary>
+        /// <summary>
         /// Gets or sets the Name.
-		/// (Human readable name)
-		/// </summary>
-		public string Name { get; set; } 
+        /// (Human readable name)
+        /// </summary>
+        public string Name { get; set; } 
 
-		/// <summary>
+        /// <summary>
         /// Gets or sets the Key.
-		/// (Unique string the application can check against)
-		/// </summary>
-		public string Key { get; set; } 
+        /// (Unique string the application can check against)
+        /// </summary>
+        public string Key { get; set; } 
 
-		/// <summary>
+        /// <summary>
         /// Gets or sets the IsAssignable.
-		/// (If true the right can be assigned to a role)
-		/// </summary>
-		public bool IsAssignable { get; set; } 
+        /// (If true the right can be assigned to a role)
+        /// </summary>
+        public bool IsAssignable { get; set; } 
     }
 }
