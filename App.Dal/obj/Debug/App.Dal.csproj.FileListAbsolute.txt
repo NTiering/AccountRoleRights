@@ -1,0 +1,17 @@
+C:\Git\Tetra\Created\App\App.Dal\bin\Debug\App.Dal.dll
+C:\Git\Tetra\Created\App\App.Dal\bin\Debug\App.Dal.pdb
+C:\Git\Tetra\Created\App\App.Dal\bin\Debug\App.Contracts.dll
+C:\Git\Tetra\Created\App\App.Dal\bin\Debug\Dapper.Contrib.dll
+C:\Git\Tetra\Created\App\App.Dal\bin\Debug\Dapper.dll
+C:\Git\Tetra\Created\App\App.Dal\bin\Debug\Dapper.Mapper.dll
+C:\Git\Tetra\Created\App\App.Dal\bin\Debug\EntityFramework.dll
+C:\Git\Tetra\Created\App\App.Dal\bin\Debug\EntityFramework.SqlServer.dll
+C:\Git\Tetra\Created\App\App.Dal\bin\Debug\NLog.dll
+C:\Git\Tetra\Created\App\App.Dal\bin\Debug\App.Contracts.pdb
+C:\Git\Tetra\Created\App\App.Dal\bin\Debug\Dapper.xml
+C:\Git\Tetra\Created\App\App.Dal\bin\Debug\EntityFramework.xml
+C:\Git\Tetra\Created\App\App.Dal\bin\Debug\EntityFramework.SqlServer.xml
+C:\Git\Tetra\Created\App\App.Dal\bin\Debug\NLog.xml
+C:\Git\Tetra\Created\App\App.Dal\obj\Debug\App.Dal.csprojResolveAssemblyReference.cache
+C:\Git\Tetra\Created\App\App.Dal\obj\Debug\App.Dal.dll
+C:\Git\Tetra\Created\App\App.Dal\obj\Debug\App.Dal.pdb
