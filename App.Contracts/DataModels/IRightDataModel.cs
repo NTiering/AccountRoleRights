@@ -8,7 +8,6 @@ namespace App.Contracts.DataModels
     /// </summary>
     public interface IRightDataModel : IDataModel
     {
-        
 
         /// <summary>
         /// Gets or sets the Name.

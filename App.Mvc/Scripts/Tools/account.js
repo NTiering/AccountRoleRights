@@ -3,6 +3,8 @@
  */
 (function () {
 
+
+
     /** 
     * show self contained popup for listing Account Role (account) entities
     */
@@ -154,7 +156,6 @@
                         dataType: "json",
                         cache: false
                     }).done(function (e) {
-                        console.log(e);
                         if (e.Success) {
                             radio("close-modal-" + id).broadcast();
                             radio("notify-success").broadcast({ title: "Account deleted", message: "" })

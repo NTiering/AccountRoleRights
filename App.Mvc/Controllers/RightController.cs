@@ -13,11 +13,13 @@ namespace App.Mvc.Controllers
     public class RightController : Controller
     {
         private IRightService service ;   
+        private IRoleService roleService;
 
-        public RightController(IRightService service )
+        public RightController(IRightService service , IRoleService roleService )
         {
             this.service = service;
-            
+            this.roleService = roleService;
+                        
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -89,7 +91,12 @@ namespace App.Mvc.Controllers
         {
             var errors = new List<IModelError>();
             var result = service.TrySave(model, errors);
-
+        
+            if(result) // make a connection between the new Right and an existing Role 
+            {				
+                roleService.AddRoleToRightForRoleRight(model.Id,model.RoleRightId);
+            }            
+        
             return Json(new
             {
                 Model = model,
@@ -124,110 +131,16 @@ namespace App.Mvc.Controllers
             return View("RightList", models);
         }
                 
-        
-        // Supports the many to many relationship (RoleRight) between Right (parent) Role (child)
+                
+        // Supports the one to many relationship (RoleRight) between Right (one) Role (many)
         //[Authorize(Roles = "Admin,ListRoleRight")]
-        public ActionResult GetRoleRight(int id, bool selected = false) 
+        public ActionResult GetRoleRight(int id) 
         {
-            var errors = new List<IModelError>();
-            var models = service.GetRoleRight(id, errors);
-            ViewBag.Errors = errors;
-            ViewBag.ToolButtons = "VP"; // View Pick 
-            ViewBag.PickState = selected;
+            var models = new[] { service.GetSingleRightByRoleForRoleRight(id)};
+            ViewBag.ToolButtons = "VE"; // View Edit 
+            ViewBag.PickState = true;
             return View("RightList", models);
         }
-
-        // Add a relationship (RoleRight) between Right (parent) Role (child)
-        //[Authorize(Roles = "Admin,SaveRoleRight")]
-        public ActionResult AddRoleRight(int id)
-        {
-            var errors = new List<IModelError>();
-            ViewBag.Readonly = false;
-            ViewBag.ShowRelationships = false;
-            ViewBag.ModelId = new int?(id);
-            return View("Form");
-        }
-
-        // Add a relationship (RoleRight) between Right (parent) Role (child)
-        [HttpPost]
-        //[Authorize(Roles = "Admin,SaveRoleRight")]
-        public ActionResult SaveRoleRight(RightViewModel model, int modelId)
-        {
-            var errors = new List<IModelError>();
-            model.Id = 0 ; // force a new object regardless
-            var result = service.TrySave(model, errors);
-
-            if (result)
-            {
-                result = service.TryAddRoleRight(model.Id, modelId, errors);
-                if (result == false && model != null) // failed to make the RoleRight relationship ?
-                {
-                    service.TryDelete(model.Id, errors);
-                }
-            }
-
-            return Json(new
-            {
-                Model = model,
-                Success = result,
-                Errors = errors
-            });
-        }
-
-        // remove a relationship (RoleRight) between Right (parent) Role (child) 
-        [HttpPost]
-        //[Authorize(Roles = "Admin,SaveRoleRight")]
-        public ActionResult UnLinkRoleRight(int modelId , int[] items)
-        {
-            var errors = new List<IModelError>();
-            var result = true;
-
-            items.DefaultIfNull().ToList().ForEach(i =>
-            {
-                if (result)
-                {
-                    if (service.TryRemoveRoleRight(modelId, i, errors) == false) // try roll-back if failed
-                    {
-                        service.TryAddRoleRight(modelId, i, errors);
-                        result = false;
-                    }
-                }
-            });
-                       
-            return Json(new
-            {
-                Success = result,
-                Errors = errors
-            });
-        }
-
-        // add a relationship (RoleRight) between existing Right (parent) Role (child) 
-        [HttpPost]
-        //[Authorize(Roles = "Admin,SaveRoleRight")]        
-        public ActionResult LinkRoleRight(int modelId , int[] items)
-        {
-            var errors = new List<IModelError>();
-            var result = true;
-
-            items.DefaultIfNull().ToList().ForEach(i =>
-            {
-                if (result)
-                {
-                    if (service.TryAddRoleRight(modelId, i, errors) == false) // try roll-back if failed
-                    {
-                        service.TryRemoveRoleRight(modelId, i, errors);
-                        result = false;
-                    }
-                }
-            });
-                       
-            return Json(new
-            {
-                Success = result,
-                Errors = errors
-            });
-        }
-                        
 
         // return a fully populated view model
         private RightViewModel GetViewModel(int id, List<IModelError> errors)
@@ -235,6 +148,12 @@ namespace App.Mvc.Controllers
             var rtn = new RightViewModel();
             rtn.Load(service.Get(id,errors));
 
+            var rolerightModel = service.GetSingleRightByRoleForRoleRight(id);
+            if (rolerightModel != null)
+            {
+                rtn.RoleRightId = rolerightModel.Id;
+            }
+            
             return rtn;
         }
     }

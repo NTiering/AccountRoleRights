@@ -8,36 +8,23 @@ namespace App.Contracts.Dals
     public interface IAccountDal : IDal<IAccountDataModel>
     {
 
-        /// <summary>
-        /// Supports the many to many relationship (AccountRole) between 
-        /// Account (parent) Role (child)
+		
+		#region 'AccountRole'		
+		// add child to parent ( Role Account )
+		/// <summary>
+        /// Adds the role to account for 'AccountRole' relationship.
         /// </summary>
-        /// <param name="accountId"></param>
-        /// <param name="roleId"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        IQueryable<IAccountDataModel> GetAccountRole(int roleId, IModelContext context = null);
-
-        /// <summary>
-        /// Supports the many to many relationship (AccountRole) between 
-        /// Account (parent) Role (child)
+		void AddRoleToAccountForAccountRole(int roleId, int accountId, IModelContext context);
+		
+		/// <summary>
+        /// Removes the role from account for 'AccountRole' relationship.
         /// </summary>
-        /// <param name="accountId"></param>
-        /// <param name="roleId"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        void AddAccountRole(int accountId, int roleId, IModelContext context = null);
-
-        /// <summary>
-        /// Supports the many to many relationship (AccountRole) between 
-        /// Account (parent) Role (child)
+		void RemoveRoleFromAccountForAccountRole(int roleId, int accountId, IModelContext context);
+		
+		/// <summary>
+        /// Get all Account for 'AccountRole' relationship.
         /// </summary>
-        /// <param name="accountId"></param>
-        /// <param name="roleId"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        void RemoveAccountRole(int accountId, int roleId, IModelContext context = null);
-            
-
-    }
+		IQueryable<IAccountDataModel> GetAllForAccountRole(int roleId, IModelContext context);
+		#endregion 		
+		    }
 }

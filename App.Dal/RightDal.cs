@@ -33,7 +33,10 @@ namespace App.Dal
             if (itemToRemove != null)
             {
                 ctx.Right.Remove(itemToRemove);
-                ctx.SaveChanges();
+
+				ctx.Role.Where(x=>x.RoleRightId == id).ToList().ForEach(x=>x.RoleRightId = -1) ;// unset any RoleRight relationships 
+
+				ctx.SaveChanges();
             }   
         }
         
@@ -82,60 +85,45 @@ namespace App.Dal
             ctx.SaveChanges();
         }    
 
-
-        /// <summary>
-        /// Supports the many to many relationship (RoleRight) between 
-        /// Right (parent) Role (child)
+		
+		#region 'RoleRight'        
+		/// <summary>
+        /// Gets the single Right by Role id for RoleRight relationship.
         /// </summary>
-        /// <param name="roleId"></param>
-        /// <param name="ctx"></param>
-        /// <returns></returns>
-        public IQueryable<IRightDataModel> GetRoleRight(int roleId, IModelContext context)
-        {
-            var ctx = new AppContext();
-            var result = (from main in ctx.Right
-                          join link in ctx.RoleRight on main.Id equals link.RightId
-                          where (link.RoleId == roleId)
-                          select main);
-            return result;
-        }
+        public IRightDataModel GetSingleRightByRoleForRoleRight(int roleId, IModelContext context)
+		{
+			var ctx = new AppContext();
+            var item = ctx.Role.Find(roleId);
+			if(item == null) return null;
+			var rtn = ctx.Right.Find(item.RoleRightId);
+			return rtn;
+		} 
 
-        /// <summary>
-        /// Supports the many to many relationship (RoleRight) between 
-        /// Right (parent) Role (child)
+		/// <summary>
+        /// Connects a Right to a Role for RoleRight relationship.
         /// </summary>
-        /// <param name="rightId"></param>
-        /// <param name="roleId"></param>
-        /// <param name="ctx"></param>
-        /// <returns></returns>
-        public void AddRoleRight(int rightId, int roleId, IModelContext context)
-        {
-            var ctx = new AppContext();
-            var model = new RoleRightRelationshipModel{ RightId = rightId , RoleId = roleId };
-            
-            if(ctx.RoleRight.Any(x=> x.RightId == rightId && x.RoleId == roleId )) return ;
-            
-            ctx.RoleRight.Add(model);
+        public void AddRightToRoleForRoleRight(int rightId, int roleId, IModelContext context)
+		{
+			var ctx = new AppContext();
+            var item = ctx.Role.Find(roleId);
+            if (item == null) return;
+            item.RoleRightId = rightId;
             ctx.SaveChanges();
-        }
+		}   
 
-        /// <summary>
-        /// Supports the many to many relationship (RoleRight) between 
-        /// Right (parent) Role (child)
+		/// <summary>
+        /// Unconnect a Right to a Role for RoleRight relationship.
         /// </summary>
-        /// <param name="rightId"></param>
-        /// <param name="roleId"></param>
-        /// <param name="ctx"></param>
-        /// <returns></returns>
-        public void RemoveRoleRight(int rightId, int roleId, IModelContext context)
-        {
-            var ctx = new AppContext();
-            var model = ctx.RoleRight.FirstOrDefault(x => x.RightId == rightId && x.RoleId == roleId);
-            if (model == null) return;
-            ctx.RoleRight.Remove(model);
-            ctx.SaveChanges();   
-        }
-            
+		public void RemoveRightFromRoleForRoleRight(int roleId, IModelContext context)
+		{
+			var ctx = new AppContext();
+            var item = ctx.Role.Find(roleId);
+            if (item == null) return;
+            item.RoleRightId = -1;
+            ctx.SaveChanges();
+		}  
 
+		#endregion 
+		
     }
 }

@@ -7,37 +7,24 @@ namespace App.Contracts.Dals
     
     public interface IRightDal : IDal<IRightDataModel>
     {
-
-        /// <summary>
-        /// Supports the many to many relationship (RoleRight) between 
-        /// Right (parent) Role (child)
+		
+		#region 'RoleRight'        
+		/// <summary>
+        /// Gets the single Right by Role id for RoleRight relationship.
         /// </summary>
-        /// <param name="rightId"></param>
-        /// <param name="roleId"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        IQueryable<IRightDataModel> GetRoleRight(int roleId, IModelContext context = null);
-
-        /// <summary>
-        /// Supports the many to many relationship (RoleRight) between 
-        /// Right (parent) Role (child)
+        IRightDataModel GetSingleRightByRoleForRoleRight(int roleId, IModelContext context);
+		
+		/// <summary>
+        /// Connects a Right to a Role for RoleRight relationship.
         /// </summary>
-        /// <param name="rightId"></param>
-        /// <param name="roleId"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        void AddRoleRight(int rightId, int roleId, IModelContext context = null);
-
-        /// <summary>
-        /// Supports the many to many relationship (RoleRight) between 
-        /// Right (parent) Role (child)
+        void AddRightToRoleForRoleRight(int rightId, int roleId, IModelContext context);
+		
+		/// <summary>
+        /// Unconnect a Right to a Role for RoleRight relationship.
         /// </summary>
-        /// <param name="rightId"></param>
-        /// <param name="roleId"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        void RemoveRoleRight(int rightId, int roleId, IModelContext context = null);
-            
-
+		void RemoveRightFromRoleForRoleRight(int roleId, IModelContext context);
+		
+		#endregion 
+		
     }
 }

@@ -33,7 +33,10 @@ namespace App.Dal
             if (itemToRemove != null)
             {
                 ctx.Account.Remove(itemToRemove);
-                ctx.SaveChanges();
+				ctx.AccountRole.RemoveRange(ctx.AccountRole.Where(x => x.AccountId == id)); // Remove any AccountRole relationships 
+
+
+				ctx.SaveChanges();
             }   
         }
         
@@ -83,59 +86,45 @@ namespace App.Dal
         }    
 
 
-        /// <summary>
-        /// Supports the many to many relationship (AccountRole) between 
-        /// Account (parent) Role (child)
+	
+		#region 'AccountRole'		
+		// add child to parent ( Role Account )
+		/// <summary>
+        /// Adds the role to account for 'AccountRole' relationship.
         /// </summary>
-        /// <param name="roleId"></param>
-        /// <param name="ctx"></param>
-        /// <returns></returns>
-        public IQueryable<IAccountDataModel> GetAccountRole(int roleId, IModelContext context)
-        {
-            var ctx = new AppContext();
-            var result = (from main in ctx.Account
-                          join link in ctx.AccountRole on main.Id equals link.AccountId
-                          where (link.RoleId == roleId)
-                          select main);
-            return result;
-        }
-
-        /// <summary>
-        /// Supports the many to many relationship (AccountRole) between 
-        /// Account (parent) Role (child)
-        /// </summary>
-        /// <param name="accountId"></param>
-        /// <param name="roleId"></param>
-        /// <param name="ctx"></param>
-        /// <returns></returns>
-        public void AddAccountRole(int accountId, int roleId, IModelContext context)
-        {
-            var ctx = new AppContext();
-            var model = new AccountRoleRelationshipModel{ AccountId = accountId , RoleId = roleId };
-            
-            if(ctx.AccountRole.Any(x=> x.AccountId == accountId && x.RoleId == roleId )) return ;
-            
-            ctx.AccountRole.Add(model);
+		public void AddRoleToAccountForAccountRole(int roleId, int accountId, IModelContext context)
+		{
+			var ctx = new AppContext();
+            var existing = ctx.AccountRole.Any(x=> x.RoleId == roleId && x.AccountId == accountId);
+            if (existing) return;
+            ctx.AccountRole.Add(new AccountRoleRelationshipModel{RoleId = roleId, AccountId = accountId});
             ctx.SaveChanges();
-        }
+		}
 
-        /// <summary>
-        /// Supports the many to many relationship (AccountRole) between 
-        /// Account (parent) Role (child)
+		/// <summary>
+        /// Removes the role from account for 'AccountRole' relationship.
         /// </summary>
-        /// <param name="accountId"></param>
-        /// <param name="roleId"></param>
-        /// <param name="ctx"></param>
-        /// <returns></returns>
-        public void RemoveAccountRole(int accountId, int roleId, IModelContext context)
-        {
-            var ctx = new AppContext();
-            var model = ctx.AccountRole.FirstOrDefault(x => x.AccountId == accountId && x.RoleId == roleId);
-            if (model == null) return;
-            ctx.AccountRole.Remove(model);
-            ctx.SaveChanges();   
-        }
-            
+		public void RemoveRoleFromAccountForAccountRole(int roleId, int accountId, IModelContext context)
+		{
+			var ctx = new AppContext();
+            var existing = ctx.AccountRole.FirstOrDefault(x=> x.RoleId == roleId && x.AccountId == accountId);
+            if (existing == null) return;
+            ctx.AccountRole.Remove(existing);
+            ctx.SaveChanges();
+		}
 
-    }
+		/// <summary>
+        /// Get all Account for 'AccountRole' relationship.
+        /// </summary>
+		public IQueryable<IAccountDataModel> GetAllForAccountRole(int roleId, IModelContext context)
+		{
+			var ctx = new AppContext();
+			var result = (from main in ctx.Account
+						join link in ctx.AccountRole on main.Id equals link.AccountId
+						where (link.RoleId == roleId)
+						select main);
+			return result;
+		}
+		#endregion 		
+		    }
 }

@@ -17,11 +17,11 @@ namespace App.Dal
             registerClient.Register(typeof(IStartupDal), typeof(StartupDal));  
             registerClient.Register(typeof(ISearchDal), typeof(SearchDal));  
                       
-            registerClient.Register(typeof(IDal<AccountDataModel>), typeof(AccountDal));    
+            registerClient.Register(typeof(IDal<IAccountDataModel>), typeof(AccountDal));    
             registerClient.Register(typeof(IAccountDal), typeof(AccountDal));    
-            registerClient.Register(typeof(IDal<RoleDataModel>), typeof(RoleDal));    
+            registerClient.Register(typeof(IDal<IRoleDataModel>), typeof(RoleDal));    
             registerClient.Register(typeof(IRoleDal), typeof(RoleDal));    
-            registerClient.Register(typeof(IDal<RightDataModel>), typeof(RightDal));    
+            registerClient.Register(typeof(IDal<IRightDataModel>), typeof(RightDal));    
             registerClient.Register(typeof(IRightDal), typeof(RightDal));    
         }
     }

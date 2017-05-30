@@ -48,6 +48,11 @@ namespace App.Dal.EntityDataModels
         public int Id { get; set; } 
 
         
+        /// <summary>
+        /// Gets or sets the RightId for RoleRight.
+        /// </summary>
+        public int RoleRightId { get; set; }          
+        
 
         /// <summary>
         /// Gets or sets the Name.

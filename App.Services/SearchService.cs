@@ -16,7 +16,7 @@ namespace App.Services
 		/// <summary>
         /// Returns search results for CustomerSearch search 
 		/// </summary>		
-		public ICustomerSearchResponse GetCustomerSearch(ICustomerSearchRequest request, List<IModelError> errors, IModelContext context = null)
+		public ICustomerSearchResponse GetCustomerSearch(ICustomerSearchContracts request, List<IModelError> errors, IModelContext context = null)
 		{			
 			return searchDal.GetCustomerSearch(request,context);
 		}
@@ -25,7 +25,7 @@ namespace App.Services
 		/// <summary>
         /// Returns search results for CustomerUsernameSearch search 
 		/// </summary>		
-		public ICustomerUsernameSearchResponse GetCustomerUsernameSearch(ICustomerUsernameSearchRequest request, List<IModelError> errors, IModelContext context = null)
+		public ICustomerUsernameSearchResponse GetCustomerUsernameSearch(ICustomerUsernameSearchContracts request, List<IModelError> errors, IModelContext context = null)
 		{			
 			return searchDal.GetCustomerUsernameSearch(request,context);
 		}

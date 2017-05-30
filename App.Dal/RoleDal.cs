@@ -33,7 +33,10 @@ namespace App.Dal
             if (itemToRemove != null)
             {
                 ctx.Role.Remove(itemToRemove);
-                ctx.SaveChanges();
+				ctx.AccountRole.RemoveRange(ctx.AccountRole.Where(x => x.RoleId == id)); // Remove any AccountRole relationships 
+
+
+				ctx.SaveChanges();
             }   
         }
         
@@ -82,109 +85,81 @@ namespace App.Dal
             ctx.SaveChanges();
         }    
 
-    
-        /// <summary>
-        /// Supports the many to many relationship (AccountRole) between 
-        /// Role (child) Account (parent)
-        /// </summary>
-        /// <param name="accountId"></param>
-        /// <param name="ctx"></param>
-        /// <returns></returns>
-        public IQueryable<IRoleDataModel> GetAccountRole(int accountId, IModelContext context)
-        {
-            var ctx = new AppContext();//2
-            var result = (from main in ctx.Role
-                          join link in ctx.AccountRole on main.Id equals link.RoleId
-                          join outer in ctx.Account on link.AccountId equals outer.Id
-                          where outer.Id == accountId
-                          select main);
-            return result;
-        }
+		
+		#region 'RoleRight'
+		/// <summary>
+        /// Returns all Role connected to a single Right For the 'RoleRight' relationship
+        /// </summary>        
+		public IQueryable<IRoleDataModel> GetAllRoleByRightForRoleRight(int rightId, IModelContext context)
+		{
+			var ctx = new AppContext();
+            var rtn = ctx.Role.Where(x => x.RoleRightId == rightId);
+			return rtn;
+		} 
 
-        /// <summary>
-        /// Supports the many to many relationship (AccountRole) between 
-        /// Role (child) Account (parent)
+		/// <summary>
+        /// Connects a Role to a Right for RoleRight relationship.
         /// </summary>
-        /// <param name="roleId"></param>
-        /// <param name="accountId"></param>
-        /// <param name="ctx"></param>
-        /// <returns></returns>
-        public void AddAccountRole(int roleId, int accountId, IModelContext context)
-        {
-            var ctx = new AppContext();
-            var model = new AccountRoleRelationshipModel{ RoleId = roleId , AccountId = accountId };
-            ctx.AccountRole.Add(model);
+        public void AddRoleToRightForRoleRight(int roleId, int rightId, IModelContext context)
+		{
+			var ctx = new AppContext();
+            var item = ctx.Role.Find(roleId);
+            if (item == null) return;
+            item.RoleRightId = rightId;
             ctx.SaveChanges();
-        }
+		} 
 
-        /// <summary>
-        /// Supports the many to many relationship (AccountRole) between 
-        /// Role (child) Account (parent)
+		/// <summary>
+        /// Unconnects a Role to a Right for RoleRight relationship.
         /// </summary>
-        /// <param name="roleId"></param>
-        /// <param name="accountId"></param>
-        /// <param name="ctx"></param>
-        /// <returns></returns>
-        public void RemoveAccountRole(int roleId, int accountId, IModelContext context)
-        {
-            var ctx = new AppContext();
-            var model = ctx.AccountRole.FirstOrDefault(x => x.RoleId == roleId && x.AccountId == accountId);
-            if (model == null) return;
-            ctx.AccountRole.Remove(model);
-            ctx.SaveChanges();   
-        }
-        
-        /// <summary>
-        /// Supports the many to many relationship (RoleRight) between 
-        /// Role (child) Right (parent)
-        /// </summary>
-        /// <param name="rightId"></param>
-        /// <param name="ctx"></param>
-        /// <returns></returns>
-        public IQueryable<IRoleDataModel> GetRoleRight(int rightId, IModelContext context)
-        {
-            var ctx = new AppContext();//2
-            var result = (from main in ctx.Role
-                          join link in ctx.RoleRight on main.Id equals link.RoleId
-                          join outer in ctx.Right on link.RightId equals outer.Id
-                          where outer.Id == rightId
-                          select main);
-            return result;
-        }
-
-        /// <summary>
-        /// Supports the many to many relationship (RoleRight) between 
-        /// Role (child) Right (parent)
-        /// </summary>
-        /// <param name="roleId"></param>
-        /// <param name="rightId"></param>
-        /// <param name="ctx"></param>
-        /// <returns></returns>
-        public void AddRoleRight(int roleId, int rightId, IModelContext context)
-        {
-            var ctx = new AppContext();
-            var model = new RoleRightRelationshipModel{ RoleId = roleId , RightId = rightId };
-            ctx.RoleRight.Add(model);
+        public void RemoveRoleFromRightForRoleRight(int roleId, IModelContext context)
+		{
+			var ctx = new AppContext();
+            var item = ctx.Role.Find(roleId);
+            if (item == null) return;
+            item.RoleRightId = -1;
             ctx.SaveChanges();
-        }
-
-        /// <summary>
-        /// Supports the many to many relationship (RoleRight) between 
-        /// Role (child) Right (parent)
+		} 
+		#endregion 
+		
+		
+		#region 'AccountRole'	
+		/// <summary>
+        /// Adds the role to account for 'AccountRole' relationship.
         /// </summary>
-        /// <param name="roleId"></param>
-        /// <param name="rightId"></param>
-        /// <param name="ctx"></param>
-        /// <returns></returns>
-        public void RemoveRoleRight(int roleId, int rightId, IModelContext context)
-        {
-            var ctx = new AppContext();
-            var model = ctx.RoleRight.FirstOrDefault(x => x.RoleId == roleId && x.RightId == rightId);
-            if (model == null) return;
-            ctx.RoleRight.Remove(model);
-            ctx.SaveChanges();   
-        }
-        
+		public void AddAccountToRoleForAccountRole(int roleId, int accountId, IModelContext context)
+		{
+			var ctx = new AppContext();
+            var existing = ctx.AccountRole.Any(x=> x.RoleId == roleId && x.AccountId == accountId);
+            if (existing) return;
+            ctx.AccountRole.Add(new AccountRoleRelationshipModel{RoleId = roleId, AccountId = accountId});
+            ctx.SaveChanges();
+		}
 
-    }
+		/// <summary>
+        /// Removes the role from account for 'AccountRole' relationship.
+        /// </summary>
+		public void RemoveAccountFromRoleForAccountRole(int roleId, int accountId, IModelContext context)
+		{
+			var ctx = new AppContext();
+            var existing = ctx.AccountRole.FirstOrDefault(x=> x.RoleId == roleId && x.AccountId == accountId);
+            if (existing == null) return;
+            ctx.AccountRole.Remove(existing);
+            ctx.SaveChanges();
+		}
+
+		/// <summary>
+        /// Get all Role for 'AccountRole' relationship.
+        /// </summary>
+		public IQueryable<IRoleDataModel> GetAllForAccountRole(int accountId, IModelContext context)
+		{
+			var ctx = new AppContext();
+			var result = (from main in ctx.Role
+						join link in ctx.AccountRole on main.Id equals link.RoleId
+						where (link.AccountId == accountId)
+						select main);
+			return result;
+		}
+		#endregion 		
+		    }
 }

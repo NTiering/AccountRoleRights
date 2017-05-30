@@ -1,9 +1,8 @@
 namespace App.Tests.Services
 {
-    using App.Services.Interfaces;
     using Contracts;
-    using Contracts.DataModels;
     using Contracts.Services;
+    using Contracts.Validators;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using System;
@@ -60,7 +59,7 @@ namespace App.Tests.Services
         [TestMethod]
         public void Account_Validator_Is_Registered()
         {
-            var typeExpected = typeof(IValidator<IAccountDataModel>);
+            var typeExpected = typeof(IAccountValidator);
 
             client.Verify(x => x.Register(typeExpected, It.IsAny<Type>(), ""),
                 Times.Once, GetErrorMessage(typeExpected));
@@ -69,7 +68,7 @@ namespace App.Tests.Services
         [TestMethod]
         public void Role_Validator_Is_Registered()
         {
-            var typeExpected = typeof(IValidator<IRoleDataModel>);
+            var typeExpected = typeof(IRoleValidator);
 
             client.Verify(x => x.Register(typeExpected, It.IsAny<Type>(), ""),
                 Times.Once, GetErrorMessage(typeExpected));
@@ -78,7 +77,7 @@ namespace App.Tests.Services
         [TestMethod]
         public void Right_Validator_Is_Registered()
         {
-            var typeExpected = typeof(IValidator<IRightDataModel>);
+            var typeExpected = typeof(IRightValidator);
 
             client.Verify(x => x.Register(typeExpected, It.IsAny<Type>(), ""),
                 Times.Once, GetErrorMessage(typeExpected));

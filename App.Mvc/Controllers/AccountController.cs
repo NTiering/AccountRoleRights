@@ -129,9 +129,7 @@ namespace App.Mvc.Controllers
         //[Authorize(Roles = "Admin,ListAccountRole")]
         public ActionResult GetAccountRole(int id, bool selected = false) 
         {
-            var errors = new List<IModelError>();
-            var models = service.GetAccountRole(id, errors);
-            ViewBag.Errors = errors;
+            var models = service.GetAllForAccountRole(id);
             ViewBag.ToolButtons = "VP"; // View Pick 
             ViewBag.PickState = selected;
             return View("AccountList", models);
@@ -141,11 +139,10 @@ namespace App.Mvc.Controllers
         //[Authorize(Roles = "Admin,SaveAccountRole")]
         public ActionResult AddAccountRole(int id)
         {
-            var errors = new List<IModelError>();
             ViewBag.Readonly = false;
             ViewBag.ShowRelationships = false;
             ViewBag.ModelId = new int?(id);
-            return View("Form");
+            return View("Form", new AccountViewModel());
         }
 
         // Add a relationship (AccountRole) between Account (parent) Role (child)
@@ -159,11 +156,7 @@ namespace App.Mvc.Controllers
 
             if (result)
             {
-                result = service.TryAddAccountRole(model.Id, modelId, errors);
-                if (result == false && model != null) // failed to make the AccountRole relationship ?
-                {
-                    service.TryDelete(model.Id, errors);
-                }
+                service.AddRoleToAccountForAccountRole(model.Id, modelId);
             }
 
             return Json(new
@@ -179,25 +172,25 @@ namespace App.Mvc.Controllers
         //[Authorize(Roles = "Admin,SaveAccountRole")]
         public ActionResult UnLinkAccountRole(int modelId , int[] items)
         {
-            var errors = new List<IModelError>();
             var result = true;
 
-            items.DefaultIfNull().ToList().ForEach(i =>
+            try
             {
-                if (result)
-                {
-                    if (service.TryRemoveAccountRole(modelId, i, errors) == false) // try roll-back if failed
-                    {
-                        service.TryAddAccountRole(modelId, i, errors);
-                        result = false;
-                    }
-                }
-            });
-                       
+                items.DefaultIfNull().AsParallel().ToList().ForEach(i => {
+					service.RemoveRoleFromAccountForAccountRole(modelId, i);					                  
+                });
+            }
+            catch 
+            {
+				items.DefaultIfNull().AsParallel().ToList().ForEach(i => {                    
+					service.AddRoleToAccountForAccountRole(modelId, i);  
+                });
+                result = false;  
+            }
+                                   
             return Json(new
             {
-                Success = result,
-                Errors = errors
+                Success = result
             });
         }
 
@@ -206,25 +199,25 @@ namespace App.Mvc.Controllers
         //[Authorize(Roles = "Admin,SaveAccountRole")]        
         public ActionResult LinkAccountRole(int modelId , int[] items)
         {
-            var errors = new List<IModelError>();
             var result = true;
 
-            items.DefaultIfNull().ToList().ForEach(i =>
+            try
             {
-                if (result)
-                {
-                    if (service.TryAddAccountRole(modelId, i, errors) == false) // try roll-back if failed
-                    {
-                        service.TryRemoveAccountRole(modelId, i, errors);
-                        result = false;
-                    }
-                }
-            });
-                       
+                items.DefaultIfNull().AsParallel().ToList().ForEach(i => {
+					service.AddRoleToAccountForAccountRole(modelId, i);                    
+                });
+            }
+            catch 
+            {
+				items.DefaultIfNull().AsParallel().ToList().ForEach(i => {                    
+					service.RemoveRoleFromAccountForAccountRole(modelId, i);
+                });
+                result = false;  
+            }
+                                   
             return Json(new
             {
-                Success = result,
-                Errors = errors
+                Success = result
             });
         }
                         

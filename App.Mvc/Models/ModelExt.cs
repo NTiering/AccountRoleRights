@@ -15,7 +15,7 @@ namespace App.Mvc.Models
         /// <summary>
         /// Represents a single Account instance as a select list item 
         /// </summary>
-        public static SelectListItem ToSelectListItem(this IAccountDataModel model,IAccountDataModel selected = null)
+        public static SelectListItem ToSelectListItem(this IAccountDataModel model, int id = -1)
         {
             if (model == null)
             {
@@ -27,7 +27,7 @@ namespace App.Mvc.Models
                 {
                     Text = string.Format("[{0}] {1}", model.Id,model.AccountValidFrom.ToString()), // change how the Account appear in drop downs here
                     Value = model.Id.ToString(),
-                    Selected = (selected  != null && selected.Id == model.Id)
+                    Selected = (id == model.Id)
                 };
             }
         }
@@ -45,7 +45,7 @@ namespace App.Mvc.Models
             {
                 var rtn = new List<SelectListItem>();
                 rtn.Add(new SelectListItem{ Text = "Select ....." , Value = "-1" });
-                rtn.AddRange(models.Select(x => x.ToSelectListItem(selected)).OrderBy(x => x.Text));
+                rtn.AddRange(models.Select(x => x.ToSelectListItem(selected == null ? -1 : selected.Id)).OrderBy(x => x.Text));
                 return rtn;
             }
         }
@@ -53,7 +53,7 @@ namespace App.Mvc.Models
         /// <summary>
         /// Represents a single Role instance as a select list item 
         /// </summary>
-        public static SelectListItem ToSelectListItem(this IRoleDataModel model,IRoleDataModel selected = null)
+        public static SelectListItem ToSelectListItem(this IRoleDataModel model, int id = -1)
         {
             if (model == null)
             {
@@ -65,7 +65,7 @@ namespace App.Mvc.Models
                 {
                     Text = string.Format("[{0}] {1}", model.Id,model.IsAssignable.ToString()), // change how the Role appear in drop downs here
                     Value = model.Id.ToString(),
-                    Selected = (selected  != null && selected.Id == model.Id)
+                    Selected = (id == model.Id)
                 };
             }
         }
@@ -83,7 +83,7 @@ namespace App.Mvc.Models
             {
                 var rtn = new List<SelectListItem>();
                 rtn.Add(new SelectListItem{ Text = "Select ....." , Value = "-1" });
-                rtn.AddRange(models.Select(x => x.ToSelectListItem(selected)).OrderBy(x => x.Text));
+                rtn.AddRange(models.Select(x => x.ToSelectListItem(selected == null ? -1 : selected.Id)).OrderBy(x => x.Text));
                 return rtn;
             }
         }
@@ -91,7 +91,7 @@ namespace App.Mvc.Models
         /// <summary>
         /// Represents a single Right instance as a select list item 
         /// </summary>
-        public static SelectListItem ToSelectListItem(this IRightDataModel model,IRightDataModel selected = null)
+        public static SelectListItem ToSelectListItem(this IRightDataModel model, int id = -1)
         {
             if (model == null)
             {
@@ -103,7 +103,7 @@ namespace App.Mvc.Models
                 {
                     Text = string.Format("[{0}] {1}", model.Id,model.IsAssignable.ToString()), // change how the Right appear in drop downs here
                     Value = model.Id.ToString(),
-                    Selected = (selected  != null && selected.Id == model.Id)
+                    Selected = (id == model.Id)
                 };
             }
         }
@@ -121,11 +121,32 @@ namespace App.Mvc.Models
             {
                 var rtn = new List<SelectListItem>();
                 rtn.Add(new SelectListItem{ Text = "Select ....." , Value = "-1" });
-                rtn.AddRange(models.Select(x => x.ToSelectListItem(selected)).OrderBy(x => x.Text));
+                rtn.AddRange(models.Select(x => x.ToSelectListItem(selected == null ? -1 : selected.Id)).OrderBy(x => x.Text));
                 return rtn;
             }
         }
         
 
-    }
+        
+		/// <summary>
+        /// Gets the Role RoleRight model
+        /// </summary>
+        public static IEnumerable<SelectListItem> GetRoleRight(this RoleViewModel model)
+        {
+            var errors = new List<IModelError>();
+            var service = NinjectWebCommon.Kernel.Get<IRightService>();
+            return service.GetAll(x=>x != null, errors).ToSelectListItem();
+        }
+        
+		/// <summary>
+        /// Gets the Right RoleRight model
+        /// </summary>
+        public static IEnumerable<SelectListItem> GetRoleRight(this RightViewModel model)
+        {
+            var errors = new List<IModelError>();
+            var service = NinjectWebCommon.Kernel.Get<IRoleService>();
+            return service.GetAll(x=>x != null, errors).ToSelectListItem();
+        }
+		
+            }
 }

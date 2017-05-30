@@ -1,4 +1,4 @@
-@model App.Contracts.DataModels.IRightDataModel
+@model RightViewModel
 @{ 
     Layout = null;
 	var isReadOnly = ViewBag.Readonly ;
@@ -14,15 +14,13 @@
 @if(showRelationships)
 {
 	<p>	
-		<!-- show a list of Role objects in a popup for RoleRight -->
-        <a class="btn btn-info btn-sm disableOnAjax" onclick="radio('Right-RoleRight').broadcast(@Model.Id)"><i class="icon-role"></i> Role Right</a>
-	</p>	
+		</p>	
 }
 
 <form>
 
     <div class="row">
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<!-- ===========================================
 						Input for Name (string)
 				=========================================== -->
@@ -34,7 +32,7 @@
 				@Html.TextBoxFor(x=>x.Name, new { @class= cssClass + " data-string type-string", name="Name" })
 								
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<!-- ===========================================
 						Input for Key (string)
 				=========================================== -->
@@ -46,7 +44,7 @@
 				@Html.TextBoxFor(x=>x.Key, new { @class= cssClass + " data-string type-string", name="Key" })
 								
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<!-- ===========================================
 						Input for IsAssignable (bool)
 				=========================================== -->
@@ -55,19 +53,19 @@
 				<i class="fa fa-exclamation-triangle text-danger error-icon" id="error-icon-for-IsAssignable" aria-hidden="true"></i>
 				<br/><small>If true the right can be assigned to a role</small>
 				
-				@if(isReadOnly) // fix 'drop downs still expand while diabled'
-				{
-					var items = (ViewBag.BoolSelectItems as SelectListItem[]) ;
-					<p><br/>@(Model.IsAssignable ? items.First().Text : items.Last().Text )</p>
-				}
-				else
-				{
-					@Html.DropDownListFor(x=>x.IsAssignable, ViewBag.BoolSelectItems as SelectListItem[], new { @class= cssClass + " data-bool type-bool" ,name="IsAssignable"})
-				}
+				@Html.DropDownListFor(x=>x.IsAssignable, ViewBag.BoolSelectItems as SelectListItem[], new { @class= cssClass + " data-bool type-bool" ,name="IsAssignable", makeDisabled = isReadOnly ? "true" : "false"})
 				
 			</div>
 	
-	
+
+		<!-- ===========================================
+		Input for Role Right (One to many)
+		=========================================== -->
+		<div class="col-md-6">
+			<label for="Role"><i class="icon-role"></i> Role Right</label>
+			@Html.DropDownList("RoleRightId", Model.GetRoleRight(), new { @class = cssClass , makeDisabled = isReadOnly ? "true" : "false" })
+        </div>
+		
 	</div>
 	
 	

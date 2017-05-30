@@ -40,11 +40,6 @@ namespace App.Dal
         /// </summary>        
         public DbSet<AccountRoleRelationshipModel> AccountRole { get; set; } 
 
-        /// <summary>
-        /// Used internally to manage relationships between Right and Role for RoleRight searches.
-        /// </summary>        
-        public DbSet<RoleRightRelationshipModel> RoleRight { get; set; } 
-
     }
 
 }

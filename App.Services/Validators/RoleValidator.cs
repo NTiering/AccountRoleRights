@@ -2,15 +2,16 @@ namespace App.Services.Validators
 {
     using Contracts;
     using Contracts.DataModels;
-    using Interfaces;
     using System.Collections.Generic;
     using System.Linq;
+    using Contracts.Validators;
+    using Contracts.Interfaces;
 
-    class RoleValidator : IValidator<IRoleDataModel> 
+    class RoleValidator : IRoleValidator 
     {
         /// <summary>
         /// Returns true if the model is valid
-        /// </summary> // here 
+        /// </summary> 
         public bool IsValid(IRoleDataModel model, Operation op, List<IModelError> errors)
         {
             var e = new List<IModelError>();

@@ -40,6 +40,7 @@
      */
     radio("app-startup").subscribe(function () {        
         $(".readonly").attr("readonly", "readonly");
+        $("[makeDisabled='true']").attr("disabled","true");
     })
 
     /**

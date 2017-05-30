@@ -3,130 +3,315 @@ namespace App.Services
     using Contracts;
     using System;
     using System.Collections.Generic;
-    using Interfaces;
     using Contracts.DataModels;
     using Contracts.Dals;
     using System.Linq;
     using Contracts.Services;
     using Encryption;
+    using Contracts.ChangeHandlers;
+    using Contracts.Validators;
+    using Contracts.Interfaces;
 
     /// <summary>
     /// Service to provide atomic opertaion for a Account data object
     /// </summary>
-    class AccountService : BaseService<IAccountDataModel>, IService<IAccountDataModel> , IAccountService
+    class AccountService : IAccountService
     {    
         
-        private IAccountDal serviceDal ; 
-        
-        private IRoleDal roleDal ;
+		private readonly ICryptoProvider cryptoProvider ;
+				       
+		private readonly IAccountDal dal ;
 
-        private IRightDal rightDal ;
+        private readonly IAccountChangeHandler changeHandler ;
 
-        private ICryptoProvider cryptoProvider ;
-
-        public AccountService(IAccountDal dal, IRoleDal roleDal , IRightDal rightDal , ICryptoProvider cryptoProvider , IValidator<IAccountDataModel> validator, IEntityChangeHandler<IAccountDataModel>[] changeHandler = null)
-         :base(dal, validator, changeHandler)
+        private readonly IAccountValidator validator ;
+		
+        public AccountService(IAccountDal dal, IAccountValidator validator, IAccountChangeHandler changeHandler , ICryptoProvider cryptoProvider)
         {
-            serviceDal = dal; // keep a local copy as it's more specialized than IDal<Account>
+            this.dal = dal; 
+			this.changeHandler = changeHandler;
+            this.validator = validator;
+			this.cryptoProvider = cryptoProvider;
+        }	   
+		
+		/// <summary>
+        /// Deletes the specified item that contains the id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="errors"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public bool TryDelete(int id, List<IModelError> errors, IModelContext context = null)
+        {
+            var exists = Exists(id, context);
+            if (!exists)
+            {
+                AddNotExistsError(errors);
+                return false;
+            }
+
+            try
+            {
+                changeHandler.BeforeDelete(id, context);
+                dal.Delete(id, context);
+                changeHandler.AfterDelete(id, context);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Unable to delete IAccountDataModel", ex);
+            }
             
-            this.roleDal = roleDal ;
-
-            this.rightDal = rightDal ;
-
-            this.cryptoProvider = cryptoProvider ;
+            return true;
         }
 
-        
-        /// <summary>
-        /// Saves the Account entity using encryption where required
+		/// <summary>
+        /// Tries to save the item.
         /// </summary>
-        override public bool TrySave(IAccountDataModel item, List<IModelError> errors, IModelContext context = null)
+        /// <param name="item"></param>
+        /// <param name="errors"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public bool TrySave(IAccountDataModel item, List<IModelError> errors, IModelContext context = null)
         {
-            var isValid = TryValidateModel(item, (item.IsNew ? Operation.Create : Operation.Update) , errors, context);
-            
-            if (isValid == false) return false;
+            return item.IsNew ?
+                TryCreate(item, errors, context) :
+                TryUpdate(item, errors, context);
+        }
 
+		/// <summary>
+        /// Gets the first item that fufills the filter.
+        /// </summary>
+        /// <param name="filter">The filter.</param>
+        /// <returns></returns>
+        public IAccountDataModel Get(Func<IAccountDataModel, bool> filter, IModelContext context = null)
+        {
+            return dal.Get(filter, context);
+        }
+
+        /// <summary>
+        /// Gets the specified item by id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="errors"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public IAccountDataModel Get(int id, List<IModelError> errors, IModelContext context = null)
+        {
+            var rtn = dal.Get(id, context);
+            return rtn;
+        }
+
+        /// <summary>
+        /// Gets the first item that fufills the filter.
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="errors"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public IAccountDataModel Get(Func<IAccountDataModel, bool> filter, List<IModelError> errors, IModelContext context = null)
+        {
+            var rtn = dal.Get(filter, context);
+            return rtn;
+        }
+
+        /// <summary>
+        /// Gets all the items that fufills the filter.
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="errors"></param>
+        /// <param name="context"></param>
+        /// <param name="order"></param>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <returns></returns>
+        public IQueryable<IAccountDataModel> GetAll(Func<IAccountDataModel, bool> filter, List<IModelError> errors, IModelContext context = null, Func<IAccountDataModel, int> order = null, int skip = 0, int take = 999)
+        {
+            var rtn = dal.GetAll(filter, context)
+                .Skip(skip)
+                .Take(take);
+
+            if (order != null)
+            {
+                rtn = rtn.OrderBy(order)
+                    .AsQueryable();
+            }
+            return rtn;
+        }
+
+		/// <summary>
+        /// Checks the validation of a single property
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        public bool TryValidate(IAccountDataModel item, string propertyName, List<IModelError> errors, IModelContext context = null)
+        {
+            var rtn = TryValidateModel(item, Operation.View, errors, context);
+            errors.RemoveAll(x => string.Compare(x.Property, propertyName, true) != 0);
+            return rtn;
+        }
+
+		/// <summary>
+        /// Tries to update the item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        private bool TryUpdate(IAccountDataModel item, List<IModelError> errors, IModelContext context = null)
+        {
+            if (TryValidateModel(item, Operation.Update, errors, context) == false)
+            {
+                return false;
+            }
 
             if (item != null && item.Password != null)
             {
                 item.Password = cryptoProvider.CreateHash(item.Password);
             }
-                        
-            return base.TrySave(item, errors, context);
-        }
-        
-
-            /// <summary>
-            /// Returns true if the model exists and the values supplied matches a hashed version of Password
-            /// </summary>
-            public bool MatchesPassword(int id , string password, List<IModelError> errors, IModelContext context = null)
+                                    
+			try
             {
-                var model = Get(id, errors, context);
-                if(model == null) return false;
-                var rtn = (String.Compare(password, cryptoProvider.CreateHash(model.Password)) == 0);
-                return rtn;
-            } 
-            
-
-        /// <summary>
-        /// Supports the many to many relationship (AccountRole) between 
-        /// Account (parent) Role (child)
-        /// </summary>
-        /// <param name="roleId"></param>
-        /// <param name="context"></param>
-        /// <returns></returns> 
-        public IQueryable<IAccountDataModel> GetAccountRole(int roleId, List<IModelError> errors, IModelContext context = null)
-        {
-            if (roleDal.Get(roleId, context) == null) // check roleId exists
+                changeHandler.BeforeUpdate(item, context);
+                dal.Update(item, context);
+                changeHandler.AfterUpdate(item, context);
+            }
+            catch (Exception ex)
             {
-                errors.Add(new ModelError{Property = "roleId", ErrorMessage = "roleId_notfound" });
-                return Enumerable.Empty<IAccountDataModel>().AsQueryable();
+                throw new InvalidOperationException("Unable to update IAccountDataModel", ex);
             }
 
-            var rtn = serviceDal.GetAccountRole(roleId, context);
+            return true;
+        }
+
+		/// <summary>
+        /// Tries to create a new item
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException">Unable to update IAccountDataModel"</exception>
+        private bool TryCreate(IAccountDataModel item, List<IModelError> errors, IModelContext context = null)
+        {
+            if (TryValidateModel(item, Operation.Create, errors, context) == false)
+            {
+                return false;
+            }
+
+            if (item != null && item.Password != null)
+            {
+                item.Password = cryptoProvider.CreateHash(item.Password);
+            }
+                                    
+			try
+            {
+                changeHandler.BeforeCreate(item, context);
+                dal.Create(item, context);
+                changeHandler.AfterCreate(item, context);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Unable to create IAccountDataModel", ex);
+            }
+
+            return true;
+        }
+
+		/// <summary>
+        /// Returns true if the an item has this id
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        private bool Exists(int id, IModelContext context = null)
+        {
+            return dal.Get(id, context) != null;
+        }
+
+		/// <summary>
+        /// Adds the not exists error.
+        /// </summary>
+        /// <param name="errors">The errors.</param>
+        private void AddNotExistsError(List<IModelError> errors)
+        {
+            errors.Add(new ModelError { Property = "", ErrorMessage = "notexisting" });
+        }
+
+		/// <summary>
+        /// Validates the model.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="operation">The operation.</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        private bool TryValidateModel(IAccountDataModel item, Operation operation, List<IModelError> errors, IModelContext context = null)
+        {
+            if (item == null)
+            {
+                AddNullModelError(errors);
+                return false;
+            }
+
+            return validator.IsValid(item, operation, errors);
+        }
+
+        /// <summary>
+        /// Adds the null model error.
+        /// </summary>
+        /// <param name="errors">The errors.</param>
+        private void AddNullModelError(List<IModelError> errors)
+        {
+            errors.Add(new ModelError { Property = "", ErrorMessage = "nomodel" });
+        }
+
+
+        /// <summary>
+        /// Returns true if the model exists and the values supplied matches a hashed version of Password
+        /// </summary>
+        public bool MatchesPassword(int id , string password, List<IModelError> errors, IModelContext context = null)
+        {
+            var model = Get(id, errors, context);
+            if(model == null) return false;
+            var rtn = (String.Compare(password, cryptoProvider.CreateHash(model.Password)) == 0);
             return rtn;
-        }
-        
-        /// <summary>
-        /// Supports the many to many relationship (AccountRole) between 
-        /// Account (parent) Role (child)
+        } 
+        		        	
+		#region 'AccountRole' (Many to many - Account (p))  		
+		/// <summary>
+        /// Adds the role to account for 'AccountRole' relationship.
         /// </summary>
-        /// <param name="accountId"></param>
-        /// <param name="roleId"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public bool TryAddAccountRole(int accountId, int roleId,  List<IModelError> errors, IModelContext context = null)
-        {
-            if (serviceDal.Get(accountId, context) == null) // check accountId exists
-            {
-                errors.Add(new ModelError{Property = "accountId", ErrorMessage = "accountId_notfound" });
-                return false;
-            }
+		public void AddRoleToAccountForAccountRole(int roleId, int accountId, IModelContext context = null)
+		{
+			changeHandler.BeforeAddRoleToAccountForAccountRole(roleId, accountId, context);
+			dal.AddRoleToAccountForAccountRole(roleId, accountId, context);
+			changeHandler.AfterAddRoleToAccountForAccountRole(roleId, accountId, context);
+		}
 
-            serviceDal.AddAccountRole(accountId, roleId, context);
-            return true; 
-        }
-
-        /// <summary>
-        /// Supports the many to many relationship (AccountRole) between 
-        /// Account (parent) Role (child)
+		/// <summary>
+        /// Removes the role from account for 'AccountRole' relationship.
         /// </summary>
-        /// <param name="accountId"></param>
-        /// <param name="roleId"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public bool TryRemoveAccountRole(int accountId, int roleId,  List<IModelError> errors, IModelContext context = null)
-        {
-            if (serviceDal.Get(accountId, context) == null) // check accountId exists
-            {
-                errors.Add(new ModelError{Property = "accountId", ErrorMessage = "accountId_notfound" });
-                return false;
-            }
+		public void RemoveRoleFromAccountForAccountRole(int roleId, int accountId, IModelContext context = null)
+		{
+			changeHandler.BeforeRemoveRoleFromAccountForAccountRole(roleId, accountId, context);
+			dal.RemoveRoleFromAccountForAccountRole(roleId, accountId, context);
+			changeHandler.AfterRemoveRoleFromAccountForAccountRole(roleId, accountId, context);
+		}
 
-            serviceDal.RemoveAccountRole(accountId, roleId, context);
-            return true; 
-        }
-                    
-
+		/// <summary>
+        /// Get all Account for 'AccountRole' relationship.
+        /// </summary>
+		public IQueryable<IAccountDataModel> GetAllForAccountRole(int roleId, IModelContext context = null)
+		{
+			changeHandler.BeforeGetAllForAccountRole(roleId, context);
+			var rtn = dal.GetAllForAccountRole(roleId, context);	
+			changeHandler.AfterGetAllForAccountRole(rtn, roleId, context);
+			return rtn ;
+		}
+		#endregion 
     }
 }

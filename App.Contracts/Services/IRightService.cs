@@ -1,49 +1,99 @@
 namespace  App.Contracts.Services
 {
     using Contracts;
-    using DataModels;
     using System;
     using System.Collections.Generic;
+    using DataModels;
     using System.Linq;
 
     /// <summary>
-    /// Service to provvide atomic opertaion for a Right data object
+    /// Service to provvide atomic operation for a Right data object
     /// </summary>
-    public interface IRightService : IService<IRightDataModel>
-    {    
-
-        /// <summary>
-        /// Supports the many to many relationship (RoleRight) between 
-        /// Right (parent) Role (child)
+    public interface IRightService 
+    {   
+		/// <summary>
+        /// Deletes the specified item that contains the id.
         /// </summary>
-        /// <param name="roleId"></param>
+        /// <param name="id"></param>
+        /// <param name="errors"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        IQueryable<IRightDataModel> GetRoleRight(int roleId, List<IModelError> errors, IModelContext context = null);
+        bool TryDelete(int id, List<IModelError> errors, IModelContext context = null);
 
-        /// <summary>
-        /// Supports the many to many relationship (RoleRight) between 
-        /// Right (parent) Role (child)
+		/// <summary>
+        /// Tries to save the item.
         /// </summary>
-        /// <param name="rightId"></param>
-        /// <param name="roleId"></param>
+        /// <param name="item"></param>
+        /// <param name="errors"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        bool TryAddRoleRight(int rightId, int roleId,  List<IModelError> errors, IModelContext context = null);
+        bool TrySave(IRightDataModel item, List<IModelError> errors, IModelContext context = null);
+
+		/// <summary>
+        /// Gets the first item that fufills the filter.
+        /// </summary>
+        /// <param name="filter">The filter.</param>
+        /// <returns></returns>
+        IRightDataModel Get(Func<IRightDataModel, bool> filter, IModelContext context = null);
 
         /// <summary>
-        /// Supports the many to many relationship (RoleRight) between 
-        /// Right (parent) Role (child)
+        /// Gets the specified item by id.
         /// </summary>
-        /// <param name="rightId"></param>
-        /// <param name="roleId"></param>
+        /// <param name="id"></param>
+        /// <param name="errors"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        bool TryRemoveRoleRight(int rightId, int roleId,  List<IModelError> errors, IModelContext context = null);
-        
-        
+        IRightDataModel Get(int id, List<IModelError> errors, IModelContext context = null);
 
-        
+        /// <summary>
+        /// Gets the first item that fufills the filter.
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="errors"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        IRightDataModel Get(Func<IRightDataModel, bool> filter, List<IModelError> errors, IModelContext context = null);
 
+        /// <summary>
+        /// Gets all the items that fufills the filter.
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="errors"></param>
+        /// <param name="context"></param>
+        /// <param name="order"></param>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <returns></returns>
+        IQueryable<IRightDataModel> GetAll(Func<IRightDataModel, bool> filter, List<IModelError> errors, IModelContext context = null, Func<IRightDataModel, int> order = null, int skip = 0, int take = 999);
+
+		/// <summary>
+        /// Checks the validation of a single property
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        bool TryValidate(IRightDataModel item, string propertyName, List<IModelError> errors, IModelContext context = null);
+    
+			
+		#region 'RoleRight'        
+		/// <summary>
+        /// Gets the single Right by Role id for RoleRight relationship.
+        /// </summary>
+        IRightDataModel GetSingleRightByRoleForRoleRight(int roleId, IModelContext context = null);
+
+		/// <summary>
+        /// Connects a Right to a Role for RoleRight relationship.
+        /// </summary>
+        void AddRightToRoleForRoleRight(int rightId, int roleId, IModelContext context = null);
+
+		/// <summary>
+        /// Unconnect a Right to a Role for RoleRight relationship.
+        /// </summary>
+		void RemoveRightFromRoleForRoleRight(int roleId, IModelContext context = null);
+
+		#endregion 
+		
     }
 }

@@ -10,11 +10,11 @@ namespace App.Contracts
 		/// <summary>
 		/// Returns search results for CustomerSearch search 
 		/// </summary>
-		ICustomerSearchResponse GetCustomerSearch(ICustomerSearchRequest request, IModelContext context = null); 
+		ICustomerSearchResponse GetCustomerSearch(ICustomerSearchContracts request, IModelContext context = null); 
 
 		/// <summary>
 		/// Returns search results for CustomerUsernameSearch search 
 		/// </summary>
-		ICustomerUsernameSearchResponse GetCustomerUsernameSearch(ICustomerUsernameSearchRequest request, IModelContext context = null); 
+		ICustomerUsernameSearchResponse GetCustomerUsernameSearch(ICustomerUsernameSearchContracts request, IModelContext context = null); 
 	}
 }

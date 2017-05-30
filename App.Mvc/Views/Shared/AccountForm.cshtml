@@ -1,4 +1,4 @@
-@model App.Contracts.DataModels.IAccountDataModel
+@model AccountViewModel
 @{ 
     Layout = null;
 	var isReadOnly = ViewBag.Readonly ;
@@ -16,13 +16,13 @@
 	<p>	
 		<!-- show a list of Role objects in a popup for AccountRole -->
         <a class="btn btn-info btn-sm disableOnAjax" onclick="radio('Account-AccountRole').broadcast(@Model.Id)"><i class="icon-role"></i> Account Role</a>
-	</p>	
+		</p>	
 }
 
 <form>
 
     <div class="row">
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<!-- ===========================================
 						Input for Username (string)
 				=========================================== -->
@@ -34,7 +34,7 @@
 				@Html.TextBoxFor(x=>x.Username, new { @class= cssClass + " data-string type-string", name="Username" })
 								
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<!-- ===========================================
 						Input for Password (hashed)
 				=========================================== -->
@@ -56,7 +56,7 @@
 				</div>
 				
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<!-- ===========================================
 						Input for LastLoggedIn (datetime)
 				=========================================== -->
@@ -68,7 +68,7 @@
 				@Html.TextBoxFor(x=>x.LastLoggedIn,"{0:d MMM yyyy}", new { @class= cssClass + " data-DateTime type-datetime", name="LastLoggedIn" })
 								
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<!-- ===========================================
 						Input for LoginAttempts (int)
 				=========================================== -->
@@ -80,7 +80,7 @@
 				@Html.TextBoxFor(x=>x.LoginAttempts, new { @class= cssClass + " data-int type-int", name="LoginAttempts" })
 								
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<!-- ===========================================
 						Input for IsLockedOut (bool)
 				=========================================== -->
@@ -89,18 +89,10 @@
 				<i class="fa fa-exclamation-triangle text-danger error-icon" id="error-icon-for-IsLockedOut" aria-hidden="true"></i>
 				<br/><small>If true this account cannot be used until unlocked</small>
 				
-				@if(isReadOnly) // fix 'drop downs still expand while diabled'
-				{
-					var items = (ViewBag.BoolSelectItems as SelectListItem[]) ;
-					<p><br/>@(Model.IsLockedOut ? items.First().Text : items.Last().Text )</p>
-				}
-				else
-				{
-					@Html.DropDownListFor(x=>x.IsLockedOut, ViewBag.BoolSelectItems as SelectListItem[], new { @class= cssClass + " data-bool type-bool" ,name="IsLockedOut"})
-				}
+				@Html.DropDownListFor(x=>x.IsLockedOut, ViewBag.BoolSelectItems as SelectListItem[], new { @class= cssClass + " data-bool type-bool" ,name="IsLockedOut", makeDisabled = isReadOnly ? "true" : "false"})
 				
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<!-- ===========================================
 						Input for AccountValidFrom (datetime)
 				=========================================== -->
@@ -112,7 +104,7 @@
 				@Html.TextBoxFor(x=>x.AccountValidFrom,"{0:d MMM yyyy}", new { @class= cssClass + " data-DateTime type-datetime", name="AccountValidFrom" })
 								
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<!-- ===========================================
 						Input for AccountValidTo (datetime)
 				=========================================== -->
@@ -124,7 +116,7 @@
 				@Html.TextBoxFor(x=>x.AccountValidTo,"{0:d MMM yyyy}", new { @class= cssClass + " data-DateTime type-datetime", name="AccountValidTo" })
 								
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<!-- ===========================================
 						Input for LoginStartAt (time)
 				=========================================== -->
@@ -133,10 +125,10 @@
 				<i class="fa fa-exclamation-triangle text-danger error-icon" id="error-icon-for-LoginStartAt" aria-hidden="true"></i>
 				<br/><small>The earliest time login can be validated</small>
 				
-				@Html.DropDownListFor(x=>x.LoginStartAt,ViewBag.TimeSelectItems as SelectListItem[] , new { @class= cssClass + " data-string type-time", name="LoginStartAt" })
+				@Html.DropDownListFor(x=>x.LoginStartAt,ViewBag.TimeSelectItems as SelectListItem[] , new { @class= cssClass + " data-string type-time", name="LoginStartAt", makeDisabled = isReadOnly ? "true" : "false" })
 								
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<!-- ===========================================
 						Input for LoginUntil (time)
 				=========================================== -->
@@ -145,7 +137,7 @@
 				<i class="fa fa-exclamation-triangle text-danger error-icon" id="error-icon-for-LoginUntil" aria-hidden="true"></i>
 				<br/><small>The latest time login can be validated</small>
 				
-				@Html.DropDownListFor(x=>x.LoginUntil,ViewBag.TimeSelectItems as SelectListItem[] , new { @class= cssClass + " data-string type-time", name="LoginUntil" })
+				@Html.DropDownListFor(x=>x.LoginUntil,ViewBag.TimeSelectItems as SelectListItem[] , new { @class= cssClass + " data-string type-time", name="LoginUntil", makeDisabled = isReadOnly ? "true" : "false" })
 								
 			</div>
 	

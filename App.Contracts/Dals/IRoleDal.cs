@@ -7,63 +7,40 @@ namespace App.Contracts.Dals
     
     public interface IRoleDal : IDal<IRoleDataModel>
     {
-    
-        /// <summary>
-        /// Supports the many to many relationship (AccountRole) between 
-        /// Role (child) Account (parent)
+		
+		#region 'RoleRight'
+		/// <summary>
+        /// Returns all Role connected to a single Right For the 'RoleRight' relationship
+        /// </summary>        
+		IQueryable<IRoleDataModel> GetAllRoleByRightForRoleRight(int rightId, IModelContext context);
+		
+		/// <summary>
+        /// Connects a Role to a Right for RoleRight relationship.
         /// </summary>
-        /// <param name="accountId"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        IQueryable<IRoleDataModel> GetAccountRole(int accountId, IModelContext context = null);
-        
-        /// <summary>
-        /// Supports the many to many relationship (AccountRole) between 
-        /// Role (child) Account (parent)
+        void AddRoleToRightForRoleRight(int roleId, int rightId, IModelContext context);
+		
+		/// <summary>
+        /// Unconnects a Role to a Right for RoleRight relationship.
         /// </summary>
-        /// <param name="roleId"></param>
-        /// <param name="accountId"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        void AddAccountRole(int roleId, int accountId, IModelContext context = null);
-
-        /// <summary>
-        /// Supports the many to many relationship (AccountRole) between 
-        /// Role (child) Account (parent)
+        void RemoveRoleFromRightForRoleRight(int roleId, IModelContext context);
+		#endregion 
+		
+		
+		#region 'AccountRole'	
+		/// <summary>
+        /// Adds the role to account for 'AccountRole' relationship.
         /// </summary>
-        /// <param name="roleId"></param>
-        /// <param name="accountId"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        void RemoveAccountRole(int roleId, int accountId, IModelContext context = null);
-        /// <summary>
-        /// Supports the many to many relationship (RoleRight) between 
-        /// Role (child) Right (parent)
+		void AddAccountToRoleForAccountRole(int roleId, int accountId, IModelContext context);
+		
+		/// <summary>
+        /// Removes the role from account for 'AccountRole' relationship.
         /// </summary>
-        /// <param name="rightId"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        IQueryable<IRoleDataModel> GetRoleRight(int rightId, IModelContext context = null);
-        
-        /// <summary>
-        /// Supports the many to many relationship (RoleRight) between 
-        /// Role (child) Right (parent)
+		void RemoveAccountFromRoleForAccountRole(int roleId, int accountId, IModelContext context);
+		
+		/// <summary>
+        /// Get all Role for 'AccountRole' relationship.
         /// </summary>
-        /// <param name="roleId"></param>
-        /// <param name="rightId"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        void AddRoleRight(int roleId, int rightId, IModelContext context = null);
-
-        /// <summary>
-        /// Supports the many to many relationship (RoleRight) between 
-        /// Role (child) Right (parent)
-        /// </summary>
-        /// <param name="roleId"></param>
-        /// <param name="rightId"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        void RemoveRoleRight(int roleId, int rightId, IModelContext context = null);
-
-    }
+		IQueryable<IRoleDataModel> GetAllForAccountRole(int accountId, IModelContext context);
+		#endregion 		
+		    }
 }

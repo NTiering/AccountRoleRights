@@ -176,59 +176,6 @@ namespace App.Tests.Services.Validation
          
 
         [TestMethod]
-        public void Missing_IsLockedOut_properites_on_new_IsLockedOutDataModels_cause_errors()
-        {
-            var service = registerClient.Get<IAccountService>();
-            var model = GetValidDataModel(true);
-            var errors = new List<IModelError>();
-            model.IsLockedOut = false;
-
-            service.TrySave(model, errors);
-
-            Assert.IsTrue(errors.Count == 1, errors.Count + " validation errors found when one (1) expected");
-        }
-
-        [TestMethod]
-        public void Required_new_IsLockedOut_properties_on_IsLockedOutDataModels_cannot_be_saved()
-        {
-            var service = registerClient.Get<IAccountService>();
-            var model = GetValidDataModel(true);
-            var errors = new List<IModelError>();
-            model.IsLockedOut = false;
-
-            var result = service.TrySave(model, errors);
-
-            Assert.IsFalse(result);
-        }
-
-        [TestMethod]
-        public void Required_IsLockedOut_properites_on_existing_IsLockedOutDataModels_cause_errors()
-        {
-            var service = registerClient.Get<IAccountService>();
-            var model = GetValidDataModel(false);
-            var errors = new List<IModelError>();
-            model.IsLockedOut = false;
-
-            service.TrySave(model, errors);
-
-            Assert.IsTrue(errors.Count == 1, errors.Count + " validation errors found when one (1) expected");
-        }
-
-        [TestMethod]
-        public void Required_existing_IsLockedOutDataModels_cannot_be_saved()
-        {
-            var service = registerClient.Get<IAccountService>();
-            var model = GetValidDataModel(false);
-            var errors = new List<IModelError>();
-            model.IsLockedOut = false;
-
-            var result = service.TrySave(model, errors);
-
-            Assert.IsFalse(result);
-        }
-         
-
-        [TestMethod]
         public void Missing_AccountValidFrom_properites_on_new_AccountValidFromDataModels_cause_errors()
         {
             var service = registerClient.Get<IAccountService>();

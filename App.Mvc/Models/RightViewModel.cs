@@ -33,11 +33,11 @@ namespace App.Mvc.Models
         public bool IsAssignable { get; set; } 
 
         
-        
         /// <summary>
         /// Gets or sets the RightId for RoleRight.
         /// </summary>
         public int RoleRightId { get; set; }          
+        
 
 
         /// <summary>
