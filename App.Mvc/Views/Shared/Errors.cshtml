@@ -1,0 +1,25 @@
+﻿
+@if (ViewData.ModelState.IsValid == false)
+{
+    if (ViewData.ModelState.Count() == 1)
+    {
+        <p class="alert alert-danger">
+            An Error Occurred
+        </p>
+    }
+    else if (ViewData.ModelState.Count() > 1)
+    {
+        <p class="alert alert-danger">
+            The form below is not valid. Please correct and re-submit
+            <i class="fa fa-question-circle" aria-hidden="true" data-toggle="collapse" data-target="#error-msgs"></i>
+
+        <p id="error-msgs" class="collapse text-danger">
+            @foreach (var errorMessage in ViewData.ModelState.Values.SelectMany(v => v.Errors).Select(x => x.ErrorMessage))
+            {
+                <text>@errorMessage<br/></text>
+            }
+        </p>
+        </p>
+    }
+}
+

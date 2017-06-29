@@ -1,9 +1,12 @@
+@{
+var title = ViewBag.Title == null ? "" : ViewBag.Title;
+}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>@title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -25,14 +28,6 @@
         document.endpoints.account.list = "@Url.Action("List", "Account")";
         document.endpoints.account.remove = "@Url.Action("Remove", "Account")";        
         document.endpoints.account.save = "@Url.Action("Save", "Account")";
-        document.endpoints.role = {};
-        document.endpoints.role.delete = "@Url.Action("Delete", "Role")";
-        document.endpoints.role.create = "@Url.Action("Create", "Role")";
-        document.endpoints.role.edit = "@Url.Action("Edit", "Role")";
-        document.endpoints.role.view = "@Url.Action("View", "Role")";
-        document.endpoints.role.list = "@Url.Action("List", "Role")";
-        document.endpoints.role.remove = "@Url.Action("Remove", "Role")";        
-        document.endpoints.role.save = "@Url.Action("Save", "Role")";
         document.endpoints.right = {};
         document.endpoints.right.delete = "@Url.Action("Delete", "Right")";
         document.endpoints.right.create = "@Url.Action("Create", "Right")";
@@ -41,6 +36,14 @@
         document.endpoints.right.list = "@Url.Action("List", "Right")";
         document.endpoints.right.remove = "@Url.Action("Remove", "Right")";        
         document.endpoints.right.save = "@Url.Action("Save", "Right")";
+        document.endpoints.role = {};
+        document.endpoints.role.delete = "@Url.Action("Delete", "Role")";
+        document.endpoints.role.create = "@Url.Action("Create", "Role")";
+        document.endpoints.role.edit = "@Url.Action("Edit", "Role")";
+        document.endpoints.role.view = "@Url.Action("View", "Role")";
+        document.endpoints.role.list = "@Url.Action("List", "Role")";
+        document.endpoints.role.remove = "@Url.Action("Remove", "Role")";        
+        document.endpoints.role.save = "@Url.Action("Save", "Role")";
 
         document.endpoints.account.getAccountRole = "@Url.Action("GetAccountRole", "Account")";
         document.endpoints.account.saveAccountRole = "@Url.Action("SaveAccountRole", "Account")";
@@ -93,8 +96,8 @@
     <script src="/Scripts/Tools/notify.js"></script>
 
     <script src="~/Scripts/Tools/account.js"></script>
-    <script src="~/Scripts/Tools/role.js"></script>
     <script src="~/Scripts/Tools/right.js"></script>
+    <script src="~/Scripts/Tools/role.js"></script>
     
     <!-- icons -->
     <script src="/Scripts/Tools/icons.js"></script>
@@ -103,8 +106,8 @@
     <script src="~/Scripts/Translations/core.js"></script>    
 
     <script src="~/Scripts/Translations/account.tr.js"></script>
-    <script src="~/Scripts/Translations/role.tr.js"></script>
     <script src="~/Scripts/Translations/right.tr.js"></script>
+    <script src="~/Scripts/Translations/role.tr.js"></script>
 </head>
 <body>
      <div class="navbar navbar-inverse navbar-fixed-top" >
@@ -115,10 +118,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="@Url.Action("index","home")" class="navbar-brand">@ViewBag.Title
+                <a href="@Url.Action("index","home")" class="navbar-brand">
                     <i class='icon-home' aria-hidden='true'></i> 
                      @if (Html.IsDebug())
-                        { <span >(Development)</span>}                  
+                        {<span> (Development) </span>} 						                 
                 </a>
                 <a href="" class="navbar-brand" >
                     <i class='' aria-hidden='true'></i>    
@@ -128,7 +131,13 @@
                 <ul class="nav navbar-nav">
                     <li>
                         <a onclick="javascript: radio('Navigation-Show').broadcast()">
-                            Sections
+                            <p class="btn btn-info btn-sm">
+                                <span class="fa-stack">
+                                    <i class="fa fa-square-o fa-stack-2x"></i>
+                                    <i class="fa fa-list-ul fa-stack-1x"></i>
+                                </span>
+                                Sections
+                            </p>
                         </a>
                     </li>
                     <!-- add new menu items here -->
@@ -140,6 +149,8 @@
         </div>
     </div>
     <div class="container body-content">
+		<h2>@title</h2>
+        <hr/>
         @RenderBody()
         <footer>
             @Html.Partial("_Footer")

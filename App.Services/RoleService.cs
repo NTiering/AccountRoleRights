@@ -17,15 +17,19 @@ namespace App.Services
     /// </summary>
     class RoleService : IRoleService
     {    
-        		       
+		private readonly ILogProvider log ; 
+		
+		private const string LogName = "Role";
+		       
 		private readonly IRoleDal dal ;
 
         private readonly IRoleChangeHandler changeHandler ;
 
         private readonly IRoleValidator validator ;
 		
-        public RoleService(IRoleDal dal, IRoleValidator validator, IRoleChangeHandler changeHandler )
+        public RoleService(ILogProvider log, IRoleDal dal, IRoleValidator validator, IRoleChangeHandler changeHandler )
         {
+			this.log = log; 
             this.dal = dal; 
 			this.changeHandler = changeHandler;
             this.validator = validator;
@@ -56,6 +60,7 @@ namespace App.Services
             }
             catch (Exception ex)
             {
+				log.Exception(LogName, ex);	
                 throw new InvalidOperationException("Unable to delete IRoleDataModel", ex);
             }
             
@@ -174,6 +179,7 @@ namespace App.Services
             }
             catch (Exception ex)
             {
+				log.Exception(LogName, ex);	
                 throw new InvalidOperationException("Unable to update IRoleDataModel", ex);
             }
 
@@ -203,6 +209,7 @@ namespace App.Services
             }
             catch (Exception ex)
             {
+                log.Exception(LogName, ex);	
                 throw new InvalidOperationException("Unable to create IRoleDataModel", ex);
             }
 

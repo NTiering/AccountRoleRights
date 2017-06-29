@@ -19,10 +19,10 @@ namespace App.Dal
                       
             registerClient.Register(typeof(IDal<IAccountDataModel>), typeof(AccountDal));    
             registerClient.Register(typeof(IAccountDal), typeof(AccountDal));    
-            registerClient.Register(typeof(IDal<IRoleDataModel>), typeof(RoleDal));    
-            registerClient.Register(typeof(IRoleDal), typeof(RoleDal));    
             registerClient.Register(typeof(IDal<IRightDataModel>), typeof(RightDal));    
             registerClient.Register(typeof(IRightDal), typeof(RightDal));    
+            registerClient.Register(typeof(IDal<IRoleDataModel>), typeof(RoleDal));    
+            registerClient.Register(typeof(IRoleDal), typeof(RoleDal));    
         }
     }
 }

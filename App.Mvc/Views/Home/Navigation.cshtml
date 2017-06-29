@@ -1,30 +1,66 @@
 @{
     Layout = null ;
 }
-<div class="row">
-    
 
-            <div class="col-md-4">
-                <div class="navigation-panel">
-                    <div class="navigation-title">Account</div>
-                    <div class="navigation-description">Represents a validated end user
-                        <p><a href='@Url.Action("Index", "Account")' class='btn btn-info'>View</a></p>    
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="navigation-panel">
-                    <div class="navigation-title">Role</div>
-                    <div class="navigation-description">Represents a collection of common rights
-                        <p><a href='@Url.Action("Index", "Role")' class='btn btn-info'>View</a></p>    
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="navigation-panel">
-                    <div class="navigation-title">Right</div>
-                    <div class="navigation-description">A single action an end user can perform
-                        <p><a href='@Url.Action("Index", "Right")' class='btn btn-info'>View</a></p>    
-                    </div>
-                </div>
-            </div></div>
+
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#items">Items</a></li>
+    <li><a data-toggle="tab" href="#search">Search</a></li>
+</ul>
+
+<div class="tab-content">
+    <div id="items" class="tab-pane fade in active">
+
+        <!--Items-->
+		<div class="row">
+
+			<div class="col-md-4">
+				<div class="navigation-panel item-Account">
+					<div class="navigation-title">Account</div>
+					<div class="navigation-description">Represents a validated end user
+						<p><a href='@Url.Action("Index", "Account")' class='btn btn-info'>View</a></p>    
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="navigation-panel item-Right">
+					<div class="navigation-title">Right</div>
+					<div class="navigation-description">A single action an end user can perform
+						<p><a href='@Url.Action("Index", "Right")' class='btn btn-info'>View</a></p>    
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="navigation-panel item-Role">
+					<div class="navigation-title">Role</div>
+					<div class="navigation-description">Represents a collection of common rights
+						<p><a href='@Url.Action("Index", "Role")' class='btn btn-info'>View</a></p>    
+					</div>
+				</div>
+			</div>		</div>
+
+	</div>
+
+	<div id="search" class="tab-pane fade">
+		<!-- Search -->
+		<div class="row">
+
+			<div class="col-md-4">
+				<div class="navigation-panel item-CustomerSearch">
+					<div class="navigation-title">Customer Search</div>
+					<div> &nbsp;
+						<p><a href='@Url.Action("CustomerSearch","Search")' class='btn btn-info'>View</a></p>    
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="navigation-panel item-CustomerUsernameSearch">
+					<div class="navigation-title">Customer Username Search</div>
+					<div> &nbsp;
+						<p><a href='@Url.Action("CustomerUsernameSearch","Search")' class='btn btn-info'>View</a></p>    
+					</div>
+				</div>
+			</div>		</div>
+	</div>
+
+</div>

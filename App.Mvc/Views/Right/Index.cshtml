@@ -2,7 +2,7 @@
 
 <script>
     $(function () { // add a toolbar item to fire the new Right popup ("app-right-add")
-        radio("app-addToolbar").broadcast("<span class='btn btn-info btn-sm disableOnAjax' onclick='radio(\"app-right-add\").broadcast()'><i class='icon-new'></i> New Right</span>")
+        radio("app-addToolbar").broadcast("<span class='btn btn-info btn-sm disableOnAjax' onclick='document.location.href = \"@Url.Action("Create")\"'><i class='icon-new'></i> New Right</span>")
         radio("app-addToolbar").broadcast("<span class='btn btn-warning btn-sm isDirty disableOnAjax' onclick='window.location.reload();'><i class='icon-refresh'></i> Refresh</span>") // shows when the data is dirty
      })
 </script>

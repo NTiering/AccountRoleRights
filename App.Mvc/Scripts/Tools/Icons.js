@@ -22,9 +22,9 @@
 
         $(".icon-account").addClass("fa fa-bicycle");        
 
-        $(".icon-role").addClass("fa fa-bath");        
+        $(".icon-right").addClass("fa fa-bath");        
 
-        $(".icon-right").addClass("fa fa-bolt");        
+        $(".icon-role").addClass("fa fa-bolt");        
     })
 
 })();

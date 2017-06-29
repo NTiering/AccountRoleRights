@@ -29,18 +29,18 @@ namespace App.Dals.Services
         }
         
         [TestMethod]
-        public void RoleDal_Is_Registered()
+        public void RightDal_Is_Registered()
         {
-            var typeExpected = typeof(IRoleDal);
+            var typeExpected = typeof(IRightDal);
 
             client.Verify(x => x.Register(typeExpected, It.IsAny<Type>(), ""),
                 Times.Once, GetErrorMessage(typeExpected));
         }
         
         [TestMethod]
-        public void RightDal_Is_Registered()
+        public void RoleDal_Is_Registered()
         {
-            var typeExpected = typeof(IRightDal);
+            var typeExpected = typeof(IRoleDal);
 
             client.Verify(x => x.Register(typeExpected, It.IsAny<Type>(), ""),
                 Times.Once, GetErrorMessage(typeExpected));

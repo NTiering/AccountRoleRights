@@ -23,6 +23,22 @@ namespace App.Dal
         }
         
         /// <summary> 
+        /// Update a Account
+        /// </summary>
+        public void Update(IAccountDataModel item, IModelContext context)
+        {
+            var ctx = new AppContext();
+            var entity = ctx.Account.FirstOrDefault(x=> x.Id == item.Id);
+            if (entity == null)
+            {
+                return;
+            }
+            
+			ctx.Entry(entity).CurrentValues.SetValues(item);
+            ctx.SaveChanges();
+        }  
+
+        /// <summary> 
         /// Delete an existing Account
         /// </summary>
         public void Delete(int id, IModelContext context)
@@ -69,21 +85,6 @@ namespace App.Dal
             var rtn = ctx.Account.Where(filter).AsQueryable();
             return rtn;
         }
-
-        /// <summary> 
-        /// Update a Account
-        /// </summary>
-        public void Update(IAccountDataModel item, IModelContext context)
-        {
-            var ctx = new AppContext();
-            var entity = ctx.Account.FirstOrDefault(x=> x.Id == item.Id);
-            if (entity == null)
-            {
-                return;
-            }
-            ctx.Entry(entity).CurrentValues.SetValues(item);
-            ctx.SaveChanges();
-        }    
 
 
 	

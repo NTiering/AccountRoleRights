@@ -23,13 +23,13 @@ namespace App.Dal.EntityDataModels
         /// <summary>
         /// Create a new item with the properties (state) of an existing IRoleDataModel
         /// </summary>
-        public RoleEntityDataModel(IRoleDataModel model)
+        internal RoleEntityDataModel(IRoleDataModel model)
         {
             // copy state over 
+
             Name = model.Name ;
-                        Key = model.Key ;
-                        IsAssignable = model.IsAssignable ;
-                    }
+            Key = model.Key ;
+            IsAssignable = model.IsAssignable ;        }
 
         /// <summary>
         /// Gets a value indicating whether this instance is unknown to the data access layer (DAL).
@@ -53,23 +53,20 @@ namespace App.Dal.EntityDataModels
         /// </summary>
         public int RoleRightId { get; set; }          
         
-
+		
         /// <summary>
         /// Gets or sets the Name.
         /// (Human readable name)
         /// </summary>
-        public string Name { get; set; } 
-
+        public string Name { get; set; } 		
         /// <summary>
         /// Gets or sets the Key.
         /// (Unique string the application can check against)
         /// </summary>
-        public string Key { get; set; } 
-
+        public string Key { get; set; } 		
         /// <summary>
         /// Gets or sets the IsAssignable.
         /// (If true the right can be assigned to an account)
         /// </summary>
-        public bool IsAssignable { get; set; } 
-    }
+        public bool IsAssignable { get; set; }     }
 }

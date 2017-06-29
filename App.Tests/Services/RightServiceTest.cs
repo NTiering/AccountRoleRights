@@ -75,8 +75,7 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IRightService>();
             var model = GetValidDataModel(true);
             var errors = new List<IModelError>();
-            model.Name = null;
-
+            model.Name = null; 
             service.TrySave(model, errors);
 
             Assert.IsTrue(errors.Count == 1, errors.Count + " validation errors found when one (1) expected");
@@ -88,8 +87,7 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IRightService>();
             var model = GetValidDataModel(true);
             var errors = new List<IModelError>();
-            model.Name = null;
-
+            model.Name = null; 
             var result = service.TrySave(model, errors);
 
             Assert.IsFalse(result);
@@ -101,8 +99,7 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IRightService>();
             var model = GetValidDataModel(false);
             var errors = new List<IModelError>();
-            model.Name = null;
-
+            model.Name = null; 
             service.TrySave(model, errors);
 
             Assert.IsTrue(errors.Count == 1, errors.Count + " validation errors found when one (1) expected");
@@ -114,10 +111,9 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IRightService>();
             var model = GetValidDataModel(false);
             var errors = new List<IModelError>();
-            model.Name = null;
-
+                       
+            model.Name = null;       
             var result = service.TrySave(model, errors);
-
             Assert.IsFalse(result);
         }
          
@@ -128,8 +124,7 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IRightService>();
             var model = GetValidDataModel(true);
             var errors = new List<IModelError>();
-            model.Key = null;
-
+            model.Key = null; 
             service.TrySave(model, errors);
 
             Assert.IsTrue(errors.Count == 1, errors.Count + " validation errors found when one (1) expected");
@@ -141,8 +136,7 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IRightService>();
             var model = GetValidDataModel(true);
             var errors = new List<IModelError>();
-            model.Key = null;
-
+            model.Key = null; 
             var result = service.TrySave(model, errors);
 
             Assert.IsFalse(result);
@@ -154,8 +148,7 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IRightService>();
             var model = GetValidDataModel(false);
             var errors = new List<IModelError>();
-            model.Key = null;
-
+            model.Key = null; 
             service.TrySave(model, errors);
 
             Assert.IsTrue(errors.Count == 1, errors.Count + " validation errors found when one (1) expected");
@@ -167,35 +160,30 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IRightService>();
             var model = GetValidDataModel(false);
             var errors = new List<IModelError>();
-            model.Key = null;
-
+                       
+            model.Key = null;       
             var result = service.TrySave(model, errors);
-
             Assert.IsFalse(result);
         }
          
 
         // ******************************
-        //   helpers
-        
+        //   helpers        
         private static IRightDataModel GetValidDataModel(bool isNew)
         {
             var rtn = new Mock<IRightDataModel>();
             rtn.SetupAllProperties();
             rtn.SetupGet(x => x.IsNew).Returns(isNew);
-            rtn.Object.Name = "some string __ !!!  look ";    
-            rtn.Object.Key = "some string __ !!!  look ";    
-            rtn.Object.IsAssignable = true;    
-            return rtn.Object;
+            rtn.Object.Name = "some string __ !!!  look ";             rtn.Object.Key = "some string __ !!!  look ";             rtn.Object.IsAssignable = true;             return rtn.Object;
         }  
         
         private static RegisterClient registerClient;
         private static Mock<IAccountDal> accountDal;
             private static Mock<IEntityChangeHandler<IAccountDataModel>> accountChangeHandler;    
-        private static Mock<IRoleDal> roleDal;
-            private static Mock<IEntityChangeHandler<IRoleDataModel>> roleChangeHandler;    
         private static Mock<IRightDal> rightDal;
             private static Mock<IEntityChangeHandler<IRightDataModel>> rightChangeHandler;    
+        private static Mock<IRoleDal> roleDal;
+            private static Mock<IEntityChangeHandler<IRoleDataModel>> roleChangeHandler;    
 
 
     
@@ -212,17 +200,17 @@ namespace App.Tests.Services.Validation
             accountChangeHandler = new Mock<IEntityChangeHandler<IAccountDataModel >>();
             registerClient.Register(typeof(IEntityChangeHandler<IAccountDataModel>), accountChangeHandler.Object);
       
-            roleDal = new Mock<IRoleDal>();
-            registerClient.Register(typeof(IRoleDal), roleDal.Object);
-
-            roleChangeHandler = new Mock<IEntityChangeHandler<IRoleDataModel >>();
-            registerClient.Register(typeof(IEntityChangeHandler<IRoleDataModel>), roleChangeHandler.Object);
-      
             rightDal = new Mock<IRightDal>();
             registerClient.Register(typeof(IRightDal), rightDal.Object);
 
             rightChangeHandler = new Mock<IEntityChangeHandler<IRightDataModel >>();
             registerClient.Register(typeof(IEntityChangeHandler<IRightDataModel>), rightChangeHandler.Object);
+      
+            roleDal = new Mock<IRoleDal>();
+            registerClient.Register(typeof(IRoleDal), roleDal.Object);
+
+            roleChangeHandler = new Mock<IEntityChangeHandler<IRoleDataModel >>();
+            registerClient.Register(typeof(IEntityChangeHandler<IRoleDataModel>), roleChangeHandler.Object);
         }
 
     }

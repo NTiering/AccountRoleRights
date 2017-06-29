@@ -17,17 +17,21 @@ namespace App.Services
     /// </summary>
     class AccountService : IAccountService
     {    
-        
+
 		private readonly ICryptoProvider cryptoProvider ;
-				       
+		private readonly ILogProvider log ; 
+		
+		private const string LogName = "Account";
+		       
 		private readonly IAccountDal dal ;
 
         private readonly IAccountChangeHandler changeHandler ;
 
         private readonly IAccountValidator validator ;
 		
-        public AccountService(IAccountDal dal, IAccountValidator validator, IAccountChangeHandler changeHandler , ICryptoProvider cryptoProvider)
+        public AccountService(ILogProvider log, IAccountDal dal, IAccountValidator validator, IAccountChangeHandler changeHandler , ICryptoProvider cryptoProvider)
         {
+			this.log = log; 
             this.dal = dal; 
 			this.changeHandler = changeHandler;
             this.validator = validator;
@@ -58,6 +62,7 @@ namespace App.Services
             }
             catch (Exception ex)
             {
+				log.Exception(LogName, ex);	
                 throw new InvalidOperationException("Unable to delete IAccountDataModel", ex);
             }
             
@@ -181,6 +186,7 @@ namespace App.Services
             }
             catch (Exception ex)
             {
+				log.Exception(LogName, ex);	
                 throw new InvalidOperationException("Unable to update IAccountDataModel", ex);
             }
 
@@ -215,6 +221,7 @@ namespace App.Services
             }
             catch (Exception ex)
             {
+                log.Exception(LogName, ex);	
                 throw new InvalidOperationException("Unable to create IAccountDataModel", ex);
             }
 

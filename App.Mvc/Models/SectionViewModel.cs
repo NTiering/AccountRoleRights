@@ -43,18 +43,18 @@ namespace App.Mvc.Models
             });
          
             rtn.Add( new SectionViewModel{
-                Name = "Role",
-                Description = "Represents a collection of common rights",
-                ControllerName = "Role",
+                Name = "Right",
+                Description = "A single action an end user can perform",
+                ControllerName = "Right",
                 InitialMethodName = "index",
                 Colour = "blue",
                 Icon = "fa fa-book" 
             });
          
             rtn.Add( new SectionViewModel{
-                Name = "Right",
-                Description = "A single action an end user can perform",
-                ControllerName = "Right",
+                Name = "Role",
+                Description = "Represents a collection of common rights",
+                ControllerName = "Role",
                 InitialMethodName = "index",
                 Colour = "green",
                 Icon = "fa fa-automobile" 

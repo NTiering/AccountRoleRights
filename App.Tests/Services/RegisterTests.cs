@@ -38,18 +38,18 @@ namespace App.Tests.Services
         }
         
         [TestMethod]
-        public void Role_Service_Is_Registered()
+        public void Right_Service_Is_Registered()
         {
-            var typeExpected = typeof(IRoleService);
+            var typeExpected = typeof(IRightService);
 
             client.Verify(x => x.Register(typeExpected, It.IsAny<Type>(), ""),
                 Times.Once, GetErrorMessage(typeExpected));
         }
         
         [TestMethod]
-        public void Right_Service_Is_Registered()
+        public void Role_Service_Is_Registered()
         {
-            var typeExpected = typeof(IRightService);
+            var typeExpected = typeof(IRoleService);
 
             client.Verify(x => x.Register(typeExpected, It.IsAny<Type>(), ""),
                 Times.Once, GetErrorMessage(typeExpected));
@@ -66,18 +66,18 @@ namespace App.Tests.Services
         }
         
         [TestMethod]
-        public void Role_Validator_Is_Registered()
+        public void Right_Validator_Is_Registered()
         {
-            var typeExpected = typeof(IRoleValidator);
+            var typeExpected = typeof(IRightValidator);
 
             client.Verify(x => x.Register(typeExpected, It.IsAny<Type>(), ""),
                 Times.Once, GetErrorMessage(typeExpected));
         }
         
         [TestMethod]
-        public void Right_Validator_Is_Registered()
+        public void Role_Validator_Is_Registered()
         {
-            var typeExpected = typeof(IRightValidator);
+            var typeExpected = typeof(IRoleValidator);
 
             client.Verify(x => x.Register(typeExpected, It.IsAny<Type>(), ""),
                 Times.Once, GetErrorMessage(typeExpected));

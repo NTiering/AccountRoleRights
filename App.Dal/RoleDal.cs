@@ -23,6 +23,22 @@ namespace App.Dal
         }
         
         /// <summary> 
+        /// Update a Role
+        /// </summary>
+        public void Update(IRoleDataModel item, IModelContext context)
+        {
+            var ctx = new AppContext();
+            var entity = ctx.Role.FirstOrDefault(x=> x.Id == item.Id);
+            if (entity == null)
+            {
+                return;
+            }
+            
+			ctx.Entry(entity).CurrentValues.SetValues(item);
+            ctx.SaveChanges();
+        }  
+
+        /// <summary> 
         /// Delete an existing Role
         /// </summary>
         public void Delete(int id, IModelContext context)
@@ -69,21 +85,6 @@ namespace App.Dal
             var rtn = ctx.Role.Where(filter).AsQueryable();
             return rtn;
         }
-
-        /// <summary> 
-        /// Update a Role
-        /// </summary>
-        public void Update(IRoleDataModel item, IModelContext context)
-        {
-            var ctx = new AppContext();
-            var entity = ctx.Role.FirstOrDefault(x=> x.Id == item.Id);
-            if (entity == null)
-            {
-                return;
-            }
-            ctx.Entry(entity).CurrentValues.SetValues(item);
-            ctx.SaveChanges();
-        }    
 
 		
 		#region 'RoleRight'

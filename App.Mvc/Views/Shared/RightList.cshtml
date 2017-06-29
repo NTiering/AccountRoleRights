@@ -52,11 +52,11 @@
          <td class="row datatype-actions">
             <div class="btn-group btn-group-sm">
                 @if (viewToolButton)
-                {<i title="View" class="icon-search btn btn-default" aria-hidden="true" onclick="radio('app-right-view').broadcast(@m.Id)"></i>}
+                {<i title="View" class="icon-search btn btn-default" aria-hidden="true" onclick="document.location='@Url.Action("View",new { Id = @m.Id})'"></i>}
                 @if (editToolButton)
-                {<i title="Edit" class="icon-edit btn btn-default" aria-hidden="true" onclick="radio('app-right-edit').broadcast(@m.Id)"></i>}
+                {<i title="Edit" class="icon-edit btn btn-default" aria-hidden="true" onclick="document.location='@Url.Action("Edit",new { Id = @m.Id})'"></i>}
                 @if (deleteToolButton)
-                {<i title="Delete" class="icon-delete btn btn-danger" aria-hidden="true" onclick="radio('app-right-delete').broadcast(@m.Id)"></i>}
+                {<i title="Delete" class="icon-delete btn btn-danger" aria-hidden="true" onclick="document.location='@Url.Action("Delete",new { Id = @m.Id})'"></i>}
                 @if (pickToolButton)
                 {<i title="Pick" class="fa fa-times btn btn-danger pick-btn" data-pickable="1" data-pick-elementId="@m.Id" data-pick-value="@pickState" aria-hidden="true" ></i>}
             </div>

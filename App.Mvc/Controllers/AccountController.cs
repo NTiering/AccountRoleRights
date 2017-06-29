@@ -1,119 +1,163 @@
 namespace App.Mvc.Controllers
 {
-    using App.Contracts;
-    using App.Contracts.DataModels;
-    using App.Contracts.Services;
-    using App.Mvc.Models;
-    using System;
+    using Contracts;
+    using Mvc;
+    using Contracts.Services;
+    using Models;
+    using Filters;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
+    using System.Web;
 
+	[Filters.ExceptionHandler]
     public class AccountController : Controller
     {
-        private IAccountService service ;   
+		private readonly ILogProvider log ; 
+		private const string LogName = "Account";
+        private readonly IAccountService service ;   
 
-        public AccountController(IAccountService service )
+        public AccountController(ILogProvider log, IAccountService service )
         {
             this.service = service;
+			this.log = log;
             
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            ViewBag.Title = "App";
+			log.LogActionExecuting(LogName,filterContext);
+			ViewBag.Title = "App";
             ViewBag.SectionTitle = "Account";
         }
 
         // GET: Account
-        //[Authorize(Roles = "Admin,ListAccount")]
+		[RolesRequired("Admin","ListAccount")]
         public ActionResult Index()
         {
             var errors = new List<IModelError>();
             var models = service.GetAll(x => x != null, errors);
             ViewBag.Errors = errors;
             ViewBag.ToolButtons = "VED"; // View Edit Delete 
+			ViewBag.Title = "List Account" ; 
             return View(models);            
         }
 
         // Display a form for viewing Account
-        //[Authorize(Roles = "Admin,ViewAccount")]
+		[RolesRequired("Admin","ViewAccount")]
         public ActionResult View(int id = -1)
-        {
+        {			 
             var errors = new List<IModelError>();
             ViewBag.Readonly = true;
-            ViewBag.ShowRelationships = false;
+            ViewBag.ButtonFlag = "";
+			ViewBag.Title = "View Account" ; 
             var model = GetViewModel(id,errors);
             return View("Form",model);
         }
 
         // Display a form for editing Account
-        //[Authorize(Roles = "Admin,SaveAccount")]
+		[RolesRequired("Admin","SaveAccount")]        
         public ActionResult Edit(int id = -1)
         {
             var errors = new List<IModelError>();
             ViewBag.Readonly = false;
-            ViewBag.ShowRelationships = true;
+			ViewBag.ButtonFlag = "RS"; // Relationship Submit
+			ViewBag.Title = "Edit Account" ; 
             var model = GetViewModel(id,errors);
             return View("Form",model);
         }
 
+		[RolesRequired("Admin","SaveAccount")]   
+        [HttpPost]
+        public ActionResult Edit(AccountViewModel model)
+        {
+            var errors = new List<IModelError>();
+            service.TrySave(model, errors);          
+
+			if (errors.Any())
+            {
+                this.AddModelErrors(errors);
+                ViewBag.Readonly = false;
+				ViewBag.ButtonFlag = "RS"; // Relationship Submit
+				ViewBag.Title = "Edit Account" ; 
+                return View("Form", model);
+            }
+            else
+            {
+                return RedirectToAction("index", new { updated = model.Id });
+            } 
+        }
+
         // Display a form for creating Account
-        //[Authorize(Roles = "Admin,SaveAccount")]
+		[RolesRequired("Admin","SaveAccount")]   
         public ActionResult Create(int id = -1)
         {
             var errors = new List<IModelError>();
             ViewBag.Readonly = false;
-            ViewBag.ShowRelationships = false;
+			ViewBag.ButtonFlag = "S"; // Submit
+			ViewBag.Title = "New Account" ; 
             var model = GetViewModel(id,errors);
             return View("Form",model);
         }
 
+		[RolesRequired("Admin","SaveAccount")]   
+        [HttpPost]
+        public ActionResult Create(AccountViewModel model)
+        {
+            var errors = new List<IModelError>();
+
+			service.TrySave(model, errors);  
+			if (errors.Any())
+            {
+                this.AddModelErrors(errors);
+                ViewBag.Readonly = false;
+                ViewBag.ButtonFlag = "S"; // Submit
+				ViewBag.Title = "New Account" ; 
+                return View("Form", model);
+            }
+            else
+            {
+                return RedirectToAction("index", new { creaated = model.Id });
+            } 
+        }
+
         // Display a form for deleting Account
-        //[Authorize(Roles = "Admin,DeleteAccount")]
+		[RolesRequired("Admin","DeleteAccount")]   
         public ActionResult Delete(int id = -1)
         {
             var errors = new List<IModelError>();
             ViewBag.Readonly = true;
             ViewBag.ShowRelationships = false;
+			ViewBag.Title = "Delete Account" ; 
             var model = GetViewModel(id,errors);
             return View("Form",model);
         }
 
-        // Add Account via json post
+		[RolesRequired("Admin", "DeleteAccount")]
         [HttpPost]
-        //[Authorize(Roles = "Admin,SaveAccount")]
-        public ActionResult Save(AccountViewModel model)
+        public ActionResult Delete(AccountViewModel model, int _post)
         {
             var errors = new List<IModelError>();
-            var result = service.TrySave(model, errors);
-
-            return Json(new
+            var result = service.TryDelete(model.Id, errors);
+            ViewBag.Title = "Delete Account";
+            if (errors.Any())
             {
-                Model = model,
-                Success = result,
-                Errors = errors
-            });
-        }
-
-        // Delete Account via json post
-        [HttpPost]
-        //[Authorize(Roles = "Admin,DeleteAccount")]
-        public ActionResult Remove(int id)
-        {
-            var errors = new List<IModelError>();
-            var result = service.TryDelete(id, errors);
-            return Json(new
+                model = GetViewModel(model.Id, errors);
+                this.AddModelErrors(errors);
+                ViewBag.Readonly = false;
+                ViewBag.ButtonFlag = "S"; // Submit
+                ViewBag.Title = "Delete Account";
+                return View("Form", model);
+            }
+            else
             {
-                Success = result ,
-                Errors = errors
-            });
+                return RedirectToAction("index", new { deleted = model.Id });
+            }
         }
-
+		
         // list all Account entities
-        //[Authorize(Roles = "Admin,ListAccount")]
+		[RolesRequired("Admin","ListAccount")]  
         public ActionResult List() 
         {
             var errors = new List<IModelError>();
@@ -127,6 +171,7 @@ namespace App.Mvc.Controllers
         
         // Supports the many to many relationship (AccountRole) between Account (parent) Role (child)
         //[Authorize(Roles = "Admin,ListAccountRole")]
+		[RolesRequired("Admin","ListAccountRole")]  
         public ActionResult GetAccountRole(int id, bool selected = false) 
         {
             var models = service.GetAllForAccountRole(id);
@@ -137,6 +182,7 @@ namespace App.Mvc.Controllers
 
         // Add a relationship (AccountRole) between Account (parent) Role (child)
         //[Authorize(Roles = "Admin,SaveAccountRole")]
+		[RolesRequired("Admin","SaveAccountRole")]  
         public ActionResult AddAccountRole(int id)
         {
             ViewBag.Readonly = false;
@@ -148,6 +194,7 @@ namespace App.Mvc.Controllers
         // Add a relationship (AccountRole) between Account (parent) Role (child)
         [HttpPost]
         //[Authorize(Roles = "Admin,SaveAccountRole")]
+		[RolesRequired("Admin","SaveAccountRole")]
         public ActionResult SaveAccountRole(AccountViewModel model, int modelId)
         {
             var errors = new List<IModelError>();
@@ -169,7 +216,7 @@ namespace App.Mvc.Controllers
 
         // remove a relationship (AccountRole) between Account (parent) Role (child) 
         [HttpPost]
-        //[Authorize(Roles = "Admin,SaveAccountRole")]
+		[RolesRequired("Admin","SaveAccountRole")]       
         public ActionResult UnLinkAccountRole(int modelId , int[] items)
         {
             var result = true;
@@ -196,7 +243,7 @@ namespace App.Mvc.Controllers
 
         // add a relationship (AccountRole) between existing Account (parent) Role (child) 
         [HttpPost]
-        //[Authorize(Roles = "Admin,SaveAccountRole")]        
+        [RolesRequired("Admin","SaveAccountRole")]  
         public ActionResult LinkAccountRole(int modelId , int[] items)
         {
             var result = true;

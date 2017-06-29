@@ -1,119 +1,163 @@
 namespace App.Mvc.Controllers
 {
-    using App.Contracts;
-    using App.Contracts.DataModels;
-    using App.Contracts.Services;
-    using App.Mvc.Models;
-    using System;
+    using Contracts;
+    using Mvc;
+    using Contracts.Services;
+    using Models;
+    using Filters;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
+    using System.Web;
 
+	[Filters.ExceptionHandler]
     public class RoleController : Controller
     {
-        private IRoleService service ;   
+		private readonly ILogProvider log ; 
+		private const string LogName = "Role";
+        private readonly IRoleService service ;   
 
-        public RoleController(IRoleService service )
+        public RoleController(ILogProvider log, IRoleService service )
         {
             this.service = service;
+			this.log = log;
             
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            ViewBag.Title = "App";
+			log.LogActionExecuting(LogName,filterContext);
+			ViewBag.Title = "App";
             ViewBag.SectionTitle = "Role";
         }
 
         // GET: Role
-        //[Authorize(Roles = "Admin,ListRole")]
+		[RolesRequired("Admin","ListRole")]
         public ActionResult Index()
         {
             var errors = new List<IModelError>();
             var models = service.GetAll(x => x != null, errors);
             ViewBag.Errors = errors;
             ViewBag.ToolButtons = "VED"; // View Edit Delete 
+			ViewBag.Title = "List Role" ; 
             return View(models);            
         }
 
         // Display a form for viewing Role
-        //[Authorize(Roles = "Admin,ViewRole")]
+		[RolesRequired("Admin","ViewRole")]
         public ActionResult View(int id = -1)
-        {
+        {			 
             var errors = new List<IModelError>();
             ViewBag.Readonly = true;
-            ViewBag.ShowRelationships = false;
+            ViewBag.ButtonFlag = "";
+			ViewBag.Title = "View Role" ; 
             var model = GetViewModel(id,errors);
             return View("Form",model);
         }
 
         // Display a form for editing Role
-        //[Authorize(Roles = "Admin,SaveRole")]
+		[RolesRequired("Admin","SaveRole")]        
         public ActionResult Edit(int id = -1)
         {
             var errors = new List<IModelError>();
             ViewBag.Readonly = false;
-            ViewBag.ShowRelationships = true;
+			ViewBag.ButtonFlag = "RS"; // Relationship Submit
+			ViewBag.Title = "Edit Role" ; 
             var model = GetViewModel(id,errors);
             return View("Form",model);
         }
 
+		[RolesRequired("Admin","SaveRole")]   
+        [HttpPost]
+        public ActionResult Edit(RoleViewModel model)
+        {
+            var errors = new List<IModelError>();
+            service.TrySave(model, errors);          
+
+			if (errors.Any())
+            {
+                this.AddModelErrors(errors);
+                ViewBag.Readonly = false;
+				ViewBag.ButtonFlag = "RS"; // Relationship Submit
+				ViewBag.Title = "Edit Role" ; 
+                return View("Form", model);
+            }
+            else
+            {
+                return RedirectToAction("index", new { updated = model.Id });
+            } 
+        }
+
         // Display a form for creating Role
-        //[Authorize(Roles = "Admin,SaveRole")]
+		[RolesRequired("Admin","SaveRole")]   
         public ActionResult Create(int id = -1)
         {
             var errors = new List<IModelError>();
             ViewBag.Readonly = false;
-            ViewBag.ShowRelationships = false;
+			ViewBag.ButtonFlag = "S"; // Submit
+			ViewBag.Title = "New Role" ; 
             var model = GetViewModel(id,errors);
             return View("Form",model);
         }
 
+		[RolesRequired("Admin","SaveRole")]   
+        [HttpPost]
+        public ActionResult Create(RoleViewModel model)
+        {
+            var errors = new List<IModelError>();
+
+			service.TrySave(model, errors);  
+			if (errors.Any())
+            {
+                this.AddModelErrors(errors);
+                ViewBag.Readonly = false;
+                ViewBag.ButtonFlag = "S"; // Submit
+				ViewBag.Title = "New Role" ; 
+                return View("Form", model);
+            }
+            else
+            {
+                return RedirectToAction("index", new { creaated = model.Id });
+            } 
+        }
+
         // Display a form for deleting Role
-        //[Authorize(Roles = "Admin,DeleteRole")]
+		[RolesRequired("Admin","DeleteRole")]   
         public ActionResult Delete(int id = -1)
         {
             var errors = new List<IModelError>();
             ViewBag.Readonly = true;
             ViewBag.ShowRelationships = false;
+			ViewBag.Title = "Delete Role" ; 
             var model = GetViewModel(id,errors);
             return View("Form",model);
         }
 
-        // Add Role via json post
+		[RolesRequired("Admin", "DeleteRole")]
         [HttpPost]
-        //[Authorize(Roles = "Admin,SaveRole")]
-        public ActionResult Save(RoleViewModel model)
+        public ActionResult Delete(RoleViewModel model, int _post)
         {
             var errors = new List<IModelError>();
-            var result = service.TrySave(model, errors);
-
-            return Json(new
+            var result = service.TryDelete(model.Id, errors);
+            ViewBag.Title = "Delete Role";
+            if (errors.Any())
             {
-                Model = model,
-                Success = result,
-                Errors = errors
-            });
-        }
-
-        // Delete Role via json post
-        [HttpPost]
-        //[Authorize(Roles = "Admin,DeleteRole")]
-        public ActionResult Remove(int id)
-        {
-            var errors = new List<IModelError>();
-            var result = service.TryDelete(id, errors);
-            return Json(new
+                model = GetViewModel(model.Id, errors);
+                this.AddModelErrors(errors);
+                ViewBag.Readonly = false;
+                ViewBag.ButtonFlag = "S"; // Submit
+                ViewBag.Title = "Delete Role";
+                return View("Form", model);
+            }
+            else
             {
-                Success = result ,
-                Errors = errors
-            });
+                return RedirectToAction("index", new { deleted = model.Id });
+            }
         }
-
+		
         // list all Role entities
-        //[Authorize(Roles = "Admin,ListRole")]
+		[RolesRequired("Admin","ListRole")]  
         public ActionResult List() 
         {
             var errors = new List<IModelError>();
@@ -126,7 +170,7 @@ namespace App.Mvc.Controllers
                 
         
         // Supports the many to many relationship (AccountRole) between Role (child) Account (parent)
-        //[Authorize(Roles = "Admin,ListAccountRole")]
+        [RolesRequired("Admin","ListAccountRole")]  
         public ActionResult GetAccountRole(int id) 
         {
             var models = service.GetAllForAccountRole(id);
@@ -136,7 +180,7 @@ namespace App.Mvc.Controllers
         }
 
         // Add a relationship (AccountRole) between Account (parent) Role (child)
-        //[Authorize(Roles = "Admin,SaveAccountRole")]
+        [RolesRequired("Admin","SaveAccountRole")] 
         public ActionResult AddAccountRole()
         {
             ViewBag.Readonly = false;
@@ -146,7 +190,7 @@ namespace App.Mvc.Controllers
 
         // Add a relationship (AccountRole) between Account (parent) and a NEW Role (child)
         [HttpPost]
-        //[Authorize(Roles = "Admin,SaveAccountRole")]
+		[RolesRequired("Admin","SaveAccountRole")]          
         public ActionResult SaveAccountRole(RoleViewModel model, int modelId)
         {
             var errors = new List<IModelError>();
@@ -169,7 +213,7 @@ namespace App.Mvc.Controllers
         
         // remove a relationship (AccountRole) between Account (parent) Role (child) 
         [HttpPost]
-        //[Authorize(Roles = "Admin,SaveAccountRole")]
+        [RolesRequired("Admin","SaveAccountRole")]  
         public ActionResult UnLinkAccountRole(int modelId , int[] items)
         {
             var result = true;
@@ -197,7 +241,7 @@ namespace App.Mvc.Controllers
         
         // add a relationship (AccountRole) between existing Account (parent) Role (child) 
         [HttpPost]
-        //[Authorize(Roles = "Admin,SaveAccountRole")]
+        [RolesRequired("Admin","SaveAccountRole")]  
         public ActionResult LinkAccountRole(int modelId , int[] items)
         {
 			var result = true;
@@ -225,7 +269,7 @@ namespace App.Mvc.Controllers
                 
     
         // Supports the one to many relationship (RoleRight) between Right (one) Role (many)
-        //[Authorize(Roles = "Admin,ListRoleRight")]
+        [RolesRequired("Admin","ListRoleRight")]  
         public ActionResult GetRoleRight(int id)
         {
             var models = service.GetAllRoleByRightForRoleRight(id);

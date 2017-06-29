@@ -23,6 +23,22 @@ namespace App.Dal
         }
         
         /// <summary> 
+        /// Update a Right
+        /// </summary>
+        public void Update(IRightDataModel item, IModelContext context)
+        {
+            var ctx = new AppContext();
+            var entity = ctx.Right.FirstOrDefault(x=> x.Id == item.Id);
+            if (entity == null)
+            {
+                return;
+            }
+            
+			ctx.Entry(entity).CurrentValues.SetValues(item);
+            ctx.SaveChanges();
+        }  
+
+        /// <summary> 
         /// Delete an existing Right
         /// </summary>
         public void Delete(int id, IModelContext context)
@@ -69,21 +85,6 @@ namespace App.Dal
             var rtn = ctx.Right.Where(filter).AsQueryable();
             return rtn;
         }
-
-        /// <summary> 
-        /// Update a Right
-        /// </summary>
-        public void Update(IRightDataModel item, IModelContext context)
-        {
-            var ctx = new AppContext();
-            var entity = ctx.Right.FirstOrDefault(x=> x.Id == item.Id);
-            if (entity == null)
-            {
-                return;
-            }
-            ctx.Entry(entity).CurrentValues.SetValues(item);
-            ctx.SaveChanges();
-        }    
 
 		
 		#region 'RoleRight'        

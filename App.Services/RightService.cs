@@ -17,15 +17,19 @@ namespace App.Services
     /// </summary>
     class RightService : IRightService
     {    
-        		       
+		private readonly ILogProvider log ; 
+		
+		private const string LogName = "Right";
+		       
 		private readonly IRightDal dal ;
 
         private readonly IRightChangeHandler changeHandler ;
 
         private readonly IRightValidator validator ;
 		
-        public RightService(IRightDal dal, IRightValidator validator, IRightChangeHandler changeHandler )
+        public RightService(ILogProvider log, IRightDal dal, IRightValidator validator, IRightChangeHandler changeHandler )
         {
+			this.log = log; 
             this.dal = dal; 
 			this.changeHandler = changeHandler;
             this.validator = validator;
@@ -56,6 +60,7 @@ namespace App.Services
             }
             catch (Exception ex)
             {
+				log.Exception(LogName, ex);	
                 throw new InvalidOperationException("Unable to delete IRightDataModel", ex);
             }
             
@@ -174,6 +179,7 @@ namespace App.Services
             }
             catch (Exception ex)
             {
+				log.Exception(LogName, ex);	
                 throw new InvalidOperationException("Unable to update IRightDataModel", ex);
             }
 
@@ -203,6 +209,7 @@ namespace App.Services
             }
             catch (Exception ex)
             {
+                log.Exception(LogName, ex);	
                 throw new InvalidOperationException("Unable to create IRightDataModel", ex);
             }
 

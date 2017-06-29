@@ -16,9 +16,9 @@ namespace App.Services.Validators
         {
             var e = new List<IModelError>();
             // check for required properties
-
             if (model.Name.IsPresent() == false) e.Add(new ModelError { Property = "Name", ErrorMessage = "role_name_missing" });
-            if (model.Key.IsPresent() == false) e.Add(new ModelError { Property = "Key", ErrorMessage = "role_key_missing" });            // check supplied properties are valid
+            if (model.Key.IsPresent() == false) e.Add(new ModelError { Property = "Key", ErrorMessage = "role_key_missing" });
+            // check supplied properties are valid
             
             errors.CombineOrReplace(e);
             return (e.Any() == false);    

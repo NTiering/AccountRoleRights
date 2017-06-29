@@ -11,7 +11,7 @@ namespace App.Mvc.Models
 
     public static class ModelExt
     {
-
+		
         /// <summary>
         /// Represents a single Account instance as a select list item 
         /// </summary>
@@ -49,45 +49,7 @@ namespace App.Mvc.Models
                 return rtn;
             }
         }
-        
-        /// <summary>
-        /// Represents a single Role instance as a select list item 
-        /// </summary>
-        public static SelectListItem ToSelectListItem(this IRoleDataModel model, int id = -1)
-        {
-            if (model == null)
-            {
-                return new SelectListItem();
-            }
-            else
-            {
-                return new SelectListItem
-                {
-                    Text = string.Format("[{0}] {1}", model.Id,model.IsAssignable.ToString()), // change how the Role appear in drop downs here
-                    Value = model.Id.ToString(),
-                    Selected = (id == model.Id)
-                };
-            }
-        }
-
-        /// <summary>
-        /// Represents a collection Role instance as select list items
-        /// </summary>
-        public static IEnumerable<SelectListItem> ToSelectListItem(this IEnumerable<IRoleDataModel> models, IRoleDataModel selected = null)
-        {
-            if (models == null)
-            {
-                return Enumerable.Empty<SelectListItem>();
-            }
-            else
-            {
-                var rtn = new List<SelectListItem>();
-                rtn.Add(new SelectListItem{ Text = "Select ....." , Value = "-1" });
-                rtn.AddRange(models.Select(x => x.ToSelectListItem(selected == null ? -1 : selected.Id)).OrderBy(x => x.Text));
-                return rtn;
-            }
-        }
-        
+        		
         /// <summary>
         /// Represents a single Right instance as a select list item 
         /// </summary>
@@ -112,6 +74,44 @@ namespace App.Mvc.Models
         /// Represents a collection Right instance as select list items
         /// </summary>
         public static IEnumerable<SelectListItem> ToSelectListItem(this IEnumerable<IRightDataModel> models, IRightDataModel selected = null)
+        {
+            if (models == null)
+            {
+                return Enumerable.Empty<SelectListItem>();
+            }
+            else
+            {
+                var rtn = new List<SelectListItem>();
+                rtn.Add(new SelectListItem{ Text = "Select ....." , Value = "-1" });
+                rtn.AddRange(models.Select(x => x.ToSelectListItem(selected == null ? -1 : selected.Id)).OrderBy(x => x.Text));
+                return rtn;
+            }
+        }
+        		
+        /// <summary>
+        /// Represents a single Role instance as a select list item 
+        /// </summary>
+        public static SelectListItem ToSelectListItem(this IRoleDataModel model, int id = -1)
+        {
+            if (model == null)
+            {
+                return new SelectListItem();
+            }
+            else
+            {
+                return new SelectListItem
+                {
+                    Text = string.Format("[{0}] {1}", model.Id,model.IsAssignable.ToString()), // change how the Role appear in drop downs here
+                    Value = model.Id.ToString(),
+                    Selected = (id == model.Id)
+                };
+            }
+        }
+
+        /// <summary>
+        /// Represents a collection Role instance as select list items
+        /// </summary>
+        public static IEnumerable<SelectListItem> ToSelectListItem(this IEnumerable<IRoleDataModel> models, IRoleDataModel selected = null)
         {
             if (models == null)
             {

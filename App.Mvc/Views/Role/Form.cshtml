@@ -1,7 +1,101 @@
 @model RoleViewModel
-@{
-    Layout = null;
+@{ 
+	var isReadOnly = ViewBag.Readonly ;
+    var cssClass = isReadOnly ? " readonly form-control " : " form-control ";
+	var buttonsFlag = ViewBag.ButtonFlag ?? "";
+
+    var showRelationships = buttonsFlag.Contains("R");
+    var showSubmitButton = buttonsFlag.Contains("S");
+}
+<script>  
+    $(function () {
+        radio("app-startup").broadcast(false);
+    })
+</script>
+
+@if(showRelationships)
+{
+	<p>	
+		<!-- show a list of Account objects in a popup for AccountRole -->
+		<a class="btn btn-info btn-sm disableOnAjax" onclick="radio('Role-AccountRole').broadcast(@Model.Id)"><i class="icon-account"></i> Account Role</a>
+	
+		<!-- show a list of Right objects in a popup for RoleRight -->
+		<a class="btn btn-info btn-sm disableOnAjax" onclick="radio('Right-RoleRight').broadcast(@Model.Id)"><i class='icon-right'></i> Role Right</a>
+		</p>	
 }
 
-@*Display the data in a form*@
-@Html.Partial("RoleForm", Model)
+<form method="post" enctype="multipart/form-data">
+	<input type="hidden" id="_post" name="_post" value="1"/>
+	@Html.Partial("Errors")
+   
+
+    <div class="row">
+			<div class="col-md-6">
+				<!-- ===========================================
+						Input for Name (string)
+				=========================================== -->
+				<label for="Name">Name</label>
+				
+				<small class="text-info">
+                Human readable name
+				
+				@if (ViewData.ModelState["Name"] != null)
+                {
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(x => x.Name)
+                    </span>
+                }            </small>				
+				
+				@Html.TextBoxFor(x=>x.Name, new { @class= cssClass + " data-string type-string", name="Name" })
+								
+			</div>
+			<div class="col-md-6">
+				<!-- ===========================================
+						Input for Key (string)
+				=========================================== -->
+				<label for="Key">Key</label>
+				
+				<small class="text-info">
+                Unique string the application can check against
+				
+				@if (ViewData.ModelState["Key"] != null)
+                {
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(x => x.Key)
+                    </span>
+                }            </small>				
+				
+				@Html.TextBoxFor(x=>x.Key, new { @class= cssClass + " data-string type-string", name="Key" })
+								
+			</div>
+			<div class="col-md-6">
+				<!-- ===========================================
+						Input for IsAssignable (bool)
+				=========================================== -->
+				<label for="IsAssignable">Is Assignable</label>
+				
+				<small class="text-info">
+                If true the right can be assigned to an account
+				
+				@if (ViewData.ModelState["IsAssignable"] != null)
+                {
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(x => x.IsAssignable)
+                    </span>
+                }            </small>				
+
+				@Html.DropDownListFor(x=>x.IsAssignable, ViewBag.BoolSelectItems as SelectListItem[], new { @class= cssClass + " data-bool type-bool" ,name="IsAssignable", makeDisabled = isReadOnly ? "true" : "false"})
+							</div>
+	
+	
+	</div>
+	
+    @if (showSubmitButton)
+    {
+        <span>
+            <hr />
+            <input type="submit" class="btn btn-info " value="Submit" />
+        </span>
+    }
+
+</form>

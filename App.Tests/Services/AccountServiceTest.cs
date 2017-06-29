@@ -75,8 +75,7 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IAccountService>();
             var model = GetValidDataModel(true);
             var errors = new List<IModelError>();
-            model.Username = null;
-
+            model.Username = null; 
             service.TrySave(model, errors);
 
             Assert.IsTrue(errors.Count == 1, errors.Count + " validation errors found when one (1) expected");
@@ -88,8 +87,7 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IAccountService>();
             var model = GetValidDataModel(true);
             var errors = new List<IModelError>();
-            model.Username = null;
-
+            model.Username = null; 
             var result = service.TrySave(model, errors);
 
             Assert.IsFalse(result);
@@ -101,8 +99,7 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IAccountService>();
             var model = GetValidDataModel(false);
             var errors = new List<IModelError>();
-            model.Username = null;
-
+            model.Username = null; 
             service.TrySave(model, errors);
 
             Assert.IsTrue(errors.Count == 1, errors.Count + " validation errors found when one (1) expected");
@@ -114,10 +111,9 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IAccountService>();
             var model = GetValidDataModel(false);
             var errors = new List<IModelError>();
-            model.Username = null;
-
+                       
+            model.Username = null;       
             var result = service.TrySave(model, errors);
-
             Assert.IsFalse(result);
         }
          
@@ -128,8 +124,7 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IAccountService>();
             var model = GetValidDataModel(true);
             var errors = new List<IModelError>();
-            model.Password = String.Empty;
-
+            model.Password = String.Empty; 
             service.TrySave(model, errors);
 
             Assert.IsTrue(errors.Count == 1, errors.Count + " validation errors found when one (1) expected");
@@ -141,8 +136,7 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IAccountService>();
             var model = GetValidDataModel(true);
             var errors = new List<IModelError>();
-            model.Password = String.Empty;
-
+            model.Password = String.Empty; 
             var result = service.TrySave(model, errors);
 
             Assert.IsFalse(result);
@@ -154,8 +148,7 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IAccountService>();
             var model = GetValidDataModel(false);
             var errors = new List<IModelError>();
-            model.Password = String.Empty;
-
+            model.Password = String.Empty; 
             service.TrySave(model, errors);
 
             Assert.IsTrue(errors.Count == 1, errors.Count + " validation errors found when one (1) expected");
@@ -167,10 +160,9 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IAccountService>();
             var model = GetValidDataModel(false);
             var errors = new List<IModelError>();
-            model.Password = String.Empty;
-
+                       
+            model.Password = String.Empty;       
             var result = service.TrySave(model, errors);
-
             Assert.IsFalse(result);
         }
          
@@ -181,8 +173,7 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IAccountService>();
             var model = GetValidDataModel(true);
             var errors = new List<IModelError>();
-            model.AccountValidFrom = DateTime.MinValue;
-
+            model.AccountValidFrom = DateTime.MinValue; 
             service.TrySave(model, errors);
 
             Assert.IsTrue(errors.Count == 1, errors.Count + " validation errors found when one (1) expected");
@@ -194,8 +185,7 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IAccountService>();
             var model = GetValidDataModel(true);
             var errors = new List<IModelError>();
-            model.AccountValidFrom = DateTime.MinValue;
-
+            model.AccountValidFrom = DateTime.MinValue; 
             var result = service.TrySave(model, errors);
 
             Assert.IsFalse(result);
@@ -207,8 +197,7 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IAccountService>();
             var model = GetValidDataModel(false);
             var errors = new List<IModelError>();
-            model.AccountValidFrom = DateTime.MinValue;
-
+            model.AccountValidFrom = DateTime.MinValue; 
             service.TrySave(model, errors);
 
             Assert.IsTrue(errors.Count == 1, errors.Count + " validation errors found when one (1) expected");
@@ -220,10 +209,9 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IAccountService>();
             var model = GetValidDataModel(false);
             var errors = new List<IModelError>();
-            model.AccountValidFrom = DateTime.MinValue;
-
+                       
+            model.AccountValidFrom = DateTime.MinValue;       
             var result = service.TrySave(model, errors);
-
             Assert.IsFalse(result);
         }
          
@@ -234,8 +222,7 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IAccountService>();
             var model = GetValidDataModel(true);
             var errors = new List<IModelError>();
-            model.AccountValidTo = DateTime.MinValue;
-
+            model.AccountValidTo = DateTime.MinValue; 
             service.TrySave(model, errors);
 
             Assert.IsTrue(errors.Count == 1, errors.Count + " validation errors found when one (1) expected");
@@ -247,8 +234,7 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IAccountService>();
             var model = GetValidDataModel(true);
             var errors = new List<IModelError>();
-            model.AccountValidTo = DateTime.MinValue;
-
+            model.AccountValidTo = DateTime.MinValue; 
             var result = service.TrySave(model, errors);
 
             Assert.IsFalse(result);
@@ -260,8 +246,7 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IAccountService>();
             var model = GetValidDataModel(false);
             var errors = new List<IModelError>();
-            model.AccountValidTo = DateTime.MinValue;
-
+            model.AccountValidTo = DateTime.MinValue; 
             service.TrySave(model, errors);
 
             Assert.IsTrue(errors.Count == 1, errors.Count + " validation errors found when one (1) expected");
@@ -273,41 +258,30 @@ namespace App.Tests.Services.Validation
             var service = registerClient.Get<IAccountService>();
             var model = GetValidDataModel(false);
             var errors = new List<IModelError>();
-            model.AccountValidTo = DateTime.MinValue;
-
+                       
+            model.AccountValidTo = DateTime.MinValue;       
             var result = service.TrySave(model, errors);
-
             Assert.IsFalse(result);
         }
          
 
         // ******************************
-        //   helpers
-        
+        //   helpers        
         private static IAccountDataModel GetValidDataModel(bool isNew)
         {
             var rtn = new Mock<IAccountDataModel>();
             rtn.SetupAllProperties();
             rtn.SetupGet(x => x.IsNew).Returns(isNew);
-            rtn.Object.Username = "some string __ !!!  look ";    
-            rtn.Object.Password = "some hashed string";    
-            rtn.Object.LastLoggedIn = DateTime.Now;    
-            rtn.Object.LoginAttempts = 42;    
-            rtn.Object.IsLockedOut = true;    
-            rtn.Object.AccountValidFrom = DateTime.Now;    
-            rtn.Object.AccountValidTo = DateTime.Now;    
-            rtn.Object.LoginStartAt = "12:01";    
-            rtn.Object.LoginUntil = "12:01";    
-            return rtn.Object;
+            rtn.Object.Username = "some string __ !!!  look ";             rtn.Object.Password = "some hashed string";             rtn.Object.LastLoggedIn = DateTime.Now;             rtn.Object.LoginAttempts = 42;             rtn.Object.IsLockedOut = true;             rtn.Object.AccountValidFrom = DateTime.Now;             rtn.Object.AccountValidTo = DateTime.Now;             rtn.Object.LoginStartAt = "12:01";             rtn.Object.LoginUntil = "12:01";             return rtn.Object;
         }  
         
         private static RegisterClient registerClient;
         private static Mock<IAccountDal> accountDal;
             private static Mock<IEntityChangeHandler<IAccountDataModel>> accountChangeHandler;    
-        private static Mock<IRoleDal> roleDal;
-            private static Mock<IEntityChangeHandler<IRoleDataModel>> roleChangeHandler;    
         private static Mock<IRightDal> rightDal;
             private static Mock<IEntityChangeHandler<IRightDataModel>> rightChangeHandler;    
+        private static Mock<IRoleDal> roleDal;
+            private static Mock<IEntityChangeHandler<IRoleDataModel>> roleChangeHandler;    
 
 
     
@@ -324,17 +298,17 @@ namespace App.Tests.Services.Validation
             accountChangeHandler = new Mock<IEntityChangeHandler<IAccountDataModel >>();
             registerClient.Register(typeof(IEntityChangeHandler<IAccountDataModel>), accountChangeHandler.Object);
       
-            roleDal = new Mock<IRoleDal>();
-            registerClient.Register(typeof(IRoleDal), roleDal.Object);
-
-            roleChangeHandler = new Mock<IEntityChangeHandler<IRoleDataModel >>();
-            registerClient.Register(typeof(IEntityChangeHandler<IRoleDataModel>), roleChangeHandler.Object);
-      
             rightDal = new Mock<IRightDal>();
             registerClient.Register(typeof(IRightDal), rightDal.Object);
 
             rightChangeHandler = new Mock<IEntityChangeHandler<IRightDataModel >>();
             registerClient.Register(typeof(IEntityChangeHandler<IRightDataModel>), rightChangeHandler.Object);
+      
+            roleDal = new Mock<IRoleDal>();
+            registerClient.Register(typeof(IRoleDal), roleDal.Object);
+
+            roleChangeHandler = new Mock<IEntityChangeHandler<IRoleDataModel >>();
+            registerClient.Register(typeof(IEntityChangeHandler<IRoleDataModel>), roleChangeHandler.Object);
         }
 
     }

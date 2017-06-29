@@ -2,73 +2,73 @@ namespace App.Mvc.Models
 {   
     using Contracts.DataModels;
     using System;
+	using System.Web.Mvc;
     
     /// <summary>
     /// Represents a validated end user
     /// </summary>
-    public class AccountViewModel : IAccountDataModel
+	public class AccountViewModel : IAccountDataModel
     {
         /// <summary>
         /// Primary Id
         /// </summary>
         public int Id { get; set; } 
 
-
+		
         /// <summary>
         /// Gets or sets the Username.
         /// (Unique user Id)
         /// </summary>
         public string Username { get; set; } 
-
+		
         /// <summary>
         /// Gets or sets the Password.
         /// (One way encrypted password)
         /// </summary>
         public string Password { get; set; } 
-
+		
         /// <summary>
         /// Gets or sets the LastLoggedIn.
         /// (Last time someone successfully logged in with this account)
         /// </summary>
         public DateTime LastLoggedIn { get; set; } 
-
+		
         /// <summary>
         /// Gets or sets the LoginAttempts.
         /// (Count of unsuccessful login attempts against this account)
         /// </summary>
         public int LoginAttempts { get; set; } 
-
+		
         /// <summary>
         /// Gets or sets the IsLockedOut.
         /// (If true this account cannot be used until unlocked)
         /// </summary>
         public bool IsLockedOut { get; set; } 
-
+		
         /// <summary>
         /// Gets or sets the AccountValidFrom.
         /// (The date the account can be used from)
         /// </summary>
         public DateTime AccountValidFrom { get; set; } 
-
+		
         /// <summary>
         /// Gets or sets the AccountValidTo.
         /// (The date the account can be used to)
         /// </summary>
         public DateTime AccountValidTo { get; set; } 
-
+		
         /// <summary>
         /// Gets or sets the LoginStartAt.
         /// (The earliest time login can be validated)
         /// </summary>
         public string LoginStartAt { get; set; } 
-
+		
         /// <summary>
         /// Gets or sets the LoginUntil.
         /// (The latest time login can be validated)
         /// </summary>
         public string LoginUntil { get; set; } 
-
-        
+		        
         
         /// <summary>
         /// Gets or sets the AccountId for AccountRole.
@@ -149,17 +149,16 @@ namespace App.Mvc.Models
             if(model == null) return ; 
             // copy state from incomming model
             Id = model.Id ;
-
-            Username = model.Username ;
-            Password = model.Password ;
-            LastLoggedIn = model.LastLoggedIn ;
-            LoginAttempts = model.LoginAttempts ;
-            IsLockedOut = model.IsLockedOut ;
-            AccountValidFrom = model.AccountValidFrom ;
-            AccountValidTo = model.AccountValidTo ;
-            LoginStartAt = model.LoginStartAt ;
-            LoginUntil = model.LoginUntil ;
-        }       
+			
+            Username = model.Username ;			
+            Password = model.Password ;			
+            LastLoggedIn = model.LastLoggedIn ;			
+            LoginAttempts = model.LoginAttempts ;			
+            IsLockedOut = model.IsLockedOut ;			
+            AccountValidFrom = model.AccountValidFrom ;			
+            AccountValidTo = model.AccountValidTo ;			
+            LoginStartAt = model.LoginStartAt ;			
+            LoginUntil = model.LoginUntil ;        }       
 
         /// <summary>
         /// Gets a value indicating whether this instance is unknown to the data access layer (DAL).

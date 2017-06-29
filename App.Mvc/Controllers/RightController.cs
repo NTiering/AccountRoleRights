@@ -1,23 +1,27 @@
 namespace App.Mvc.Controllers
 {
-    using App.Contracts;
-    using App.Contracts.DataModels;
-    using App.Contracts.Services;
-    using App.Mvc.Models;
-    using System;
+    using Contracts;
+    using Mvc;
+    using Contracts.Services;
+    using Models;
+    using Filters;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
+    using System.Web;
 
+	[Filters.ExceptionHandler]
     public class RightController : Controller
     {
-        private IRightService service ;   
-        private IRoleService roleService;
+		private readonly ILogProvider log ; 
+		private const string LogName = "Right";
+        private readonly IRightService service ;   
+        private readonly IRoleService roleService;
 
-        public RightController(IRightService service , IRoleService roleService )
+        public RightController(ILogProvider log, IRightService service , IRoleService roleService )
         {
             this.service = service;
+			this.log = log;
             this.roleService = roleService;
                         
         }
@@ -25,102 +29,137 @@ namespace App.Mvc.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            ViewBag.Title = "App";
+			log.LogActionExecuting(LogName,filterContext);
+			ViewBag.Title = "App";
             ViewBag.SectionTitle = "Right";
         }
 
         // GET: Right
-        //[Authorize(Roles = "Admin,ListRight")]
+		[RolesRequired("Admin","ListRight")]
         public ActionResult Index()
         {
             var errors = new List<IModelError>();
             var models = service.GetAll(x => x != null, errors);
             ViewBag.Errors = errors;
             ViewBag.ToolButtons = "VED"; // View Edit Delete 
+			ViewBag.Title = "List Right" ; 
             return View(models);            
         }
 
         // Display a form for viewing Right
-        //[Authorize(Roles = "Admin,ViewRight")]
+		[RolesRequired("Admin","ViewRight")]
         public ActionResult View(int id = -1)
-        {
+        {			 
             var errors = new List<IModelError>();
             ViewBag.Readonly = true;
-            ViewBag.ShowRelationships = false;
+            ViewBag.ButtonFlag = "";
+			ViewBag.Title = "View Right" ; 
             var model = GetViewModel(id,errors);
             return View("Form",model);
         }
 
         // Display a form for editing Right
-        //[Authorize(Roles = "Admin,SaveRight")]
+		[RolesRequired("Admin","SaveRight")]        
         public ActionResult Edit(int id = -1)
         {
             var errors = new List<IModelError>();
             ViewBag.Readonly = false;
-            ViewBag.ShowRelationships = true;
+			ViewBag.ButtonFlag = "RS"; // Relationship Submit
+			ViewBag.Title = "Edit Right" ; 
             var model = GetViewModel(id,errors);
             return View("Form",model);
         }
 
+		[RolesRequired("Admin","SaveRight")]   
+        [HttpPost]
+        public ActionResult Edit(RightViewModel model)
+        {
+            var errors = new List<IModelError>();
+            service.TrySave(model, errors);          
+
+			if (errors.Any())
+            {
+                this.AddModelErrors(errors);
+                ViewBag.Readonly = false;
+				ViewBag.ButtonFlag = "RS"; // Relationship Submit
+				ViewBag.Title = "Edit Right" ; 
+                return View("Form", model);
+            }
+            else
+            {
+                return RedirectToAction("index", new { updated = model.Id });
+            } 
+        }
+
         // Display a form for creating Right
-        //[Authorize(Roles = "Admin,SaveRight")]
+		[RolesRequired("Admin","SaveRight")]   
         public ActionResult Create(int id = -1)
         {
             var errors = new List<IModelError>();
             ViewBag.Readonly = false;
-            ViewBag.ShowRelationships = false;
+			ViewBag.ButtonFlag = "S"; // Submit
+			ViewBag.Title = "New Right" ; 
             var model = GetViewModel(id,errors);
             return View("Form",model);
         }
 
+		[RolesRequired("Admin","SaveRight")]   
+        [HttpPost]
+        public ActionResult Create(RightViewModel model)
+        {
+            var errors = new List<IModelError>();
+
+			service.TrySave(model, errors);  
+			if (errors.Any())
+            {
+                this.AddModelErrors(errors);
+                ViewBag.Readonly = false;
+                ViewBag.ButtonFlag = "S"; // Submit
+				ViewBag.Title = "New Right" ; 
+                return View("Form", model);
+            }
+            else
+            {
+                return RedirectToAction("index", new { creaated = model.Id });
+            } 
+        }
+
         // Display a form for deleting Right
-        //[Authorize(Roles = "Admin,DeleteRight")]
+		[RolesRequired("Admin","DeleteRight")]   
         public ActionResult Delete(int id = -1)
         {
             var errors = new List<IModelError>();
             ViewBag.Readonly = true;
             ViewBag.ShowRelationships = false;
+			ViewBag.Title = "Delete Right" ; 
             var model = GetViewModel(id,errors);
             return View("Form",model);
         }
 
-        // Add Right via json post
+		[RolesRequired("Admin", "DeleteRight")]
         [HttpPost]
-        //[Authorize(Roles = "Admin,SaveRight")]
-        public ActionResult Save(RightViewModel model)
+        public ActionResult Delete(RightViewModel model, int _post)
         {
             var errors = new List<IModelError>();
-            var result = service.TrySave(model, errors);
-        
-            if(result) // make a connection between the new Right and an existing Role 
-            {				
-                roleService.AddRoleToRightForRoleRight(model.Id,model.RoleRightId);
-            }            
-        
-            return Json(new
+            var result = service.TryDelete(model.Id, errors);
+            ViewBag.Title = "Delete Right";
+            if (errors.Any())
             {
-                Model = model,
-                Success = result,
-                Errors = errors
-            });
-        }
-
-        // Delete Right via json post
-        [HttpPost]
-        //[Authorize(Roles = "Admin,DeleteRight")]
-        public ActionResult Remove(int id)
-        {
-            var errors = new List<IModelError>();
-            var result = service.TryDelete(id, errors);
-            return Json(new
+                model = GetViewModel(model.Id, errors);
+                this.AddModelErrors(errors);
+                ViewBag.Readonly = false;
+                ViewBag.ButtonFlag = "S"; // Submit
+                ViewBag.Title = "Delete Right";
+                return View("Form", model);
+            }
+            else
             {
-                Success = result ,
-                Errors = errors
-            });
+                return RedirectToAction("index", new { deleted = model.Id });
+            }
         }
-
+		
         // list all Right entities
-        //[Authorize(Roles = "Admin,ListRight")]
+		[RolesRequired("Admin","ListRight")]  
         public ActionResult List() 
         {
             var errors = new List<IModelError>();
@@ -133,7 +172,7 @@ namespace App.Mvc.Controllers
                 
                 
         // Supports the one to many relationship (RoleRight) between Right (one) Role (many)
-        //[Authorize(Roles = "Admin,ListRoleRight")]
+        [RolesRequired("Admin","ListRoleRight")]  
         public ActionResult GetRoleRight(int id) 
         {
             var models = new[] { service.GetSingleRightByRoleForRoleRight(id)};

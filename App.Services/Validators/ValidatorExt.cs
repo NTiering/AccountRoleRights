@@ -50,6 +50,16 @@ namespace App.Services.Validators
         /// </summary>
         /// <param name="n"></param>
         /// <Returns></Returns>
+        public static bool IsPresent(this byte[] n)
+        {
+            return (n != null && n.Count() != 0);
+        }
+
+        /// <summary>
+        /// Returns true if value is not default
+        /// </summary>
+        /// <param name="n"></param>
+        /// <Returns></Returns>
         public static bool IsPresent(this string n)
         {
             return string.IsNullOrWhiteSpace(n) == false;

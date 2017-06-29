@@ -26,14 +26,14 @@ namespace App.Dal
         public DbSet<AccountEntityDataModel> Account { get; set; } 
 
         /// <summary>
-        /// Represents a collection of common rights
-        /// </summary>        
-        public DbSet<RoleEntityDataModel> Role { get; set; } 
-
-        /// <summary>
         /// A single action an end user can perform
         /// </summary>        
         public DbSet<RightEntityDataModel> Right { get; set; } 
+
+        /// <summary>
+        /// Represents a collection of common rights
+        /// </summary>        
+        public DbSet<RoleEntityDataModel> Role { get; set; } 
         
         /// <summary>
         /// Used internally to manage relationships between Account and Role for AccountRole searches.

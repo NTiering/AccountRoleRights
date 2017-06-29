@@ -14,7 +14,7 @@ namespace App.Dal
 		/// <summary>
 		/// Returns search results for CustomerSearch search 
 		/// </summary>
-		public ICustomerSearchResponse GetCustomerSearch(ICustomerSearchContracts request, IModelContext context = null)
+		public ICustomerSearchResponse GetCustomerSearch(ICustomerSearchRequest request, IModelContext context = null)
 		{
 			// var ctx = new AppContext();
             // todo : use ctx to build a results sets of ICustomerSearchDataModel objects (its implemeted as a CustomerSearchEntityDataModel() )
@@ -33,7 +33,7 @@ namespace App.Dal
 		/// <summary>
 		/// Returns search results for CustomerUsernameSearch search 
 		/// </summary>
-		public ICustomerUsernameSearchResponse GetCustomerUsernameSearch(ICustomerUsernameSearchContracts request, IModelContext context = null)
+		public ICustomerUsernameSearchResponse GetCustomerUsernameSearch(ICustomerUsernameSearchRequest request, IModelContext context = null)
 		{
 			// var ctx = new AppContext();
             // todo : use ctx to build a results sets of ICustomerUsernameSearchDataModel objects (its implemeted as a CustomerUsernameSearchEntityDataModel() )
